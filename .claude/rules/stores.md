@@ -48,3 +48,7 @@ export class ScanStore {
 - Writes (claim, renew) call the service, notify through `core/feedback`, then reload the scan from the
   server rather than patching local state.
 - Navigation stays in the page. No HttpClient, no Optimus UI, no Router in a store.
+- One exception, and only one: `core/auth/AuthStore.logout()` injects `Router`, because it is also
+  called from `session.interceptor` when a refresh fails and there is no page in that call stack to
+  hand the redirect to. Any other store that wants to navigate is doing the page's job.
+- Toasts go through `core/feedback/NotificationService`, never `MessageService` directly.

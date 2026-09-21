@@ -15,13 +15,16 @@ const garment = {
   photoUrls: [],
 };
 
-async function scanWith(state: ScanState): Promise<{ text: string; navigatedTo: string | null }> {
+async function scanWith(
+  state: ScanState,
+): Promise<{ text: string; navigatedTo: string | null; claimed: boolean }> {
   const scan = vi
     .fn()
     .mockResolvedValue(state === 'invalid' ? { state } : { state, garment });
 
+  const claim = vi.fn();
   TestBed.configureTestingModule({
-    providers: [provideRouter([]), { provide: GarmentsService, useValue: { scan } }],
+    providers: [provideRouter([]), { provide: GarmentsService, useValue: { scan, claim } }],
   });
 
   const router = TestBed.inject(Router);
@@ -38,7 +41,7 @@ async function scanWith(state: ScanState): Promise<{ text: string; navigatedTo: 
   await fixture.whenStable();
   fixture.detectChanges();
 
-  return { text: textOf(fixture), navigatedTo };
+  return { text: textOf(fixture), navigatedTo, claimed: claim.mock.calls.length > 0 };
 }
 
 describe('ScanPage', () => {
@@ -68,11 +71,13 @@ describe('ScanPage', () => {
   });
 
   it('should send a stranger to the authenticity screen when the shirt belongs to someone else', async () => {
-    const { text, navigatedTo } = await scanWith('foreign');
+    const { text, navigatedTo, claimed } = await scanWith('foreign');
 
     expect(navigatedTo).toBe('/t/abc123/verify');
     expect(text).not.toContain("Ro'yxatdan o'tish");
+    expect(claimed).toBe(false);
   });
+
 
   it('should explain the chip is dead when the token is invalid', async () => {
     const { text, navigatedTo } = await scanWith('invalid');

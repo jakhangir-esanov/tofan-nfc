@@ -142,6 +142,9 @@ Stores `.store.ts`, services `.service.ts`, DTOs `.dto.ts`, mappers `.mapper.ts`
 
 - Optimus UI components are used in components, pages, `shared/components/` and `core/layout/`.
   Never in models, services or stores.
+- The one Optimus UI **service** a store may reach is the toast, and only through
+  `core/feedback/NotificationService`. `MessageService` itself is injected there and nowhere else, so
+  a store says "warn the user" without knowing which library draws it.
 - **Mobile first, always.** The design target is a phone held right after tapping a shirt: single column,
   full-bleed, `max-width: 480px` centred on desktop, safe-area insets, sticky bottom action bar.
   There is no sidebar, no topbar shell and no data table anywhere in this project.

@@ -33,6 +33,13 @@ These are not optional; a review rejects a change that lands without them.
   `foreign` even when an `AuthStore` session exists.
 - The token never reaches `console`, `localStorage`, `sessionStorage` or a query string.
 
+**Cross-feature reach**
+
+A feature's spec may not import another feature (Sheriff and ESLint both reject it), so "the passport
+service is never called from the scan flow" is proven by the boundary, not by a spy. What a scan spec
+asserts instead is that its own service was used for reading only — `claim` is never called for a
+state the server did not mark `claimable`.
+
 **Auth redirect**
 
 - An unauthenticated user on `/t/:token/activate` is sent to `/auth/login` with

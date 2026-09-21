@@ -34,6 +34,8 @@ Out of scope: payments, stamp awarding, the multi-shirt list, the admin panel.
   with the `Invalid` state (`docs/backend-contract.md`).
 - A registration whose profile step fails leaves the account usable and warns with a toast; a dedicated
   "finish your profile" screen is still to be built.
+- `auth-token.interceptor` and `session.interceptor` have no specs yet. `.claude/rules/testing.md`
+  asks for the refresh-once-then-login case; it is the last mandated test still missing.
 
 ## Phase 2 — validity and payment
 
