@@ -1,0 +1,16 @@
+<app-state-screen
+  [loading]="store.loading()"
+  [error]="store.loadError()"
+  (retry)="resolve()"
+>
+  @if (store.garment(); as garment) {
+    <section class="verify">
+      <p class="verify__badge" i18n="@@verify.badge">PEAKTOFAN ORIGINALI</p>
+      <h1 class="verify__title" i18n="@@verify.title">Bu futbolka haqiqiy</h1>
+      <p class="verify__lead app-muted" i18n="@@verify.lead">
+        Futbolka allaqachon aktivatsiya qilingan. Pasport faqat egasiga ko'rinadi.
+      </p>
+      <app-garment-preview [garment]="garment" />
+    </section>
+  }
+</app-state-screen>

@@ -1,0 +1,13 @@
+<nav class="language-switcher" i18n-aria-label="@@layout.languageSwitcher" aria-label="Til tanlash">
+  @for (locale of locales; track locale) {
+    <button
+      type="button"
+      class="language-switcher__option app-tap-target"
+      [class.language-switcher__option--active]="locale === current"
+      [attr.aria-current]="locale === current ? 'true' : null"
+      (click)="switchTo(locale)"
+    >
+      {{ locale }}
+    </button>
+  }
+</nav>

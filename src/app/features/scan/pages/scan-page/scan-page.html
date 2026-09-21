@@ -1,0 +1,47 @@
+<app-state-screen
+  [loading]="store.loading()"
+  [error]="store.loadError()"
+  (retry)="resolve()"
+>
+  @switch (store.state()) {
+    @case ('unclaimed') {
+      @if (store.garment(); as garment) {
+        <section class="scan">
+          <h1 class="scan__title" i18n="@@scan.unclaimed.title">Futbolkangiz aktivatsiya kutmoqda</h1>
+          <p class="scan__lead app-muted" i18n="@@scan.unclaimed.lead">
+            Ro'yxatdan o'ting va bu futbolkaning raqamli pasportini oching.
+          </p>
+          <app-garment-preview [garment]="garment" />
+        </section>
+
+        <div class="app-action-bar">
+          <a
+            [routerLink]="registerUrl()"
+            [queryParams]="{ returnUrl: returnUrl() }"
+            class="scan__primary app-tap-target"
+            i18n="@@scan.unclaimed.register"
+          >
+            Ro'yxatdan o'tish
+          </a>
+          <a
+            [routerLink]="loginUrl()"
+            [queryParams]="{ returnUrl: returnUrl() }"
+            class="scan__secondary app-tap-target"
+            i18n="@@scan.unclaimed.login"
+          >
+            Akkauntim bor
+          </a>
+        </div>
+      }
+    }
+    @case ('invalid') {
+      <section class="scan scan--centered">
+        <h1 class="scan__title" i18n="@@scan.invalid.title">Havola ishlamayapti</h1>
+        <p class="scan__lead app-muted" i18n="@@scan.invalid.lead">
+          Bu havola noto'g'ri yoki bekor qilingan. Futbolkani qaytadan skanerlang yoki biz bilan
+          bog'laning.
+        </p>
+      </section>
+    }
+  }
+</app-state-screen>

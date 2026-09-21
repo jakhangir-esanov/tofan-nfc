@@ -1,0 +1,58 @@
+<section class="auth">
+  <h1 class="auth__title" i18n="@@auth.login.title">Kirish</h1>
+  <p class="auth__lead app-muted" i18n="@@auth.login.lead">
+    Akkauntingizga kiring va futbolka pasportini oching.
+  </p>
+
+  <form class="auth__form" (ngSubmit)="submit()">
+    <label class="auth__field" [class.auth__field--pristine]="!loginForm.username().touched()">
+      <span class="auth__label" i18n="@@auth.field.email">Email</span>
+      <input
+        pInputText
+        type="email"
+        autocomplete="username"
+        [formField]="loginForm.username"
+      />
+      @if (loginForm.username().touched() && loginForm.username().invalid()) {
+        <span class="auth__error" i18n="@@auth.error.emailRequired">Emailni kiriting</span>
+      }
+    </label>
+
+    <label class="auth__field" [class.auth__field--pristine]="!loginForm.password().touched()">
+      <span class="auth__label" i18n="@@auth.field.password">Parol</span>
+      <input
+        pInputText
+        type="password"
+        autocomplete="current-password"
+        [formField]="loginForm.password"
+      />
+      @if (loginForm.password().touched() && loginForm.password().invalid()) {
+        <span class="auth__error" i18n="@@auth.error.passwordLength">
+          Parol kamida 8 ta belgidan iborat bo'lsin
+        </span>
+      }
+    </label>
+
+    @if (store.submitError(); as message) {
+      <p class="auth__error auth__error--summary" role="alert">{{ message }}</p>
+    }
+
+    <div class="app-action-bar">
+      <p-button
+        type="submit"
+        [loading]="store.submitting()"
+        i18n-label="@@auth.login.submit"
+        label="Kirish"
+        styleClass="auth__submit"
+      />
+      <a
+        class="auth__link app-tap-target"
+        [routerLink]="registerLink()"
+        [queryParams]="{ returnUrl: returnUrl() }"
+        i18n="@@auth.login.toRegister"
+      >
+        Akkauntim yo'q
+      </a>
+    </div>
+  </form>
+</section>

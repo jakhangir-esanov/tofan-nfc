@@ -1,0 +1,31 @@
+<figure class="garment-preview">
+  @if (photoUrl(); as url) {
+    <img class="garment-preview__photo" [src]="url" [alt]="garment().model" width="320" height="320" />
+  } @else {
+    <div class="garment-preview__photo garment-preview__photo--empty" aria-hidden="true"></div>
+  }
+
+  <figcaption class="garment-preview__caption">
+    <span class="garment-preview__model">{{ garment().model }}</span>
+    <span class="garment-preview__serial">{{ garment().serialNumber }}</span>
+  </figcaption>
+</figure>
+
+<dl class="garment-facts">
+  <div class="garment-facts__row">
+    <dt i18n="@@garment.color">Rang</dt>
+    <dd>{{ garment().color }}</dd>
+  </div>
+  <div class="garment-facts__row">
+    <dt i18n="@@garment.size">O'lcham</dt>
+    <dd>{{ garment().size }}</dd>
+  </div>
+  <div class="garment-facts__row">
+    <dt i18n="@@garment.material">Material</dt>
+    <dd>{{ garment().material }}</dd>
+  </div>
+  <div class="garment-facts__row">
+    <dt i18n="@@garment.manufacturedAt">Ishlab chiqarilgan</dt>
+    <dd>{{ garment().manufacturedAt | date: 'dd.MM.yyyy' }}</dd>
+  </div>
+</dl>

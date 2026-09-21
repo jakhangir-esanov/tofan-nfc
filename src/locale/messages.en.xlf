@@ -1,0 +1,579 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="uz" target-language="en" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="error.garment.alreadyClaimed" datatype="html">
+        <source>Bu futbolka allaqachon aktivatsiya qilingan.</source>
+        <target state="new">Bu futbolka allaqachon aktivatsiya qilingan.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/feedback/error-message.ts</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.garment.notFound" datatype="html">
+        <source>Bu havola bo&apos;yicha futbolka topilmadi.</source>
+        <target state="new">Bu havola bo&apos;yicha futbolka topilmadi.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/feedback/error-message.ts</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.garment.unsupportedResponse" datatype="html">
+        <source>Saytni yangilash kerak. Sahifani qaytadan yuklang.</source>
+        <target state="new">Saytni yangilash kerak. Sahifani qaytadan yuklang.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/feedback/error-message.ts</context>
+          <context context-type="linenumber">14</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.garment.revoked" datatype="html">
+        <source>Bu havola bekor qilingan. Qo&apos;llab-quvvatlash xizmatiga murojaat qiling.</source>
+        <target state="new">Bu havola bekor qilingan. Qo&apos;llab-quvvatlash xizmatiga murojaat qiling.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/feedback/error-message.ts</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.auth.invalidCredentials" datatype="html">
+        <source>Login yoki parol noto&apos;g&apos;ri.</source>
+        <target state="new">Login yoki parol noto&apos;g&apos;ri.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/feedback/error-message.ts</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.auth.userExists" datatype="html">
+        <source>Bu email bilan akkaunt allaqachon mavjud.</source>
+        <target state="new">Bu email bilan akkaunt allaqachon mavjud.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/feedback/error-message.ts</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.auth.invalidCredentials.fallback" datatype="html">
+        <source>Login yoki parol noto&apos;g&apos;ri.</source>
+        <target state="new">Login yoki parol noto&apos;g&apos;ri.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/feedback/error-message.ts</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.session.expired" datatype="html">
+        <source>Sessiya tugadi. Iltimos, qaytadan kiring.</source>
+        <target state="new">Sessiya tugadi. Iltimos, qaytadan kiring.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/feedback/error-message.ts</context>
+          <context context-type="linenumber">34</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.accessDenied" datatype="html">
+        <source>Bu ma&apos;lumotni ko&apos;rishga ruxsat yo&apos;q.</source>
+        <target state="new">Bu ma&apos;lumotni ko&apos;rishga ruxsat yo&apos;q.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/feedback/error-message.ts</context>
+          <context context-type="linenumber">37</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.notFound" datatype="html">
+        <source>Ma&apos;lumot topilmadi.</source>
+        <target state="new">Ma&apos;lumot topilmadi.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/feedback/error-message.ts</context>
+          <context context-type="linenumber">40</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.conflict" datatype="html">
+        <source>Bu amalni bajarib bo&apos;lmadi.</source>
+        <target state="new">Bu amalni bajarib bo&apos;lmadi.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/feedback/error-message.ts</context>
+          <context context-type="linenumber">43</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.rateLimited" datatype="html">
+        <source>Juda ko&apos;p urinish. Biroz kutib, qaytadan urinib ko&apos;ring.</source>
+        <target state="new">Juda ko&apos;p urinish. Biroz kutib, qaytadan urinib ko&apos;ring.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/feedback/error-message.ts</context>
+          <context context-type="linenumber">46</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.generic" datatype="html">
+        <source>Ulanishda muammo. Qaytadan urinib ko&apos;ring.</source>
+        <target state="new">Ulanishda muammo. Qaytadan urinib ko&apos;ring.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/feedback/error-message.ts</context>
+          <context context-type="linenumber">55</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="layout.brand" datatype="html">
+        <source>PEAKTOFAN</source>
+        <target state="new">PEAKTOFAN</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/layout/components/app-shell/app-shell.html</context>
+          <context context-type="linenumber">3,4</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="layout.languageSwitcher" datatype="html">
+        <source>Til tanlash</source>
+        <target state="new">Til tanlash</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/layout/language/language-switcher.html</context>
+          <context context-type="linenumber">1,2</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="auth.register.profileIncomplete" datatype="html">
+        <source>Akkaunt yaratildi, lekin ismingiz saqlanmadi. Keyinroq ilovada to&apos;ldirasiz.</source>
+        <target state="new">Akkaunt yaratildi, lekin ismingiz saqlanmadi. Keyinroq ilovada to&apos;ldirasiz.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/auth-form.store.ts</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="auth.login.title" datatype="html">
+        <source>Kirish</source>
+        <target state="new">Kirish</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/pages/login-page/login-page.html</context>
+          <context context-type="linenumber">2,3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="auth.login.lead" datatype="html">
+        <source> Akkauntingizga kiring va futbolka pasportini oching. </source>
+        <target state="new"> Akkauntingizga kiring va futbolka pasportini oching. </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/pages/login-page/login-page.html</context>
+          <context context-type="linenumber">4,7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="auth.field.email" datatype="html">
+        <source>Email</source>
+        <target state="new">Email</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/pages/login-page/login-page.html</context>
+          <context context-type="linenumber">9,11</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/pages/register-page/register-page.html</context>
+          <context context-type="linenumber">25,26</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="auth.error.emailRequired" datatype="html">
+        <source>Emailni kiriting</source>
+        <target state="new">Emailni kiriting</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/pages/login-page/login-page.html</context>
+          <context context-type="linenumber">17,21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="auth.field.password" datatype="html">
+        <source>Parol</source>
+        <target state="new">Parol</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/pages/login-page/login-page.html</context>
+          <context context-type="linenumber">22,24</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/pages/register-page/register-page.html</context>
+          <context context-type="linenumber">33,35</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="auth.error.passwordLength" datatype="html">
+        <source> Parol kamida 8 ta belgidan iborat bo&apos;lsin </source>
+        <target state="new"> Parol kamida 8 ta belgidan iborat bo&apos;lsin </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/pages/login-page/login-page.html</context>
+          <context context-type="linenumber">31,34</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/pages/register-page/register-page.html</context>
+          <context context-type="linenumber">42,45</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="auth.login.submit" datatype="html">
+        <source>Kirish</source>
+        <target state="new">Kirish</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/pages/login-page/login-page.html</context>
+          <context context-type="linenumber">46</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="auth.login.toRegister" datatype="html">
+        <source> Akkauntim yo&apos;q </source>
+        <target state="new"> Akkauntim yo&apos;q </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/pages/login-page/login-page.html</context>
+          <context context-type="linenumber">54,57</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="auth.register.title" datatype="html">
+        <source>Ro&apos;yxatdan o&apos;tish</source>
+        <target state="new">Ro&apos;yxatdan o&apos;tish</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/pages/register-page/register-page.html</context>
+          <context context-type="linenumber">2,3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="auth.register.lead" datatype="html">
+        <source> Bir marta ro&apos;yxatdan o&apos;ting — futbolkangiz pasporti shu akkauntga bog&apos;lanadi. </source>
+        <target state="new"> Bir marta ro&apos;yxatdan o&apos;ting — futbolkangiz pasporti shu akkauntga bog&apos;lanadi. </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/pages/register-page/register-page.html</context>
+          <context context-type="linenumber">4,7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="auth.field.firstName" datatype="html">
+        <source>Ism</source>
+        <target state="new">Ism</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/pages/register-page/register-page.html</context>
+          <context context-type="linenumber">9,10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="auth.error.firstNameRequired" datatype="html">
+        <source>Ismingizni kiriting</source>
+        <target state="new">Ismingizni kiriting</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/pages/register-page/register-page.html</context>
+          <context context-type="linenumber">12,16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="auth.field.lastName" datatype="html">
+        <source>Familiya</source>
+        <target state="new">Familiya</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/pages/register-page/register-page.html</context>
+          <context context-type="linenumber">17,18</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="auth.error.lastNameRequired" datatype="html">
+        <source>Familiyangizni kiriting</source>
+        <target state="new">Familiyangizni kiriting</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/pages/register-page/register-page.html</context>
+          <context context-type="linenumber">20,24</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="auth.error.emailInvalid" datatype="html">
+        <source>To&apos;g&apos;ri email kiriting</source>
+        <target state="new">To&apos;g&apos;ri email kiriting</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/pages/register-page/register-page.html</context>
+          <context context-type="linenumber">28,32</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="auth.register.submit" datatype="html">
+        <source>Ro&apos;yxatdan o&apos;tish</source>
+        <target state="new">Ro&apos;yxatdan o&apos;tish</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/pages/register-page/register-page.html</context>
+          <context context-type="linenumber">56,59</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="auth.register.toLogin" datatype="html">
+        <source> Akkauntim bor </source>
+        <target state="new"> Akkauntim bor </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/pages/register-page/register-page.html</context>
+          <context context-type="linenumber">64,67</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="home.title" datatype="html">
+        <source>Futbolkangizga telefoningizni tekkizing</source>
+        <target state="new">Futbolkangizga telefoningizni tekkizing</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/home/pages/home-page/home-page.html</context>
+          <context context-type="linenumber">3,4</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="home.lead" datatype="html">
+        <source> Peaktofan futbolkasidagi NFC chip raqamli pasportni ochadi. </source>
+        <target state="new"> Peaktofan futbolkasidagi NFC chip raqamli pasportni ochadi. </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/home/pages/home-page/home-page.html</context>
+          <context context-type="linenumber">5,8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="notFound.title" datatype="html">
+        <source>Sahifa topilmadi</source>
+        <target state="new">Sahifa topilmadi</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/not-found/pages/not-found-page/not-found-page.html</context>
+          <context context-type="linenumber">2,3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="notFound.lead" datatype="html">
+        <source> Havola noto&apos;g&apos;ri bo&apos;lishi mumkin. Futbolkani qaytadan skanerlang. </source>
+        <target state="new"> Havola noto&apos;g&apos;ri bo&apos;lishi mumkin. Futbolkani qaytadan skanerlang. </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/not-found/pages/not-found-page/not-found-page.html</context>
+          <context context-type="linenumber">4,6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="notFound.toHome" datatype="html">
+        <source> Bosh sahifa </source>
+        <target state="new"> Bosh sahifa </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/not-found/pages/not-found-page/not-found-page.html</context>
+          <context context-type="linenumber">7,10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="passport.cover.title" datatype="html">
+        <source>RAQAMLI PASPORT</source>
+        <target state="new">RAQAMLI PASPORT</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/passport/pages/passport-page/passport-page.html</context>
+          <context context-type="linenumber">10,11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="passport.locked" datatype="html">
+        <source>Muddati tugagan</source>
+        <target state="new">Muddati tugagan</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/passport/pages/passport-page/passport-page.html</context>
+          <context context-type="linenumber">14,16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="passport.field.holder" datatype="html">
+        <source>Egasi</source>
+        <target state="new">Egasi</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/passport/pages/passport-page/passport-page.html</context>
+          <context context-type="linenumber">21,22</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="passport.field.model" datatype="html">
+        <source>Model</source>
+        <target state="new">Model</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/passport/pages/passport-page/passport-page.html</context>
+          <context context-type="linenumber">25,26</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="passport.field.serial" datatype="html">
+        <source>Seriya raqami</source>
+        <target state="new">Seriya raqami</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/passport/pages/passport-page/passport-page.html</context>
+          <context context-type="linenumber">29,30</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="passport.field.material" datatype="html">
+        <source>Material</source>
+        <target state="new">Material</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/passport/pages/passport-page/passport-page.html</context>
+          <context context-type="linenumber">33,34</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="passport.field.activatedAt" datatype="html">
+        <source>Aktivatsiya</source>
+        <target state="new">Aktivatsiya</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/passport/pages/passport-page/passport-page.html</context>
+          <context context-type="linenumber">37,38</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="passport.field.expiresAt" datatype="html">
+        <source>Amal qilish muddati</source>
+        <target state="new">Amal qilish muddati</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/passport/pages/passport-page/passport-page.html</context>
+          <context context-type="linenumber">41,42</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="passport.field.rating" datatype="html">
+        <source>Reyting</source>
+        <target state="new">Reyting</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/passport/pages/passport-page/passport-page.html</context>
+          <context context-type="linenumber">46,47</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="passport.stamps.empty" datatype="html">
+        <source> Hali shtamp yo&apos;q. Ilovada birinchi mashqingizni boshlang. </source>
+        <target state="new"> Hali shtamp yo&apos;q. Ilovada birinchi mashqingizni boshlang. </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/passport/pages/passport-page/passport-page.html</context>
+          <context context-type="linenumber">56,58</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="passport.page.cover" datatype="html">
+        <source>Muqova</source>
+        <target state="new">Muqova</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/passport/pages/passport-page/passport-page.ts</context>
+          <context context-type="linenumber">24</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="passport.page.data" datatype="html">
+        <source>Ma&apos;lumot</source>
+        <target state="new">Ma&apos;lumot</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/passport/pages/passport-page/passport-page.ts</context>
+          <context context-type="linenumber">25</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="passport.page.stamps" datatype="html">
+        <source>Shtamplar</source>
+        <target state="new">Shtamplar</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/passport/pages/passport-page/passport-page.ts</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="activate.title" datatype="html">
+        <source>Bu sizning futbolkangizmi?</source>
+        <target state="new">Bu sizning futbolkangizmi?</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/scan/pages/activate-page/activate-page.html</context>
+          <context context-type="linenumber">8,9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="activate.lead" datatype="html">
+        <source> Aktivatsiyadan keyin futbolka shu akkauntga bog&apos;lanadi va uni boshqa hech kim aktivatsiya qila olmaydi. </source>
+        <target state="new"> Aktivatsiyadan keyin futbolka shu akkauntga bog&apos;lanadi va uni boshqa hech kim aktivatsiya qila olmaydi. </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/scan/pages/activate-page/activate-page.html</context>
+          <context context-type="linenumber">10,12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="activate.submit" datatype="html">
+        <source>Aktivatsiya qilish</source>
+        <target state="new">Aktivatsiya qilish</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/scan/pages/activate-page/activate-page.html</context>
+          <context context-type="linenumber">24,25</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="scan.unclaimed.title" datatype="html">
+        <source>Futbolkangiz aktivatsiya kutmoqda</source>
+        <target state="new">Futbolkangiz aktivatsiya kutmoqda</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/scan/pages/scan-page/scan-page.html</context>
+          <context context-type="linenumber">10,11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="scan.unclaimed.lead" datatype="html">
+        <source> Ro&apos;yxatdan o&apos;ting va bu futbolkaning raqamli pasportini oching. </source>
+        <target state="new"> Ro&apos;yxatdan o&apos;ting va bu futbolkaning raqamli pasportini oching. </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/scan/pages/scan-page/scan-page.html</context>
+          <context context-type="linenumber">12,14</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="scan.unclaimed.register" datatype="html">
+        <source> Ro&apos;yxatdan o&apos;tish </source>
+        <target state="new"> Ro&apos;yxatdan o&apos;tish </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/scan/pages/scan-page/scan-page.html</context>
+          <context context-type="linenumber">24,26</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="scan.unclaimed.login" datatype="html">
+        <source> Akkauntim bor </source>
+        <target state="new"> Akkauntim bor </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/scan/pages/scan-page/scan-page.html</context>
+          <context context-type="linenumber">32,34</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="scan.invalid.title" datatype="html">
+        <source>Havola ishlamayapti</source>
+        <target state="new">Havola ishlamayapti</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/scan/pages/scan-page/scan-page.html</context>
+          <context context-type="linenumber">39,40</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="scan.invalid.lead" datatype="html">
+        <source> Bu havola noto&apos;g&apos;ri yoki bekor qilingan. Futbolkani qaytadan skanerlang yoki biz bilan bog&apos;laning. </source>
+        <target state="new"> Bu havola noto&apos;g&apos;ri yoki bekor qilingan. Futbolkani qaytadan skanerlang yoki biz bilan bog&apos;laning. </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/scan/pages/scan-page/scan-page.html</context>
+          <context context-type="linenumber">41,43</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="verify.badge" datatype="html">
+        <source>PEAKTOFAN ORIGINALI</source>
+        <target state="new">PEAKTOFAN ORIGINALI</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/scan/pages/verify-page/verify-page.html</context>
+          <context context-type="linenumber">8,9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="verify.title" datatype="html">
+        <source>Bu futbolka haqiqiy</source>
+        <target state="new">Bu futbolka haqiqiy</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/scan/pages/verify-page/verify-page.html</context>
+          <context context-type="linenumber">9,10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="verify.lead" datatype="html">
+        <source> Futbolka allaqachon aktivatsiya qilingan. Pasport faqat egasiga ko&apos;rinadi. </source>
+        <target state="new"> Futbolka allaqachon aktivatsiya qilingan. Pasport faqat egasiga ko&apos;rinadi. </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/scan/pages/verify-page/verify-page.html</context>
+          <context context-type="linenumber">11,13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="garment.color" datatype="html">
+        <source>Rang</source>
+        <target state="new">Rang</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/garment-preview/garment-preview.html</context>
+          <context context-type="linenumber">16,17</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="garment.size" datatype="html">
+        <source>O&apos;lcham</source>
+        <target state="new">O&apos;lcham</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/garment-preview/garment-preview.html</context>
+          <context context-type="linenumber">20,21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="garment.material" datatype="html">
+        <source>Material</source>
+        <target state="new">Material</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/garment-preview/garment-preview.html</context>
+          <context context-type="linenumber">24,25</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="garment.manufacturedAt" datatype="html">
+        <source>Ishlab chiqarilgan</source>
+        <target state="new">Ishlab chiqarilgan</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/garment-preview/garment-preview.html</context>
+          <context context-type="linenumber">28,29</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="passport.pages" datatype="html">
+        <source>Pasport sahifalari</source>
+        <target state="new">Pasport sahifalari</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/passport-book/passport-book.html</context>
+          <context context-type="linenumber">8,9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="state.loading" datatype="html">
+        <source>Yuklanmoqda…</source>
+        <target state="new">Yuklanmoqda…</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/state-screen/state-screen.html</context>
+          <context context-type="linenumber">4,6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="state.retry" datatype="html">
+        <source>Qaytadan urinish</source>
+        <target state="new">Qaytadan urinish</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/state-screen/state-screen.html</context>
+          <context context-type="linenumber">13,14</context>
+        </context-group>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

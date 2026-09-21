@@ -1,0 +1,43 @@
+.scan {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.scan--centered {
+  justify-content: center;
+  text-align: center;
+}
+
+.scan__title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.scan__lead {
+  margin: 0 0 16px;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.scan__primary,
+.scan__secondary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.scan__primary {
+  background-color: var(--app-accent);
+  color: var(--app-accent-contrast);
+}
+
+.scan__secondary {
+  border: 1px solid var(--app-border);
+  color: var(--app-text);
+}

@@ -1,0 +1,20 @@
+<div class="passport-book">
+  <div class="passport-book__viewport">
+    <div class="passport-book__track" [style.transform]="offset()">
+      <ng-content />
+    </div>
+  </div>
+
+  <nav class="passport-book__nav" i18n-aria-label="@@passport.pages" aria-label="Pasport sahifalari">
+    @for (label of pageLabels(); track label; let i = $index) {
+      <button
+        type="button"
+        class="passport-book__dot app-tap-target"
+        [class.passport-book__dot--active]="i === index()"
+        [attr.aria-current]="i === index() ? 'page' : null"
+        [attr.aria-label]="label"
+        (click)="goTo(i)"
+      ></button>
+    }
+  </nav>
+</div>

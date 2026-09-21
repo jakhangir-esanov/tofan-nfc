@@ -1,0 +1,52 @@
+:host {
+  display: block;
+  outline: none;
+}
+
+.passport-book {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.passport-book__viewport {
+  overflow: hidden;
+  border-radius: var(--app-radius);
+  perspective: 1200px;
+}
+
+.passport-book__track {
+  display: flex;
+  transition: transform var(--app-motion-page-turn) var(--app-motion-easing);
+  will-change: transform;
+}
+
+.passport-book__nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.passport-book__dot {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+}
+
+.passport-book__dot::after {
+  content: '';
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--app-border);
+  transform: translate(-50%, -50%);
+  transition: background-color var(--app-motion-fast) var(--app-motion-easing);
+}
+
+.passport-book__dot--active::after {
+  background-color: var(--app-accent);
+}

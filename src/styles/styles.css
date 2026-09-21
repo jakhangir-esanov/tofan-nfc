@@ -1,0 +1,119 @@
+@import '@openng/icons/openng-icons.css';
+
+:root {
+  --app-shell-max-width: 480px;
+  --app-gutter: 16px;
+  --app-radius: 18px;
+
+  --app-canvas: #0b0c0f;
+  --app-surface: #14161b;
+  --app-surface-raised: #1c1f26;
+  --app-border: #2a2e37;
+  --app-text: #f2f3f5;
+  --app-text-muted: #9aa0ac;
+  --app-accent: #c8a45c;
+  --app-accent-contrast: #14161b;
+  --app-paper: #efe7d8;
+  --app-paper-ink: #2c2a26;
+  --app-paper-line: #cdbfa5;
+  --app-danger: #e05a4f;
+  --app-success: #4caf7d;
+
+  --app-motion-fast: 180ms;
+  --app-motion-page-turn: 520ms;
+  --app-motion-easing: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: var(--app-canvas);
+  color: var(--app-text);
+  font-family: var(--p-font-family, 'Inter', system-ui, sans-serif);
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior-y: none;
+}
+
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: var(--app-shell-max-width);
+  min-height: 100dvh;
+  margin: 0 auto;
+  padding: env(safe-area-inset-top) var(--app-gutter) env(safe-area-inset-bottom);
+  box-sizing: border-box;
+}
+
+.app-shell__content {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  padding-block: 12px 24px;
+}
+
+.app-shell__content > * {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+}
+
+.app-action-bar {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-block: 12px calc(12px + env(safe-area-inset-bottom));
+  background: linear-gradient(to top, var(--app-canvas) 70%, transparent);
+}
+
+.app-surface {
+  background-color: var(--app-surface);
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius);
+}
+
+.app-muted {
+  color: var(--app-text-muted);
+}
+
+.p-toast {
+  max-width: calc(100vw - 2 * var(--app-gutter));
+}
+
+.app-tap-target {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --app-motion-fast: 1ms;
+    --app-motion-page-turn: 1ms;
+  }
+}
+
+.passport-page {
+  flex: 0 0 100%;
+  min-width: 100%;
+  box-sizing: border-box;
+  padding: 24px 20px;
+  border-radius: var(--app-radius);
+}
+
+.passport-page--cover {
+  background: radial-gradient(circle at 50% 20%, var(--app-surface-raised), var(--app-canvas));
+  border: 1px solid var(--app-border);
+  min-height: 420px;
+}
+
+.passport-page--paper {
+  background-color: var(--app-paper);
+  color: var(--app-paper-ink);
+  min-height: 420px;
+}

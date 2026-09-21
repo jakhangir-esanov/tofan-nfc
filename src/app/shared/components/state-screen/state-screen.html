@@ -1,0 +1,19 @@
+@if (loading()) {
+  <div class="state-screen" role="status" aria-live="polite">
+    <span class="state-screen__mark" aria-hidden="true"></span>
+    <p class="state-screen__text" i18n="@@state.loading">Yuklanmoqda…</p>
+  </div>
+} @else if (error(); as message) {
+  <div class="state-screen" role="alert">
+    <span class="state-screen__mark state-screen__mark--error" aria-hidden="true"></span>
+    <p class="state-screen__text">{{ message }}</p>
+    <p-button
+      severity="secondary"
+      i18n-label="@@state.retry"
+      label="Qaytadan urinish"
+      (onClick)="retry.emit()"
+    />
+  </div>
+} @else {
+  <ng-content />
+}

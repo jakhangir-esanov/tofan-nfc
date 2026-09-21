@@ -1,0 +1,68 @@
+<section class="auth">
+  <h1 class="auth__title" i18n="@@auth.register.title">Ro'yxatdan o'tish</h1>
+  <p class="auth__lead app-muted" i18n="@@auth.register.lead">
+    Bir marta ro'yxatdan o'ting — futbolkangiz pasporti shu akkauntga bog'lanadi.
+  </p>
+
+  <form class="auth__form" (ngSubmit)="submit()">
+    <label class="auth__field" [class.auth__field--pristine]="!registerForm.firstName().touched()">
+      <span class="auth__label" i18n="@@auth.field.firstName">Ism</span>
+      <input pInputText autocomplete="given-name" [formField]="registerForm.firstName" />
+      @if (registerForm.firstName().touched() && registerForm.firstName().invalid()) {
+        <span class="auth__error" i18n="@@auth.error.firstNameRequired">Ismingizni kiriting</span>
+      }
+    </label>
+
+    <label class="auth__field" [class.auth__field--pristine]="!registerForm.lastName().touched()">
+      <span class="auth__label" i18n="@@auth.field.lastName">Familiya</span>
+      <input pInputText autocomplete="family-name" [formField]="registerForm.lastName" />
+      @if (registerForm.lastName().touched() && registerForm.lastName().invalid()) {
+        <span class="auth__error" i18n="@@auth.error.lastNameRequired">Familiyangizni kiriting</span>
+      }
+    </label>
+
+    <label class="auth__field" [class.auth__field--pristine]="!registerForm.email().touched()">
+      <span class="auth__label" i18n="@@auth.field.email">Email</span>
+      <input pInputText type="email" autocomplete="email" [formField]="registerForm.email" />
+      @if (registerForm.email().touched() && registerForm.email().invalid()) {
+        <span class="auth__error" i18n="@@auth.error.emailInvalid">To'g'ri email kiriting</span>
+      }
+    </label>
+
+    <label class="auth__field" [class.auth__field--pristine]="!registerForm.password().touched()">
+      <span class="auth__label" i18n="@@auth.field.password">Parol</span>
+      <input
+        pInputText
+        type="password"
+        autocomplete="new-password"
+        [formField]="registerForm.password"
+      />
+      @if (registerForm.password().touched() && registerForm.password().invalid()) {
+        <span class="auth__error" i18n="@@auth.error.passwordLength">
+          Parol kamida 8 ta belgidan iborat bo'lsin
+        </span>
+      }
+    </label>
+
+    @if (store.submitError(); as message) {
+      <p class="auth__error auth__error--summary" role="alert">{{ message }}</p>
+    }
+
+    <div class="app-action-bar">
+      <p-button
+        type="submit"
+        [loading]="store.submitting()"
+        i18n-label="@@auth.register.submit"
+        label="Ro'yxatdan o'tish"
+      />
+      <a
+        class="auth__link app-tap-target"
+        [routerLink]="loginLink()"
+        [queryParams]="{ returnUrl: returnUrl() }"
+        i18n="@@auth.register.toLogin"
+      >
+        Akkauntim bor
+      </a>
+    </div>
+  </form>
+</section>

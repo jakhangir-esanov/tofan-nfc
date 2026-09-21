@@ -1,0 +1,64 @@
+.garment-preview {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.garment-preview__photo {
+  width: 100%;
+  max-width: 320px;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: var(--app-radius);
+  background-color: var(--app-surface);
+}
+
+.garment-preview__photo--empty {
+  border: 1px dashed var(--app-border);
+}
+
+.garment-preview__caption {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.garment-preview__model {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.garment-preview__serial {
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  color: var(--app-text-muted);
+}
+
+.garment-facts {
+  margin: 20px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.garment-facts__row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--app-border);
+}
+
+.garment-facts__row dt {
+  color: var(--app-text-muted);
+  font-size: 14px;
+}
+
+.garment-facts__row dd {
+  margin: 0;
+  font-size: 14px;
+  text-align: right;
+}

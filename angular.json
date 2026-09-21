@@ -2,22 +2,49 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "cli": {
-    "packageManager": "npm"
+    "packageManager": "npm",
+    "schematicCollections": [
+      "angular-eslint"
+    ],
+    "analytics": "8019d058-5bb7-4bcd-a5da-ca3e6d131256"
   },
   "newProjectRoot": "projects",
   "projects": {
     "tofan-nfc": {
       "projectType": "application",
-      "schematics": {},
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
+      "i18n": {
+        "sourceLocale": {
+          "code": "uz",
+          "subPath": ""
+        },
+        "locales": {
+          "ru": {
+            "translation": "src/locale/messages.ru.xlf",
+            "subPath": "ru"
+          },
+          "en": {
+            "translation": "src/locale/messages.en.xlf",
+            "subPath": "en"
+          }
+        }
+      },
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "css"
+        }
+      },
       "architect": {
         "build": {
           "builder": "@angular/build:application",
           "options": {
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
+            "polyfills": [
+              "@angular/localize/init"
+            ],
             "assets": [
               {
                 "glob": "**/*",
@@ -25,7 +52,8 @@
               }
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles/tailwind.css",
+              "src/styles/styles.css"
             ],
             "server": "src/main.server.ts",
             "outputMode": "server",
@@ -38,10 +66,11 @@
           },
           "configurations": {
             "production": {
+              "localize": true,
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
+                  "maximumWarning": "700kB",
                   "maximumError": "1MB"
                 },
                 {
@@ -50,7 +79,13 @@
                   "maximumError": "8kB"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.production.ts"
+                }
+              ]
             },
             "development": {
               "optimization": false,
@@ -62,6 +97,9 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
+          "options": {
+            "proxyConfig": "proxy.conf.json"
+          },
           "configurations": {
             "production": {
               "buildTarget": "tofan-nfc:build:production"
@@ -72,8 +110,20 @@
           },
           "defaultConfiguration": "development"
         },
+        "extract-i18n": {
+          "builder": "@angular/build:extract-i18n"
+        },
         "test": {
           "builder": "@angular/build:unit-test"
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
+          }
         }
       }
     }

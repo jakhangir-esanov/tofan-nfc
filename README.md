@@ -1,59 +1,38 @@
-# TofanNfc
+# Peaktofan NFC
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.1.8.
+Customer-facing web app for Peaktofan shirts with an NFC chip. Tapping a phone on a shirt opens
+`https://<domain>/t/<token>`; the server decides what that token means for the visitor, and the app
+renders the matching screen — registration, activation, the shirt's digital passport, or a plain
+authenticity check for a stranger.
 
-## Development server
+Part of the Tofan ecosystem: the backend is `tofan` (.NET 10), the admin panel is `tofan-ui`.
+This repository is neither.
 
-To start a local development server, run:
+Angular 22 · TypeScript 6 (strict) · Optimus UI 2 · SSR · Vitest.
 
-```bash
-ng serve
-```
+## Documentation
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+| Document | Contents |
+| -------- | -------- |
+| `CLAUDE.md` | Project rules. Read before writing code. |
+| `docs/product-brief.md` | The marketing TZ, summarised, with the places we deliberately diverge |
+| `docs/pages.md` | Every page, every scan state, and the visual design |
+| `docs/architecture.md` | Why it is built this way |
+| `docs/backend-contract.md` | Endpoints and DTO shapes (the garment endpoints are still proposed) |
+| `docs/roadmap.md` | Scope per phase |
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
+## Commands
 
 ```bash
-ng build
+npm start             # ng serve, /api proxied to the backend
+npm run build
+npm test
+npm run lint
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+There is no mock backend: the dev server needs a running backend.
 
-## Running unit tests
+## Status
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Phase 1 (scan, auth, passport) is in design. The garment endpoints do not exist in the backend yet —
+see `docs/backend-contract.md`.

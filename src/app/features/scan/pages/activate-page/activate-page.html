@@ -1,0 +1,29 @@
+<app-state-screen
+  [loading]="store.loading()"
+  [error]="store.loadError()"
+  (retry)="resolve()"
+>
+  @if (store.claimableGarment(); as garment) {
+    <section class="activate">
+      <h1 class="activate__title" i18n="@@activate.title">Bu sizning futbolkangizmi?</h1>
+      <p class="activate__lead app-muted" i18n="@@activate.lead">
+        Aktivatsiyadan keyin futbolka shu akkauntga bog'lanadi va uni boshqa hech kim aktivatsiya
+        qila olmaydi.
+      </p>
+      <app-garment-preview [garment]="garment" />
+
+      @if (store.claimError(); as message) {
+        <p class="activate__error" role="alert">{{ message }}</p>
+      }
+    </section>
+
+    <div class="app-action-bar">
+      <p-button
+        [loading]="store.claiming()"
+        i18n-label="@@activate.submit"
+        label="Aktivatsiya qilish"
+        (onClick)="activate()"
+      />
+    </div>
+  }
+</app-state-screen>
