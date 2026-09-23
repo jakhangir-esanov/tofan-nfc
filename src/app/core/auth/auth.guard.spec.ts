@@ -1,3 +1,4 @@
+import { PLATFORM_ID } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { provideRouter } from '@angular/router';
@@ -5,9 +6,13 @@ import { describe, expect, it } from 'vitest';
 import { authGuard } from './auth.guard';
 import { AuthStore } from './auth.store';
 
-function runGuard(hasSession: boolean, url: string): boolean | UrlTree {
+function runGuard(hasSession: boolean, url: string, platform = 'browser'): boolean | UrlTree {
   TestBed.configureTestingModule({
-    providers: [provideRouter([]), { provide: AuthStore, useValue: { hasSession: () => hasSession } }],
+    providers: [
+      provideRouter([]),
+      { provide: PLATFORM_ID, useValue: platform },
+      { provide: AuthStore, useValue: { hasSession: () => hasSession } },
+    ],
   });
 
   const state = { url } as RouterStateSnapshot;
@@ -36,5 +41,9 @@ describe('authGuard', () => {
     const router = TestBed.inject(Router);
 
     expect(router.serializeUrl(result as UrlTree)).toContain('abc123%2Fpassport');
+  });
+
+  it('should leave the decision to the browser when the page is rendered on the server', () => {
+    expect(runGuard(false, '/t/abc123/passport', 'server')).toBe(true);
   });
 });

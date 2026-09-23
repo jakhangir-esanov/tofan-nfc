@@ -45,7 +45,9 @@ to `/t/:token` so the scan endpoint decides what the visitor sees.
 
 ## Security notes
 
-The route needs a session, but ownership is enforced by the backend: a non-owner gets
+The route needs a session (checked in the browser: on the server there is never a session, so `authGuard`
+lets server rendering through and the passport is only fetched after hydration; otherwise every reload
+or language switch detoured through the login page), but ownership is enforced by the backend: a non-owner gets
 `Garment.NotOwner` and is sent back to the scan rather than the page inventing a state. The rescan rule
 switches on the backend `code`, never on the HTTP status.
 
