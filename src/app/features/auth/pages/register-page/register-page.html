@@ -4,7 +4,7 @@
     Bir marta ro'yxatdan o'ting — futbolkangiz pasporti shu akkauntga bog'lanadi.
   </p>
 
-  <form class="auth__form" (ngSubmit)="submit()">
+  <form class="auth__form" [formRoot]="registerForm">
     <label class="auth__field" [class.auth__field--pristine]="!registerForm.firstName().touched()">
       <span class="auth__label" i18n="@@auth.field.firstName">Ism</span>
       <input pInputText autocomplete="given-name" [formField]="registerForm.firstName" />
@@ -17,9 +17,28 @@
       <span class="auth__label" i18n="@@auth.field.lastName">Familiya</span>
       <input pInputText autocomplete="family-name" [formField]="registerForm.lastName" />
       @if (registerForm.lastName().touched() && registerForm.lastName().invalid()) {
-        <span class="auth__error" i18n="@@auth.error.lastNameRequired">Familiyangizni kiriting</span>
+        <span class="auth__error" i18n="@@auth.error.lastNameRequired"
+          >Familiyangizni kiriting</span
+        >
       }
     </label>
+
+    <fieldset class="auth__field auth__choices">
+      <legend class="auth__label" i18n="@@auth.field.gender">Jinsingiz</legend>
+      <div class="auth__choice-row">
+        <label class="auth__choice app-tap-target">
+          <input type="radio" value="male" [formField]="registerForm.gender" />
+          <span i18n="@@auth.gender.male">Erkak</span>
+        </label>
+        <label class="auth__choice app-tap-target">
+          <input type="radio" value="female" [formField]="registerForm.gender" />
+          <span i18n="@@auth.gender.female">Ayol</span>
+        </label>
+      </div>
+      @if (registerForm.gender().touched() && registerForm.gender().invalid()) {
+        <span class="auth__error" i18n="@@auth.error.genderRequired">Jinsingizni tanlang</span>
+      }
+    </fieldset>
 
     <label class="auth__field" [class.auth__field--pristine]="!registerForm.email().touched()">
       <span class="auth__label" i18n="@@auth.field.email">Email</span>
@@ -31,12 +50,7 @@
 
     <label class="auth__field" [class.auth__field--pristine]="!registerForm.password().touched()">
       <span class="auth__label" i18n="@@auth.field.password">Parol</span>
-      <input
-        pInputText
-        type="password"
-        autocomplete="new-password"
-        [formField]="registerForm.password"
-      />
+      <app-password-input autocomplete="new-password" [formField]="registerForm.password" />
       @if (registerForm.password().touched() && registerForm.password().invalid()) {
         <span class="auth__error" i18n="@@auth.error.passwordLength">
           Parol kamida 8 ta belgidan iborat bo'lsin

@@ -9,8 +9,8 @@
 }
 
 .home__mark {
-  font-size: 40px;
-  color: var(--app-accent);
+  height: 72px;
+  margin-bottom: 8px;
 }
 
 .home__title {

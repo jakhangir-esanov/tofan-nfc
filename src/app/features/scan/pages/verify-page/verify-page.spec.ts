@@ -5,13 +5,14 @@ import { GarmentsService } from '../../services/garments.service';
 import { VerifyPage } from './verify-page';
 
 const garment = {
-  serialNumber: 'PT-2026-000123',
+  serialNumber: '01K7X8M4Q9F2A6BC3DEFGHJKMN',
   model: 'Peaktofan Classic',
   color: 'Qora',
   size: 'L',
   material: '95% paxta',
   manufacturedAt: new Date('2026-08-14T00:00:00Z'),
-  photoUrls: [],
+  knownColor: 'black' as const,
+  shade: 'var(--app-shirt-black)',
 };
 
 async function renderForeignScan(): Promise<ComponentFixture<VerifyPage>> {

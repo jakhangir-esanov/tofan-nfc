@@ -23,8 +23,7 @@ export interface RefreshTokenRequest {
   refreshToken: string;
 }
 
-export enum Gender {
-  Unspecified = 0,
+export enum GenderDto {
   Male = 1,
   Female = 2,
 }
@@ -34,7 +33,7 @@ export interface CreateProfileRequest {
   lastName: string;
   userName: string;
   dateOfBirth?: string | null;
-  gender: Gender;
+  gender: GenderDto;
   profilePhotoUrl?: string | null;
   countryCode: string;
   timeZone: string;

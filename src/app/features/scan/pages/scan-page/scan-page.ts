@@ -4,12 +4,13 @@ import { AppPaths } from '@core/config/app-paths';
 import { GarmentPreview } from '@shared/components/garment-preview/garment-preview';
 import { StateScreen } from '@shared/components/state-screen/state-screen';
 import { ScanStore } from '../../scan.store';
+import { InvalidLink } from '../../components/invalid-link/invalid-link';
 import { belongsOn } from '../../models/garment-scan';
 import { scanRoute } from '../../models/scan-route';
 
 @Component({
   selector: 'app-scan-page',
-  imports: [GarmentPreview, RouterLink, StateScreen],
+  imports: [GarmentPreview, InvalidLink, RouterLink, StateScreen],
   providers: [ScanStore],
   templateUrl: './scan-page.html',
   styleUrl: './scan-page.css',

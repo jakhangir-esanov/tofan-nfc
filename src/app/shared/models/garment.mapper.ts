@@ -1,4 +1,5 @@
 import { Garment } from './garment';
+import { garmentShadeOf, toGarmentColor } from './garment-color';
 import { GarmentDto } from './garment.dto';
 
 export function toGarment(dto: GarmentDto): Garment {
@@ -9,6 +10,7 @@ export function toGarment(dto: GarmentDto): Garment {
     size: dto.size,
     material: dto.material,
     manufacturedAt: new Date(dto.manufacturedAt),
-    photoUrls: dto.photoUrls,
+    knownColor: toGarmentColor(dto.color),
+    shade: garmentShadeOf(dto.color),
   };
 }

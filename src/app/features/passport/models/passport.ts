@@ -1,5 +1,4 @@
 import { Garment } from '@shared/models/garment';
-import { Stamp } from './stamp';
 
 export interface PassportHolder {
   readonly firstName: string;
@@ -12,8 +11,6 @@ export interface Passport {
   readonly activatedAt: Date;
   readonly expiresAt: Date;
   readonly isExpired: boolean;
-  readonly rating: number | null;
-  readonly stamps: readonly Stamp[];
 }
 
 export function holderName(holder: PassportHolder): string {

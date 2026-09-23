@@ -1,3 +1,5 @@
+import { GarmentColor } from './garment-color';
+
 export interface Garment {
   readonly serialNumber: string;
   readonly model: string;
@@ -5,5 +7,6 @@ export interface Garment {
   readonly size: string;
   readonly material: string;
   readonly manufacturedAt: Date;
-  readonly photoUrls: readonly string[];
+  readonly knownColor: GarmentColor | null;
+  readonly shade: string;
 }

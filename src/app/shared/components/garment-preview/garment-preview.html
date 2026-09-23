@@ -1,9 +1,9 @@
 <figure class="garment-preview">
-  @if (photoUrl(); as url) {
-    <img class="garment-preview__photo" [src]="url" [alt]="garment().model" width="320" height="320" />
-  } @else {
-    <div class="garment-preview__photo garment-preview__photo--empty" aria-hidden="true"></div>
-  }
+  <app-garment-shirt
+    class="garment-preview__photo"
+    [shade]="garment().shade"
+    [label]="garment().model"
+  />
 
   <figcaption class="garment-preview__caption">
     <span class="garment-preview__model">{{ garment().model }}</span>
@@ -12,18 +12,33 @@
 </figure>
 
 <dl class="garment-facts">
-  <div class="garment-facts__row">
-    <dt i18n="@@garment.color">Rang</dt>
-    <dd>{{ garment().color }}</dd>
-  </div>
-  <div class="garment-facts__row">
-    <dt i18n="@@garment.size">O'lcham</dt>
-    <dd>{{ garment().size }}</dd>
-  </div>
-  <div class="garment-facts__row">
-    <dt i18n="@@garment.material">Material</dt>
-    <dd>{{ garment().material }}</dd>
-  </div>
+  @if (hasColor()) {
+    <div class="garment-facts__row">
+      <dt i18n="@@garment.color">Rang</dt>
+      <dd class="garment-facts__color">
+        <span
+          class="garment-facts__swatch"
+          [style.background-color]="garment().shade"
+          [attr.role]="colorLabel() ? null : 'img'"
+          [attr.aria-label]="colorLabel() ? null : garment().color"
+          [attr.aria-hidden]="colorLabel() ? 'true' : null"
+        ></span>
+        {{ colorLabel() }}
+      </dd>
+    </div>
+  }
+  @if (garment().size) {
+    <div class="garment-facts__row">
+      <dt i18n="@@garment.size">O'lcham</dt>
+      <dd>{{ garment().size }}</dd>
+    </div>
+  }
+  @if (garment().material) {
+    <div class="garment-facts__row">
+      <dt i18n="@@garment.material">Material</dt>
+      <dd>{{ garment().material }}</dd>
+    </div>
+  }
   <div class="garment-facts__row">
     <dt i18n="@@garment.manufacturedAt">Ishlab chiqarilgan</dt>
     <dd>{{ garment().manufacturedAt | date: 'dd.MM.yyyy' }}</dd>

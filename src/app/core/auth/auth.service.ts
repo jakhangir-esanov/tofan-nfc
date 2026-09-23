@@ -8,18 +8,15 @@ import { SessionExpiredError } from './session-expired.error';
 import { Registration, toUsername } from './registration';
 import {
   AuthTokenResponse,
-  CreateProfileRequest,
-  Gender,
   LoginRequest,
   ProfileResponse,
   RefreshTokenRequest,
   RegisterRequest,
 } from './auth.dto';
-import { toAuthSession, toUserProfile } from './auth.mapper';
+import { toAuthSession, toCreateProfileRequest, toUserProfile } from './auth.mapper';
 
 const INVALID_CREDENTIALS_CODE = 'Authentication.InvalidCredentials';
 const INVALID_REFRESH_TOKEN_CODE = 'Authentication.InvalidRefreshToken';
-const DEFAULT_COUNTRY_CODE = 'UZ';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -49,15 +46,7 @@ export class AuthService {
   }
 
   createProfile(registration: Registration, timeZone: string): Promise<void> {
-    const body: CreateProfileRequest = {
-      firstName: registration.firstName.trim(),
-      lastName: registration.lastName.trim(),
-      userName: toUsername(registration),
-      gender: Gender.Unspecified,
-      countryCode: DEFAULT_COUNTRY_CODE,
-      timeZone,
-    };
-    return this.apiClient.post('/profiles', body);
+    return this.apiClient.post('/profiles', toCreateProfileRequest(registration, timeZone));
   }
 
   async findProfile(): Promise<ProfileResponse | null> {

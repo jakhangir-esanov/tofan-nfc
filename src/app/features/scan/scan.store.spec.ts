@@ -6,13 +6,14 @@ import { GarmentsService } from './services/garments.service';
 import { GarmentScan } from './models/garment-scan';
 
 const garment = {
-  serialNumber: 'PT-2026-000123',
+  serialNumber: '01K7X8M4Q9F2A6BC3DEFGHJKMN',
   model: 'Peaktofan Classic',
   color: 'Qora',
   size: 'L',
   material: '95% paxta',
   manufacturedAt: new Date('2026-08-14T00:00:00Z'),
-  photoUrls: [],
+  knownColor: 'black' as const,
+  shade: 'var(--app-shirt-black)',
 };
 
 function createStore(service: Partial<GarmentsService>): ScanStore {
@@ -36,7 +37,10 @@ describe('ScanStore', () => {
 
   it('should refuse to claim when the server did not say the garment is claimable', async () => {
     const claim = vi.fn();
-    const store = createStore({ scan: () => Promise.resolve({ state: 'foreign', garment }), claim });
+    const store = createStore({
+      scan: () => Promise.resolve({ state: 'foreign', garment }),
+      claim,
+    });
 
     await store.load('token-1');
 
@@ -46,19 +50,32 @@ describe('ScanStore', () => {
   });
 
   it('should start in the loading state so a failure never renders as an empty screen', () => {
-    const store = createStore({ scan: () => Promise.resolve({ state: 'invalid' }) });
+    const store = createStore({
+      scan: () => Promise.resolve({ state: 'invalid', reason: 'revoked' }),
+    });
 
     expect(store.loading()).toBe(true);
     expect(store.loadError()).toBeNull();
   });
 
   it('should hold no garment when the token is invalid', async () => {
-    const store = createStore({ scan: () => Promise.resolve({ state: 'invalid' }) });
+    const store = createStore({
+      scan: () => Promise.resolve({ state: 'invalid', reason: 'revoked' }),
+    });
 
     await store.load('token-1');
 
     expect(store.state()).toBe('invalid');
     expect(store.garment()).toBeNull();
+    expect(store.invalidReason()).toBe('revoked');
+  });
+
+  it('should hold no invalid reason when the scan resolved to a garment', async () => {
+    const store = createStore({ scan: () => Promise.resolve({ state: 'foreign', garment }) });
+
+    await store.load('token-1');
+
+    expect(store.invalidReason()).toBeNull();
   });
 
   it('should clear the scan and report the error when the request fails', async () => {

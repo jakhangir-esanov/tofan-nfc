@@ -18,19 +18,28 @@ Angular 22 · TypeScript 6 (strict) · Optimus UI 2 · SSR · Vitest.
 | `docs/product-brief.md` | The marketing TZ, summarised, with the places we deliberately diverge |
 | `docs/pages.md` | Every page, every scan state, and the visual design |
 | `docs/architecture.md` | Why it is built this way |
-| `docs/backend-contract.md` | Endpoints and DTO shapes (the garment endpoints are still proposed) |
+| `docs/backend-contract.md` | Endpoints and DTO shapes, checked against the backend code |
+| `docs/backend-task.md` | The garment module specified for the backend team, in Uzbek |
 | `docs/roadmap.md` | Scope per phase |
 
 ## Commands
 
 ```bash
-npm start             # ng serve, /api proxied to the backend
+npm start             # ng serve, /api proxied to the backend, Uzbek only
+npm run serve:ssr     # build every locale and serve them on :4200 like production
 npm run build
 npm test
 npm run lint
 ```
 
 There is no mock backend: the dev server needs a running backend.
+
+`ng serve` can only serve one locale, so on `npm start` the RU/EN switch leads to `/ru/...`, which the
+dev server does not know. To try the language switch, run `npm run serve:ssr`: it builds uz, ru and en
+and starts the SSR server with the settings in `ssr.env` (port 4200, `API_PROXY_TARGET` pointing at the
+backend). `src/api-proxy.ts` forwards `/api` only when `API_PROXY_TARGET` is set; in production the
+variable is absent and the reverse proxy in front of the site routes `/api`. There is no hot reload on
+this path: rebuild after a change.
 
 ## Status
 

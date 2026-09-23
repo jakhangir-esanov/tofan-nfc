@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { AuthSession } from './auth-session';
-import { AuthTokenResponse } from './auth.dto';
-import { toAuthSession, toUserProfile } from './auth.mapper';
+import { AuthTokenResponse, GenderDto } from './auth.dto';
+import { toAuthSession, toCreateProfileRequest, toUserProfile } from './auth.mapper';
+import { Registration } from './registration';
 
 function tokenWith(claims: Record<string, unknown>): string {
   const payload = btoa(JSON.stringify(claims)).replace(/\+/g, '-').replace(/\//g, '_');
@@ -9,7 +10,11 @@ function tokenWith(claims: Record<string, unknown>): string {
 }
 
 const response: AuthTokenResponse = {
-  accessToken: tokenWith({ sub: 'user-1', preferred_username: 'jahongir', name: 'Jahongir Esanov' }),
+  accessToken: tokenWith({
+    sub: 'user-1',
+    preferred_username: 'jahongir',
+    name: 'Jahongir Esanov',
+  }),
   expiresIn: 3600,
   refreshToken: 'refresh',
   refreshExpiresIn: 86400,
@@ -63,5 +68,34 @@ describe('toUserProfile', () => {
 
     expect(profile.id).toBe('');
     expect(profile.username).toBe('');
+  });
+});
+
+describe('toCreateProfileRequest', () => {
+  const registration: Registration = {
+    firstName: ' Jahongir ',
+    lastName: ' Esanov ',
+    gender: 'female',
+    email: ' Jahongir@Example.com ',
+    phoneNumber: null,
+    password: 'Passw0rd!23',
+  };
+
+  it('should send the chosen gender as the backend enum when the profile is created', () => {
+    expect(toCreateProfileRequest(registration, 'Asia/Tashkent').gender).toBe(GenderDto.Female);
+    expect(
+      toCreateProfileRequest({ ...registration, gender: 'male' }, 'Asia/Tashkent').gender,
+    ).toBe(GenderDto.Male);
+  });
+
+  it('should trim the names and derive the username from the email when the profile is created', () => {
+    expect(toCreateProfileRequest(registration, 'Asia/Tashkent')).toEqual({
+      firstName: 'Jahongir',
+      lastName: 'Esanov',
+      userName: 'jahongir@example.com',
+      gender: GenderDto.Female,
+      countryCode: 'UZ',
+      timeZone: 'Asia/Tashkent',
+    });
   });
 });

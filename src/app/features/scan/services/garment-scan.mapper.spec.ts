@@ -1,16 +1,15 @@
 import { describe, expect, it } from 'vitest';
-import { GarmentScanDto, GarmentScanStateDto } from './garment-scan.dto';
+import { GarmentInvalidReasonDto, GarmentScanDto, GarmentScanStateDto } from './garment-scan.dto';
 import { toGarmentScan } from './garment-scan.mapper';
 import { ScanContractError } from '../models/scan-contract.error';
 
 const garmentDto = {
-  serialNumber: 'PT-2026-000123',
+  serialNumber: '01K7X8M4Q9F2A6BC3DEFGHJKMN',
   model: 'Peaktofan Classic',
   color: 'Qora',
   size: 'L',
   material: '95% paxta',
   manufacturedAt: '2026-08-14T00:00:00Z',
-  photoUrls: ['https://cdn.test/front.jpg'],
 };
 
 describe('toGarmentScan', () => {
@@ -24,33 +23,65 @@ describe('toGarmentScan', () => {
     ];
 
     for (const [dtoState, expected] of states) {
-      const scan = toGarmentScan({ state: dtoState, garment: garmentDto });
+      const scan = toGarmentScan({ state: dtoState, reason: null, garment: garmentDto });
       expect(scan.state).toBe(expected);
     }
   });
 
-  it('should carry no garment when the token is invalid', () => {
-    const scan = toGarmentScan({ state: GarmentScanStateDto.Invalid, garment: null });
+  it('should map every invalid reason by name when the token is invalid', () => {
+    const reasons: [GarmentInvalidReasonDto, string][] = [
+      [GarmentInvalidReasonDto.Unknown, 'unknown'],
+      [GarmentInvalidReasonDto.Revoked, 'revoked'],
+      [GarmentInvalidReasonDto.Hidden, 'hidden'],
+    ];
 
-    expect(scan).toEqual({ state: 'invalid' });
+    for (const [reason, expected] of reasons) {
+      const scan = toGarmentScan({ state: GarmentScanStateDto.Invalid, reason, garment: null });
+      expect(scan).toEqual({ state: 'invalid', reason: expected });
+    }
   });
 
-  it('should map the manufactured date to a Date when the garment is present', () => {
-    const scan = toGarmentScan({ state: GarmentScanStateDto.Owned, garment: garmentDto });
+  it('should map the manufactured date and the colour when the garment is present', () => {
+    const scan = toGarmentScan({
+      state: GarmentScanStateDto.Owned,
+      reason: null,
+      garment: garmentDto,
+    });
 
     expect(scan.state === 'owned' && scan.garment.manufacturedAt).toEqual(
       new Date('2026-08-14T00:00:00Z'),
     );
+    expect(scan.state === 'owned' && scan.garment.knownColor).toBe('black');
   });
 
   it('should fail when a garment state arrives without a garment', () => {
-    const dto: GarmentScanDto = { state: GarmentScanStateDto.Foreign, garment: null };
+    const dto: GarmentScanDto = { state: GarmentScanStateDto.Foreign, reason: null, garment: null };
+
+    expect(() => toGarmentScan(dto)).toThrowError(ScanContractError);
+  });
+
+  it('should fail when an invalid state arrives without a reason', () => {
+    const dto: GarmentScanDto = { state: GarmentScanStateDto.Invalid, reason: null, garment: null };
+
+    expect(() => toGarmentScan(dto)).toThrowError(ScanContractError);
+  });
+
+  it('should fail when the backend sends an unknown invalid reason', () => {
+    const dto: GarmentScanDto = {
+      state: GarmentScanStateDto.Invalid,
+      reason: 99 as GarmentInvalidReasonDto,
+      garment: null,
+    };
 
     expect(() => toGarmentScan(dto)).toThrowError(ScanContractError);
   });
 
   it('should fail when the backend sends an unknown state', () => {
-    const dto = { state: 99, garment: garmentDto } as unknown as GarmentScanDto;
+    const dto: GarmentScanDto = {
+      state: 99 as GarmentScanStateDto,
+      reason: null,
+      garment: garmentDto,
+    };
 
     expect(() => toGarmentScan(dto)).toThrowError(ScanContractError);
   });

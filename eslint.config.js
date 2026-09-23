@@ -93,6 +93,12 @@ module.exports = defineConfig([
     rules: {
       'tofan/no-comments': 'error',
       '@angular-eslint/template/no-any': 'error',
+      '@angular-eslint/template/label-has-associated-control': [
+        'error',
+        {
+          controlComponents: ['app-password-input'],
+        },
+      ],
     },
   },
 ]);

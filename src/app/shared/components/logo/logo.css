@@ -1,0 +1,10 @@
+:host {
+  display: inline-flex;
+  height: 40px;
+}
+
+.logo__mark {
+  height: 100%;
+  width: auto;
+  fill: var(--app-accent);
+}

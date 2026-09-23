@@ -12,7 +12,7 @@ export class ApiClient {
   private readonly anonymousHttp = new HttpClient(inject(HttpBackend));
   private readonly baseUrl = inject(API_BASE_URL);
 
-  url(path: string): string {
+  private url(path: string): string {
     return `${this.baseUrl}${path}`;
   }
 

@@ -1,0 +1,29 @@
+<section class="invalid-link">
+  @switch (reason()) {
+    @case ('revoked') {
+      <h1 class="invalid-link__title" i18n="@@scan.invalid.revoked.title">
+        Bu futbolka bekor qilingan
+      </h1>
+      <p class="invalid-link__lead app-muted" i18n="@@scan.invalid.revoked.lead">
+        Peaktofan bu futbolkaning raqamli pasportini bekor qilgan. Batafsil ma'lumot uchun biz bilan
+        bog'laning.
+      </p>
+    }
+    @case ('hidden') {
+      <h1 class="invalid-link__title" i18n="@@scan.invalid.hidden.title">
+        Pasport vaqtincha yopiq
+      </h1>
+      <p class="invalid-link__lead app-muted" i18n="@@scan.invalid.hidden.lead">
+        Bu futbolkaning sahifasi vaqtincha yopilgan. Keyinroq qaytadan skanerlang yoki biz bilan
+        bog'laning.
+      </p>
+    }
+    @default {
+      <h1 class="invalid-link__title" i18n="@@scan.invalid.unknown.title">Havola ishlamayapti</h1>
+      <p class="invalid-link__lead app-muted" i18n="@@scan.invalid.unknown.lead">
+        Bu havola bo'yicha futbolka topilmadi. Futbolkadagi chipni qaytadan skanerlang yoki biz
+        bilan bog'laning.
+      </p>
+    }
+  }
+</section>

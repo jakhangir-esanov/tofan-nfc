@@ -1,12 +1,8 @@
-<app-state-screen
-  [loading]="store.loading()"
-  [error]="store.loadError()"
-  (retry)="load()"
->
+<app-state-screen [loading]="store.loading()" [error]="store.loadError()" (retry)="load()">
   @if (store.passport(); as passport) {
     <app-passport-book [pageLabels]="pageLabels">
       <section class="passport-page passport-page--cover">
-        <span class="cover__emblem" aria-hidden="true">✦</span>
+        <app-logo class="cover__emblem" />
         <h1 class="cover__title" i18n="@@passport.cover.title">RAQAMLI PASPORT</h1>
         <p class="cover__holder">{{ holder() }}</p>
         <p class="cover__serial">{{ passport.garment.serialNumber }}</p>
@@ -17,10 +13,12 @@
 
       <section class="passport-page passport-page--paper">
         <dl class="data-page">
-          <div class="data-page__row">
-            <dt i18n="@@passport.field.holder">Egasi</dt>
-            <dd>{{ holder() }}</dd>
-          </div>
+          @if (holder()) {
+            <div class="data-page__row">
+              <dt i18n="@@passport.field.holder">Egasi</dt>
+              <dd>{{ holder() }}</dd>
+            </div>
+          }
           <div class="data-page__row">
             <dt i18n="@@passport.field.model">Model</dt>
             <dd>{{ passport.garment.model }}</dd>
@@ -29,10 +27,12 @@
             <dt i18n="@@passport.field.serial">Seriya raqami</dt>
             <dd>{{ passport.garment.serialNumber }}</dd>
           </div>
-          <div class="data-page__row">
-            <dt i18n="@@passport.field.material">Material</dt>
-            <dd>{{ passport.garment.material }}</dd>
-          </div>
+          @if (passport.garment.material) {
+            <div class="data-page__row">
+              <dt i18n="@@passport.field.material">Material</dt>
+              <dd>{{ passport.garment.material }}</dd>
+            </div>
+          }
           <div class="data-page__row">
             <dt i18n="@@passport.field.activatedAt">Aktivatsiya</dt>
             <dd>{{ passport.activatedAt | date: 'dd.MM.yyyy' }}</dd>
@@ -41,30 +41,7 @@
             <dt i18n="@@passport.field.expiresAt">Amal qilish muddati</dt>
             <dd>{{ passport.expiresAt | date: 'dd.MM.yyyy' }}</dd>
           </div>
-          @if (passport.rating !== null) {
-            <div class="data-page__row">
-              <dt i18n="@@passport.field.rating">Reyting</dt>
-              <dd>{{ passport.rating }}</dd>
-            </div>
-          }
         </dl>
-      </section>
-
-      <section class="passport-page passport-page--paper">
-        @if (store.stamps().length === 0) {
-          <p class="stamps__empty" i18n="@@passport.stamps.empty">
-            Hali shtamp yo'q. Ilovada birinchi mashqingizni boshlang.
-          </p>
-        } @else {
-          <ul class="stamps">
-            @for (stamp of store.stamps(); track stamp.id) {
-              <li class="stamps__item">
-                <span class="stamps__title">{{ stamp.title }}</span>
-                <span class="stamps__date">{{ stamp.awardedAt | date: 'dd.MM.yyyy' }}</span>
-              </li>
-            }
-          </ul>
-        }
       </section>
     </app-passport-book>
   }

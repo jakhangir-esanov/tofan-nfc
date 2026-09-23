@@ -12,8 +12,9 @@ const MESSAGES_BY_CODE: Readonly<Record<string, string>> = {
   'Garment.AlreadyClaimed': $localize`:@@error.garment.alreadyClaimed:Bu futbolka allaqachon aktivatsiya qilingan.`,
   'Garment.NotFound': $localize`:@@error.garment.notFound:Bu havola bo'yicha futbolka topilmadi.`,
   'Garment.UnsupportedScanResponse': $localize`:@@error.garment.unsupportedResponse:Saytni yangilash kerak. Sahifani qaytadan yuklang.`,
-  'Garment.Revoked': $localize`:@@error.garment.revoked:Bu havola bekor qilingan. Qo'llab-quvvatlash xizmatiga murojaat qiling.`,
+  'Garment.NotAvailable': $localize`:@@error.garment.notAvailable:Bu futbolka hozir mavjud emas. Qo'llab-quvvatlash xizmatiga murojaat qiling.`,
   'Authentication.InvalidCredentials': $localize`:@@error.auth.invalidCredentials:Login yoki parol noto'g'ri.`,
+  'IdentityProvider.Conflict': $localize`:@@error.auth.userExists:Bu email bilan akkaunt allaqachon mavjud.`,
   'IdentityProvider.UserAlreadyExists': $localize`:@@error.auth.userExists:Bu email bilan akkaunt allaqachon mavjud.`,
 };
 

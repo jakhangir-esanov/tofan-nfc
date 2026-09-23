@@ -6,6 +6,7 @@ import {
 } from '@angular/ssr/node';
 import express from 'express';
 import { join } from 'node:path';
+import { apiProxy } from './api-proxy';
 
 const DEFAULT_PORT = 4000;
 const STATIC_CACHE_MAX_AGE = '1y';
@@ -14,6 +15,11 @@ const browserDistFolder = join(import.meta.dirname, '../browser');
 
 const app = express();
 const angularApp = new AngularNodeAppEngine();
+const apiProxyTarget = process.env['API_PROXY_TARGET'];
+
+if (apiProxyTarget) {
+  app.use('/api', apiProxy(apiProxyTarget));
+}
 
 app.use(
   express.static(browserDistFolder, {

@@ -9,7 +9,14 @@ export enum GarmentScanStateDto {
   Foreign = 6,
 }
 
+export enum GarmentInvalidReasonDto {
+  Unknown = 1,
+  Revoked = 2,
+  Hidden = 3,
+}
+
 export interface GarmentScanDto {
   state: GarmentScanStateDto;
+  reason: GarmentInvalidReasonDto | null;
   garment: GarmentDto | null;
 }

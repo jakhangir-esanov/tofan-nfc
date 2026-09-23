@@ -5,7 +5,11 @@
     </div>
   </div>
 
-  <nav class="passport-book__nav" i18n-aria-label="@@passport.pages" aria-label="Pasport sahifalari">
+  <nav
+    class="passport-book__nav"
+    i18n-aria-label="@@passport.pages"
+    aria-label="Pasport sahifalari"
+  >
     @for (label of pageLabels(); track label; let i = $index) {
       <button
         type="button"

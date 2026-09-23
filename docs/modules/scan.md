@@ -24,7 +24,8 @@ authenticity screen a stranger sees. Every screen here is a rendering of one ser
 
 ```text
 features/scan/
-  models/garment-scan.ts        GarmentScan union, ScanState, helpers
+  models/garment-scan.ts        GarmentScan union, ScanState, InvalidReason, helpers
+  components/invalid-link/      copy for the invalid state, one branch per reason
   services/garment-scan.dto.ts  integer enum + response shape
   services/garment-scan.mapper.ts
   services/garments.service.ts
@@ -34,11 +35,17 @@ features/scan/
 ```
 
 The `Garment` model, DTO and mapper live in `shared/models/` because `passport` reads them too.
+There is no shirt photo. `GarmentPreview` draws the shirt with `shared/components/garment-shirt` (an
+inline SVG without the emblem) and paints it with `Garment.shade`: the `#RRGGBB` code the admin panel
+saved, a theme shade for an older colour word (`knownColor`, `black` or `blue`), or
+`--app-shirt-neutral` for anything else (`garmentShadeOf` in `shared/models/garment-color.ts`). The
+colour row shows a swatch; an older word is also named in the page language.
 
 ## State
 
 `ScanStore` holds the scan the server returned, plus `loading`, `loadError`, `claiming` and
-`claimError`. It starts in `loading` so a failure surfaces as an error rather than a blank screen.
+`claimError`, and exposes `invalidReason` for the invalid screen. It starts in `loading` so a failure
+surfaces as an error rather than a blank screen.
 It derives nothing about ownership, validity or expiry; it stores what the server said. A failed claim
 reloads the scan from the server instead of patching local state.
 

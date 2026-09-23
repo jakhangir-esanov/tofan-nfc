@@ -6,13 +6,14 @@ import { GarmentsService } from '../../services/garments.service';
 import { ScanPage } from './scan-page';
 
 const garment = {
-  serialNumber: 'PT-2026-000123',
+  serialNumber: '01K7X8M4Q9F2A6BC3DEFGHJKMN',
   model: 'Peaktofan Classic',
   color: 'Qora',
   size: 'L',
   material: '95% paxta',
   manufacturedAt: new Date('2026-08-14T00:00:00Z'),
-  photoUrls: [],
+  knownColor: 'black' as const,
+  shade: 'var(--app-shirt-black)',
 };
 
 async function scanWith(
@@ -20,7 +21,7 @@ async function scanWith(
 ): Promise<{ text: string; navigatedTo: string | null; claimed: boolean }> {
   const scan = vi
     .fn()
-    .mockResolvedValue(state === 'invalid' ? { state } : { state, garment });
+    .mockResolvedValue(state === 'invalid' ? { state, reason: 'unknown' } : { state, garment });
 
   const claim = vi.fn();
   TestBed.configureTestingModule({
@@ -77,7 +78,6 @@ describe('ScanPage', () => {
     expect(text).not.toContain("Ro'yxatdan o'tish");
     expect(claimed).toBe(false);
   });
-
 
   it('should explain the chip is dead when the token is invalid', async () => {
     const { text, navigatedTo } = await scanWith('invalid');

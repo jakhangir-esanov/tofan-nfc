@@ -1,8 +1,4 @@
-<app-state-screen
-  [loading]="store.loading()"
-  [error]="store.loadError()"
-  (retry)="resolve()"
->
+<app-state-screen [loading]="store.loading()" [error]="store.loadError()" (retry)="resolve()">
   @if (store.garment(); as garment) {
     <section class="verify">
       <p class="verify__badge" i18n="@@verify.badge">PEAKTOFAN ORIGINALI</p>

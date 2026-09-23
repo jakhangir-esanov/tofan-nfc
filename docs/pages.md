@@ -62,7 +62,8 @@ indicator, then one of:
 - `owned` → redirect to `/t/:token/passport`.
 - `expired` → redirect to `/t/:token/passport` (it renders itself locked).
 - `foreign` → redirect to `/t/:token/verify`.
-- `invalid` → invalid-chip content inline.
+- `invalid` → invalid-chip content inline, worded by the server's `reason`: `unknown` ("Havola
+  ishlamayapti"), `revoked` ("Bu futbolka bekor qilingan"), `hidden` ("Pasport vaqtincha yopiq").
 
 A failed request is not an invalid chip. It shows a retry with the Peaktofan mark still on screen.
 
@@ -75,24 +76,26 @@ other owner's name.
 
 ### 4.3 Passport — `/t/:token/passport`
 
-The centrepiece. A real passport booklet, three pages, swipe or tap to turn.
+The centrepiece. A real passport booklet, swipe or tap to turn. Today it has two pages, cover and
+data page; the stamps page returns with Gamification (see below).
 
 **Cover.** Dark textured field, embossed Peaktofan emblem, the words "RAQAMLI PASPORT", the serial
 number in the bottom corner, the owner's name below the emblem. Tapping it opens the booklet.
 
 **Page 1 — data page.** Laid out like the photo page of a real passport: the shirt photo on the left in
 a portrait frame, a two-column field list on the right — model, colour, size, material, manufactured
-date, serial number, owner, activation date, valid until, rating. A machine-readable strip along the
-bottom edge as a visual motif (decorative, no real data in it).
+date, serial number, owner, activation date, valid until. A machine-readable strip along the
+bottom edge as a visual motif (decorative, no real data in it). A field the admin left empty (colour,
+size, material) is left out rather than shown blank; an owner without a profile has no owner row.
 
-**Page 2 — stamps.** A grid of stamps positioned at slight random angles like real visa stamps, each
-with its icon, title and date. Empty state: "Hali shtamp yo'q — ilovada birinchi mashqingizni
-boshlang" with a link to the app. In phase 1 stamps are read-only; the press animation arrives in
-phase 3.
+**Page 2 — stamps (phase 3, not rendered today).** A grid of stamps positioned at slight random
+angles like real visa stamps, each with its icon, title and date. The backend sends neither stamps nor
+a rating yet, because nothing awards them; an empty stamps page or a rating of `0` would tell the owner
+something false, so neither the page nor the rating field exists until Gamification does.
 
 **Locked variant (`expired`).** The booklet renders with the cover and the data page visible but
-greyed, a band across it, and a single action: **Muddatni uzaytirish**. Stamps and rating are absent
-from the payload, not merely covered.
+greyed, a band across it, and a single action: **Muddatni uzaytirish**. Once stamps exist they are
+absent from an expired payload, not merely covered.
 
 ### 4.4 Authenticity — `/t/:token/verify`
 
@@ -124,10 +127,11 @@ too many attempts (429). Each ends with a way out: shop link or support contact.
 - **Mobile first, always.** Single column, full-bleed, safe-area insets, `max-width: 480px` centred on
   desktop. No sidebar, no topbar shell, no data table anywhere in this app.
 - **Dark and premium.** The passport metaphor wants depth: dark background, warm metallic accent for
-  the emblem and the rating, paper-toned booklet pages. Colours come from the Optimus UI theme preset
+  the emblem and the rating. Every booklet page, the data page too, sits on the same dark surface as
+the rest of the site (the cream paper page was dropped on 2026-09-23). Colours come from the Optimus UI theme preset
   in `core/config/ui.providers.ts` — the Peaktofan brand tokens. No hex values in components.
-- **The shirt photo is the hero.** Fixed aspect ratio, explicit width and height so the layout never
-  jumps on a slow connection.
+- **The shirt is the hero.** It is drawn inline (no photo) in the shirt's own colour, at a fixed aspect
+  ratio, so the layout never jumps.
 - **Motion with restraint.** Page turn is a CSS 3D transform on the booklet container; cover open is a
   scale-and-lift; stamp award is a press-and-settle. All of it degrades to a cross-fade under
   `prefers-reduced-motion`, and none of it blocks interaction.
@@ -138,10 +142,8 @@ too many attempts (429). Each ends with a way out: shop link or support contact.
 
 ## 5.1 Control notes
 
-- `p-password` does not bind to Signal Forms in Optimus UI 2.0.2: its `pattern` and length inputs are
-  typed for the old forms API and the `[formField]` binding fails to compile. Password fields use
-  `<input pInputText type="password">` until a `shared/components` wrapper implementing
-  `FormValueControl` exists.
+- Password fields use `shared/components/password-input` implementing `FormValueControl`, which wraps
+  Optimus `p-password` with toggle mask and Signal Forms `[formField]` binding.
 - An empty required field is invalid from the first render, so Optimus marks it red before the user has
   typed anything. Each field carries `auth__field--pristine` until it is touched, and the form
   stylesheet neutralises the invalid border while that class is present.
@@ -155,6 +157,7 @@ Shared (`shared/components/`):
 | `state-screen`   | Branded loading / error+retry / empty frame used by every page       |
 | `passport-book`  | Booklet container: page turn, swipe, reduced-motion fallback         |
 | `garment-preview`| Shirt photo plus product fields, used by activation and authenticity |
+| `password-input` | FormValueControl wrapper over Optimus p-password for Signal Forms    |
 
 Feature-only: `passport-cover`, `passport-data-page`, `passport-stamps-page`, `stamp-card`
 (in `features/passport/components/`), `register-form`, `login-form` (in `features/auth/components/`).

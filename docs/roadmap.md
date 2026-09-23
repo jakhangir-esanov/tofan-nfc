@@ -10,32 +10,30 @@ Frontend
   `core/auth`, `core/layout` mobile shell, i18n for `uz`/`ru`/`en`
 - `features/scan`: scan landing, activation, authenticity, invalid states
 - `features/auth`: register (name, email, password), login, `returnUrl` handling
-- `features/passport`: booklet with cover, data page and stamps page; stamps read-only
+- `features/passport`: booklet with cover and data page (no stamps page and no rating until the
+  backend sends them)
 - Locked passport for the expired state, with a disabled renew action
 - Required tests, including the security set in `.claude/rules/testing.md`
 
-Backend (blocking, `tofan` repository)
+Backend (`tofan` repository)
 
-- Garment module: entity, 128-bit token, claim, passport query, revoke
-- Rate limiting on scan and claim
-- Stamp storage and read endpoint
+- Garment module: entity, 160-bit token, scan, claim, passport, `me/garments`, admin status and
+  extend — **done** (2026-09-22), not yet exercised against a deployed server
+- Rate limiting: dropped by the backend; a 160-bit token cannot be enumerated, DoS protection sits in
+  nginx
+- Stamp storage and read endpoint: moved to phase 3 with Gamification
 
 Out of scope: payments, stamp awarding, the multi-shirt list, the admin panel.
 
 ### Open items inside phase 1
 
-- `src/locale/messages.ru.xlf` and `messages.en.xlf` are generated with `state="new"` targets that still
-  hold the Uzbek source. The ru and en builds therefore render Uzbek text until a translator fills them.
+- `src/locale/messages.ru.xlf` and `messages.en.xlf`: every unit translated (`state="translated"`).
+- Password fields: wrapped in `shared/components/password-input` implementing `FormValueControl` over Optimus `p-password`.
+- `auth-token.interceptor` and `session.interceptor`: specs written and passing.
 - The passport booklet turns pages with a horizontal slide. The 3D page-turn and the stamp press
   animation are still to be built.
-- Password fields use a plain `pInputText`; a `shared/components` wrapper implementing
-  `FormValueControl` would bring back the Optimus password control (see `docs/pages.md`).
-- Distinct copy for a revoked, transferred or admin-hidden chip waits on the backend sending a `reason`
-  with the `Invalid` state (`docs/backend-contract.md`).
 - A registration whose profile step fails leaves the account usable and warns with a toast; a dedicated
   "finish your profile" screen is still to be built.
-- `auth-token.interceptor` and `session.interceptor` have no specs yet. `.claude/rules/testing.md`
-  asks for the refresh-once-then-login case; it is the last mandated test still missing.
 
 ## Phase 2 — validity and payment
 
@@ -47,14 +45,16 @@ Out of scope: payments, stamp awarding, the multi-shirt list, the admin panel.
 
 - Stamp award animation and push notification
 - Stamp kinds: personal record, achievement, rank, special
-- Rating on the cover and the stamps page
+- Stamps page in the booklet and the rating on the cover — both need the backend to add `stamps` and
+  `rating` to the passport response first
 - Open question to answer first: how rating is computed, per account or per shirt
 
 ## Phase 4 — multiple shirts and admin
 
 - `/my/garments` list, switching between passports
-- Admin screens in `tofan-ui`: create shirts, CSV import, export links, regenerate a token,
-  extend validity, award a special stamp, block an account
+- `/my/garments` reads `GET /me/garments`, which already exists
+- Admin screens in `tofan-ui`: create shirts, export links (`.xlsx`), status, extend validity, award a
+  special stamp, block an account. There is no regenerate-token endpoint, by design
 - Ownership transfer, if the product owner wants resold shirts to move
 
 ## Deferred

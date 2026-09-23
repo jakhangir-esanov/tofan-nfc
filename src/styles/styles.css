@@ -13,9 +13,12 @@
   --app-text-muted: #9aa0ac;
   --app-accent: #c8a45c;
   --app-accent-contrast: #14161b;
-  --app-paper: #efe7d8;
-  --app-paper-ink: #2c2a26;
-  --app-paper-line: #cdbfa5;
+  --app-shirt-black: #2b2e36;
+  --app-shirt-blue: #2f63c4;
+  --app-shirt-neutral: #5f6470;
+  --app-shirt-outline: #5a5f6b;
+  --app-shirt-light: #ffffff;
+  --app-shirt-shadow: #000000;
   --app-danger: #e05a4f;
   --app-success: #4caf7d;
 
@@ -113,7 +116,8 @@ body {
 }
 
 .passport-page--paper {
-  background-color: var(--app-paper);
-  color: var(--app-paper-ink);
+  background: linear-gradient(180deg, var(--app-surface-raised), var(--app-surface));
+  border: 1px solid var(--app-border);
+  color: var(--app-text);
   min-height: 420px;
 }

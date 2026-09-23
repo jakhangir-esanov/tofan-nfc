@@ -12,13 +12,19 @@ import { UserProfile } from './user-profile';
 const registration: Registration = {
   firstName: 'Jahongir',
   lastName: 'Esanov',
+  gender: 'male',
   email: 'jahongir@example.com',
   phoneNumber: null,
   password: 'Passw0rd!23',
 };
 
 function session(): AuthSession {
-  return new AuthSession('access', new Date(Date.now() + 3600_000), 'refresh', new Date(Date.now() + 86_400_000));
+  return new AuthSession(
+    'access',
+    new Date(Date.now() + 3600_000),
+    'refresh',
+    new Date(Date.now() + 86_400_000),
+  );
 }
 
 function createStore(authService: Partial<AuthService>): {
@@ -39,7 +45,10 @@ function createStore(authService: Partial<AuthService>): {
   TestBed.configureTestingModule({
     providers: [
       provideRouter([]),
-      { provide: AuthService, useValue: { readProfile: () => new UserProfile('u1', 'j', 'J E'), ...authService } },
+      {
+        provide: AuthService,
+        useValue: { readProfile: () => new UserProfile('u1', 'j', 'J E'), ...authService },
+      },
       { provide: AuthSessionStorage, useValue: storage },
     ],
   });
@@ -87,7 +96,13 @@ describe('AuthStore', () => {
       register: () => Promise.resolve(session()),
       createProfile: () => Promise.reject(new ServiceUnavailableError()),
       findProfile: () =>
-        Promise.resolve({ id: 'p1', userId: 'u1', firstName: 'Jahongir', lastName: 'Esanov', userName: 'j' }),
+        Promise.resolve({
+          id: 'p1',
+          userId: 'u1',
+          firstName: 'Jahongir',
+          lastName: 'Esanov',
+          userName: 'j',
+        }),
     });
 
     await store.register(registration);

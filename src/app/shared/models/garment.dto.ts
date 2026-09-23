@@ -5,5 +5,4 @@ export interface GarmentDto {
   size: string;
   material: string;
   manufacturedAt: string;
-  photoUrls: string[];
 }

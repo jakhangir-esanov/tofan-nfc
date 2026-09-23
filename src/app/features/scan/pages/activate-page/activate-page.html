@@ -1,8 +1,4 @@
-<app-state-screen
-  [loading]="store.loading()"
-  [error]="store.loadError()"
-  (retry)="resolve()"
->
+<app-state-screen [loading]="store.loading()" [error]="store.loadError()" (retry)="resolve()">
   @if (store.claimableGarment(); as garment) {
     <section class="activate">
       <h1 class="activate__title" i18n="@@activate.title">Bu sizning futbolkangizmi?</h1>

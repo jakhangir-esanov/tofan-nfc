@@ -10,6 +10,7 @@ import { AuthFormStore } from './auth-form.store';
 const registration: Registration = {
   firstName: 'Jahongir',
   lastName: 'Esanov',
+  gender: 'male',
   email: 'jahongir@example.com',
   phoneNumber: null,
   password: 'Passw0rd!23',
@@ -23,7 +24,10 @@ function createStore(
     providers: [
       AuthFormStore,
       { provide: AuthStore, useValue: { hasProfile: signal(true), ...auth } },
-      { provide: NotificationService, useValue: { warn: vi.fn(), error: vi.fn(), ...notifications } },
+      {
+        provide: NotificationService,
+        useValue: { warn: vi.fn(), error: vi.fn(), ...notifications },
+      },
     ],
   });
   return TestBed.inject(AuthFormStore);

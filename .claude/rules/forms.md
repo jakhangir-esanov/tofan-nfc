@@ -23,7 +23,8 @@ paths:
 
 There are exactly two, both in `features/auth`:
 
-- **Register**: first name, last name, email, password (+ optional phone). It maps to
+- **Register**: first name, last name, gender (male or female, required by `POST /profiles`), email,
+  password (+ optional phone). It maps to
   `POST /auth/register` and `POST /profiles`. Keep it to one screen — this form sits between a
   customer and the shirt they already paid for; every extra field costs activations.
 - **Login**: email or username, password.
@@ -32,3 +33,11 @@ No SMS code field, no OTP screen, no phone verification step. The platform has n
 
 Password rules mirror the backend: 8–128 characters. Show a single, translated message; never a
 message matched from backend text.
+
+## Submitting
+
+- A form element uses `<form [formRoot]="myForm">` (`FormRoot` from `@angular/forms/signals`) and the
+  `form()` call gets `{ submission: { action } }`. Never `(ngSubmit)`: without `FormsModule` nothing
+  emits it, the browser submits the form natively and reloads the page with the fields emptied (the
+  register bug of 2026-09-23). `FormRoot` sets `novalidate`, prevents the native submit, marks every
+  field touched and runs `action` only when the form is valid.

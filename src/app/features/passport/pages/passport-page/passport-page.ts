@@ -2,6 +2,7 @@ import { DatePipe } from '@angular/common';
 import { Component, afterNextRender, computed, inject, input } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppPaths } from '@core/config/app-paths';
+import { Logo } from '@shared/components/logo/logo';
 import { PassportBook } from '@shared/components/passport-book/passport-book';
 import { StateScreen } from '@shared/components/state-screen/state-screen';
 import { PassportStore } from '../../passport.store';
@@ -9,7 +10,7 @@ import { holderName } from '../../models/passport';
 
 @Component({
   selector: 'app-passport-page',
-  imports: [DatePipe, PassportBook, StateScreen],
+  imports: [DatePipe, Logo, PassportBook, StateScreen],
   providers: [PassportStore],
   templateUrl: './passport-page.html',
   styleUrl: './passport-page.css',
@@ -23,7 +24,6 @@ export class PassportPage {
   protected readonly pageLabels = [
     $localize`:@@passport.page.cover:Muqova`,
     $localize`:@@passport.page.data:Ma'lumot`,
-    $localize`:@@passport.page.stamps:Shtamplar`,
   ];
 
   protected readonly holder = computed(() => {

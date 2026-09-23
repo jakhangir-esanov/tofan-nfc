@@ -34,7 +34,8 @@ Stack:
 ## 2. Commands
 
 ```bash
-npm start             # ng serve, /api is proxied to the backend (proxy.conf.json)
+npm start             # ng serve, /api is proxied to the backend (proxy.conf.json), uz only
+npm run serve:ssr     # every locale on :4200 like production (ssr.env, src/api-proxy.ts)
 npm run build         # ng build (must pass before finishing a task)
 npm test              # ng test (Vitest)
 npm run lint          # ng lint + lint:comments + lint:boundaries (must pass before finishing a task)

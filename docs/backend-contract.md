@@ -1,8 +1,9 @@
 # Backend contract
 
-Status: **proposed**. The garment endpoints below do not exist yet — `Shop` and `Gamification` in the
-`tofan` repository are empty module shells (`AssemblyReference.cs` only). The auth and profile
-endpoints are real and verified against `D:\Projects\tofan` (2026-09-21).
+Status: **implemented**. The garment endpoints below ship in the `Garment` module of the `tofan`
+repository (2026-09-22; see `docs/garment-module.md` there). `Shop` and `Gamification` are still empty
+module shells, so the passport carries neither a rating nor stamps. The auth and profile endpoints are
+real and verified against `D:\Projects\tofan`.
 
 This file is the single source for DTO shapes in `features/<x>/services/`. When the backend changes,
 compare against the staging Swagger and update here first.
@@ -52,7 +53,7 @@ RFC 7807 ProblemDetails built by `ApiResults.Problem`:
 | 403                              | `AccessDeniedError`                          |
 | 404 / `NotFound`                 | `NotFoundError`                              |
 | 409 / `Conflict`                 | `ConflictError`                              |
-| 429                              | `RateLimitedError`                           |
+| 429                              | `RateLimitedError` (no endpoint returns it today) |
 | network failure, 5xx / `Failure` | `ServiceUnavailableError`                    |
 
 Validation issues carry the FluentValidation validator code (`NotEmptyValidator`), not the property
@@ -74,11 +75,13 @@ Token response: `{ accessToken, refreshToken, idToken, tokenType, expiresIn, ref
 There is **no SMS or OTP endpoint**, by design. Registration is email plus password.
 
 Registration in this app is two calls, in order: `POST /auth/register`, then `POST /profiles` with
-`countryCode: "UZ"` and the browser time zone. If the second call fails the user is signed in without a
+`countryCode: "UZ"`, the browser time zone and the gender the user picked. `gender` is required
+(`Male = 1`, `Female = 2`; the backend rejects `0` since 2026-09-23 — before that this app sent `0`
+and left profiles with an unknown gender). If the second call fails the user is signed in without a
 profile; the app detects this with `GET /profiles` and resumes on the next screen rather than starting
 over.
 
-## Proposed garment endpoints
+## Garment endpoints
 
 Naming note: the TZ writes `GET /t/{token}`. That collides with the frontend route, so the API uses
 `/garments/by-token/{token}`. The chip still carries `https://<domain>/t/<token>`.
@@ -91,33 +94,48 @@ Bearer optional. This is the only endpoint that decides what a scan means.
 {
   "state": 3,
   "garment": {
-    "serialNumber": "PT-2026-000123",
+    "serialNumber": "01K7X8M4Q9F2A6BC3DEFGHJKMN",
     "model": "Peaktofan Classic",
-    "color": "Qora",
+    "color": "#1A3C6E",
     "size": "L",
     "material": "95% paxta, 5% elastan",
-    "manufacturedAt": "2026-08-14T00:00:00Z",
-    "photoUrls": ["https://.../front.jpg", "https://.../back.jpg"]
+    "manufacturedAt": "2026-08-14T00:00:00Z"
   },
-  "passport": null
+  "reason": null
 }
 ```
 
+**There is no shirt photo.** The backend dropped `photoFileId` on 2026-09-23. The site draws the shirt
+itself (`shared/components/garment-shirt`) and paints it with the shirt's colour.
+
+`serialNumber` is made by the server: a ULID, 26 characters of Crockford base32 (for example
+`01K7X8M4Q9F2A6BC3DEFGHJKMN`). Older shirts may still carry a `PT-…` serial; the site shows either as
+it is and never checks its shape.
+
+`color` is a `#RRGGBB` code chosen in the admin panel with a colour picker. Older shirts may carry a
+word (`black`, `blue`, `Qora`, `Ko'k`, Russian names). `garmentShadeOf`
+(`shared/models/garment-color.ts`) paints the shirt with the code, maps the old words to theme shades
+(`--app-shirt-black`, `--app-shirt-blue`) and falls back to `--app-shirt-neutral`. The colour row shows
+a swatch; an old word is also named in the page language.
+
 `GarmentScanState`: `Invalid = 1`, `Unclaimed = 2`, `Claimable = 3`, `Owned = 4`, `Expired = 5`,
-`Foreign = 6`.
+`Foreign = 6`. `Expired` is derived from the expiry date, not from a stored status: `GarmentStatus`
+(admin only, never sent to this app) is `Inactive = 1`, `Active = 2`, `Hidden = 3`, `Revoked = 4`.
 
-Rules the backend must hold:
+Rules the backend holds:
 
-- `passport` is non-null **only** for `Owned` and `Expired`, and only for the owner's bearer token.
-- `Foreign`, `Unclaimed`, `Claimable` and `Invalid` carry no owner name, no activation date, no expiry,
-  no rating and no stamps.
+- There is no `passport` field on this response at all. The passport is its own endpoint, owner only.
+- `Foreign`, `Unclaimed` and `Claimable` carry no owner name, no activation date, no expiry, no rating
+  and no stamps — those fields are not declared on the scan response, so they cannot leak.
 - `Invalid` carries no `garment` either — an unknown token must not confirm that a serial exists.
-- Rate limited per token and per IP; 429 on abuse.
+- An unknown token returns `200` with `state: Invalid`, never `404`: the difference between the two
+  would reveal whether the token exists.
 
-`Invalid` covers several situations that need different copy on the screen. The backend must therefore
-send a `reason` next to the state — `Garment.Unknown`, `Garment.Revoked`, `Garment.Transferred`,
-`Garment.Hidden` — so the frontend can say what happened instead of one generic "this link is dead".
-Phase 1 renders a single invalid screen; the per-reason copy lands with the reason field.
+`Invalid` covers several situations that need different copy on the screen, so the response carries a
+`reason` next to the state. `GarmentInvalidReason`: `Unknown = 1`, `Revoked = 2`, `Hidden = 3`. Every
+one of them can actually occur, and each has its own copy on the scan screen
+(`features/scan/components/invalid-link`). A missing or unknown `reason` on an `Invalid` response is a
+contract error, not a silent fallback.
 
 ### `POST /garments/by-token/{token}/claim` — activation
 
@@ -125,12 +143,15 @@ Bearer required, idempotent. Binds the shirt to the caller and sets `activatedAt
 (`activatedAt + 2 months`). Returns the same shape as the scan, now `Owned`.
 
 - 409 `Garment.AlreadyClaimed` if another account owns it. The response says nothing about that account.
-- 200 if the caller already owns it.
+- 409 `Garment.NotAvailable` if the shirt is revoked or hidden.
+- 404 `Garment.NotFound` if the token is unknown. This endpoint requires a bearer, so it does not have
+  the scan endpoint's enumeration problem.
+- 200 if the caller already owns it, with the original `activatedAt` and `expiresAt` untouched.
 - One shirt binds to one account; one account may hold many shirts.
 
 ### `GET /garments/by-token/{token}/passport` — passport
 
-Bearer required, owner only. Returns the passport with its stamps:
+Bearer required, owner only:
 
 ```jsonc
 {
@@ -138,46 +159,80 @@ Bearer required, owner only. Returns the passport with its stamps:
   "owner": { "firstName": "Jahongir", "lastName": "Esanov" },
   "activatedAt": "2026-09-21T10:12:00Z",
   "expiresAt": "2026-11-21T10:12:00Z",
-  "isExpired": false,
-  "rating": 1280,
-  "stamps": [
-    {
-      "id": "…",
-      "code": "pr-bench-100",
-      "title": "Bench press 100 kg",
-      "iconUrl": "https://…/pr.svg",
-      "kind": 1,
-      "awardedAt": "2026-09-19T08:00:00Z"
-    }
-  ]
+  "isExpired": false
 }
 ```
 
-`StampKind`: `PersonalRecord = 1`, `Achievement = 2`, `Rank = 3`, `Special = 4`.
+**There is no `rating` and no `stamps` field.** Gamification is not built, so nothing could fill either;
+both arrive with the first real stamp. Render the rating slot and page 2 of the booklet from their empty
+states until then — a `rating` of `0` would read as "this person scored nothing", which is worse than
+showing no number at all.
 
-- 403 when the caller is not the owner. The frontend does not translate that into a state; it re-reads
-  the scan endpoint.
-- When expired, the server returns the garment, owner and dates, sets `isExpired` to true and **omits
-  stamps and rating** (`stamps: []`, `rating: null`).
+- **400** `Garment.NotOwner` when the caller is not the owner — not `403`, so the frontend is never
+  tempted to turn a transport status into a state. It re-reads the scan endpoint instead.
+- 404 `Garment.NotFound` for an unknown token; 409 `Garment.NotAvailable` when the shirt is revoked or
+  hidden.
+- When expired, the server returns the garment, owner and dates and sets `isExpired` to true.
 - `isExpired` is the server's own verdict. The frontend renders the locked passport from that flag and
   never compares `expiresAt` to the device clock.
 
-### Later phases
+### `GET /me/garments` — shirts on this account
 
-| Endpoint                                     | Phase | Purpose                    |
-| -------------------------------------------- | ----- | -------------------------- |
-| `GET /me/garments`                            | 4     | Shirts on this account     |
+Bearer required. A plain array inside the `Result` envelope, newest activation first. Revoked and hidden
+shirts are left out. Not called by this app yet: the shirt list is phase 4 (`docs/roadmap.md`).
+
+```jsonc
+[
+  {
+    "token": "n1gq9Xh2…",
+    "serialNumber": "01K7X8M4Q9F2A6BC3DEFGHJKMN",
+    "model": "Peaktofan Classic",
+    "activatedAt": "2026-09-21T10:12:00Z",
+    "expiresAt": "2026-11-21T10:12:00Z",
+    "isExpired": false
+  }
+]
+```
+
+### Admin endpoints
+
+All six exist and require the admin policy. They belong to `tofan-ui`, not to this app; they are listed
+here only so the scan states below make sense.
+
+| Endpoint                                     | Purpose                                     |
+| -------------------------------------------- | ------------------------------------------- |
+| `POST /admin/garments`                       | Create; the server makes the serial; returns `{ id, serialNumber, token, linkUrl }` |
+| `GET /admin/garments`                        | Paged list                                  |
+| `POST /admin/garments/{id}/status`           | Body `{ status }`: active, hidden, revoked  |
+| `POST /admin/garments/{id}/extend`           | Body `{ months }` 1–24; returns the new expiry |
+| `GET /admin/garments/export-links`           | `.xlsx` with every column, for the print shop |
+| `DELETE /admin/garments/{id}`                | Delete a shirt nobody activated             |
+
+One of them changes what a scan sees, so this app must handle it:
+
+- **`status`** — a shirt set to hidden or revoked scans as `Invalid` with `reason` `Hidden` (3) or
+  `Revoked` (2), for the owner too. Setting it back to active restores the previous state; the validity
+  period is not extended by this, so a shirt that expired while hidden scans as `Expired`.
+
+- **`delete`** — only for a shirt nobody activated. Its token then scans as `Invalid` with `reason`
+  `Unknown` (1), like any unknown token. A claimed shirt cannot be deleted, so an owner never loses a
+  passport this way.
+
+A token is never replaced once issued: there is no regenerate-link endpoint, by design. The token is
+written into the chip, so replacing it would kill the shirt. There is no "this link was replaced" case
+to render.
+
+### Still missing
+
+| Endpoint                                      | Phase | Purpose                    |
+| --------------------------------------------- | ----- | -------------------------- |
 | `POST /payments/create`                       | 2     | Start a renewal payment    |
 | `POST /payments/webhook`                      | 2     | Provider callback (server) |
 | `POST /garments/{id}/stamps`                  | 3     | Award a stamp (app, admin) |
-| `POST /admin/garments`, `…/regenerate-link`, `…/export-links` | 4 | Admin panel, lives in `tofan-ui` |
 
-## Backend work this app depends on
+## Backend work this app still depends on
 
-1. A garment module in `tofan` (entity, token generation with at least 128 bits of entropy, claim,
-   passport, revocation).
-2. Rate limiting on the scan and claim endpoints.
-3. Stamp storage and the rule that a stamp is never revoked except by an admin.
-4. A `reason` on the `Invalid` scan state (unknown, revoked, transferred, hidden).
-
-Until (1) exists, no screen in this repository can be finished against a real backend.
+1. Stamp storage and the rule that a stamp is never revoked except by an admin (Gamification). That
+   work adds the `stamps` field to the passport; it does not exist today.
+2. Rating calculation — undefined, so the passport has no `rating` field yet either.
+3. A transfer flow, if a resold shirt should ever change owner.

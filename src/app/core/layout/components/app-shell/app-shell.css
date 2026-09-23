@@ -6,8 +6,15 @@
 }
 
 .app-shell__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.22em;
   color: var(--app-accent);
+}
+
+.app-shell__logo {
+  height: 24px;
 }

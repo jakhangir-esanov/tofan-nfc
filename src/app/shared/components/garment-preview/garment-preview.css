@@ -7,16 +7,15 @@
 }
 
 .garment-preview__photo {
+  display: block;
+  box-sizing: border-box;
   width: 100%;
   max-width: 320px;
   aspect-ratio: 1;
-  object-fit: cover;
+  padding: 24px;
   border-radius: var(--app-radius);
-  background-color: var(--app-surface);
-}
-
-.garment-preview__photo--empty {
-  border: 1px dashed var(--app-border);
+  background: radial-gradient(circle at 50% 40%, var(--app-surface-raised), var(--app-surface));
+  border: 1px solid var(--app-border);
 }
 
 .garment-preview__caption {
@@ -32,9 +31,12 @@
 }
 
 .garment-preview__serial {
+  max-width: 100%;
   font-size: 12px;
   letter-spacing: 0.12em;
   color: var(--app-text-muted);
+  overflow-wrap: anywhere;
+  text-align: center;
 }
 
 .garment-facts {
@@ -61,4 +63,19 @@
   margin: 0;
   font-size: 14px;
   text-align: right;
+}
+
+.garment-facts__color {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.garment-facts__swatch {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 1px solid var(--app-shirt-outline);
 }

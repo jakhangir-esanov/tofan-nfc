@@ -1,7 +1,13 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { toErrorMessage } from '@core/feedback/error-message';
 import { Garment } from '@shared/models/garment';
-import { GarmentScan, ScanState, garmentOf } from './models/garment-scan';
+import {
+  GarmentScan,
+  InvalidReason,
+  ScanState,
+  garmentOf,
+  invalidReasonOf,
+} from './models/garment-scan';
 import { GarmentsService } from './services/garments.service';
 
 @Injectable()
@@ -25,6 +31,11 @@ export class ScanStore {
   readonly claimableGarment = computed<Garment | null>(() =>
     this.claimable() ? this.garment() : null,
   );
+
+  readonly invalidReason = computed<InvalidReason | null>(() => {
+    const scan = this.scan();
+    return scan === null ? null : invalidReasonOf(scan);
+  });
 
   async load(token: string): Promise<void> {
     this.loading.set(true);
