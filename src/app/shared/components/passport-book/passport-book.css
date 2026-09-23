@@ -13,6 +13,8 @@
   overflow: hidden;
   border-radius: var(--app-radius);
   perspective: 1200px;
+  touch-action: pan-y;
+  user-select: none;
 }
 
 .passport-book__track {

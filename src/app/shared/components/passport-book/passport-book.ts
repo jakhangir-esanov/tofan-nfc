@@ -9,6 +9,7 @@ const SWIPE_THRESHOLD_PX = 48;
   host: {
     '(pointerdown)': 'startSwipe($event)',
     '(pointerup)': 'endSwipe($event)',
+    '(pointercancel)': 'cancelSwipe()',
     '(keydown.arrowleft)': 'previous()',
     '(keydown.arrowright)': 'next()',
     tabindex: '0',
@@ -36,6 +37,10 @@ export class PassportBook {
 
   protected startSwipe(event: PointerEvent): void {
     this.swipeStartX = event.clientX;
+  }
+
+  protected cancelSwipe(): void {
+    this.swipeStartX = null;
   }
 
   protected endSwipe(event: PointerEvent): void {
