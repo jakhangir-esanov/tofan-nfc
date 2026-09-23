@@ -45,7 +45,8 @@ Muhit o'zgaruvchilari:
 
 `NG_ALLOWED_HOSTS` — Angular SSR'ning SSRF himoyasi: `Host` (va `X-Forwarded-Host`) ro'yxatda bo'lmasa
 server `400 Bad Request` qaytaradi va logga `Header "host" ... is not allowed` yozadi. `angular.json`
-dagi `allowedHosts` faqat lokal manzillarni sanaydi; production domeni env orqali beriladi.
+dagi `allowedHosts` faqat lokal manzillarni sanaydi; production domeni stack faylda beriladi. Bu
+tekshiruvni nginx emas, ilovaning o'zi qiladi, shuning uchun domen nginx'da ham, stack'da ham turadi.
 
 Yig'ish va yuklash (o'z kompyuteringizda, repo papkasida):
 
@@ -68,10 +69,11 @@ docker run --rm -p 4200:4000 -e NG_ALLOWED_HOSTS=localhost -e API_PROXY_TARGET=h
 
 ```bash
 TOFAN_NFC_IMAGE=ejakhangir/tofan-nfc:v1.0
-NFC_HOST=nfc.157.90.117.20.sslip.io
 ```
 
-`NFC_BASE_URL` allaqachon bor (`https://${NFC_HOST}` bilan bir xil bo'lsin).
+Shu faylda `NFC_BASE_URL=https://nfc.157.90.117.20.sslip.io` ham bo'lishi kerak — API chipga yoziladigan
+havolani shundan yasaydi va usiz ishga tushmaydi (`Garment:PublicBaseUrl must point at the public NFC
+site`).
 
 ### 2. Stack fayli
 
@@ -82,8 +84,7 @@ services:
   tofan-nfc:
     image: ${TOFAN_NFC_IMAGE}
     environment:
-      NG_ALLOWED_HOSTS: ${NFC_HOST}
-      API_PROXY_TARGET: http://tofan-api:8080
+      NG_ALLOWED_HOSTS: nfc.157.90.117.20.sslip.io
     networks:
       - tofan-net
     deploy:
@@ -101,6 +102,10 @@ networks:
   tofan-net:
     external: true
 ```
+
+`NG_ALLOWED_HOSTS` — NFC saytining domeni (`NFC_BASE_URL` dagi bilan bir xil, `https://` siz).
+`API_PROXY_TARGET` yozilmaydi: image'dagi standart `http://tofan-api:8080` — `tofan-net` ichidagi API
+servisi. Faqat API boshqa nom yoki portda bo'lsa qo'shiladi.
 
 ```bash
 cd /opt/tofan && set -a && . env/tofan.env && set +a \
