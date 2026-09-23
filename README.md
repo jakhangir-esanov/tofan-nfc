@@ -37,9 +37,10 @@ There is no mock backend: the dev server needs a running backend.
 `ng serve` can only serve one locale, so on `npm start` the RU/EN switch leads to `/ru/...`, which the
 dev server does not know. To try the language switch, run `npm run serve:ssr`: it builds uz, ru and en
 and starts the SSR server with the settings in `ssr.env` (port 4200, `API_PROXY_TARGET` pointing at the
-backend). `src/api-proxy.ts` forwards `/api` only when `API_PROXY_TARGET` is set; in production the
-variable is absent and the reverse proxy in front of the site routes `/api`. There is no hot reload on
-this path: rebuild after a change.
+backend). `src/api-proxy.ts` forwards `/api` only when `API_PROXY_TARGET` is set; the Docker image sets
+it to `http://tofan-api:8080`. There is no hot reload on this path: rebuild after a change.
+
+Deployment (Docker image, Swarm stack, nginx, the required `NG_ALLOWED_HOSTS`): `docs/deployment.md`.
 
 ## Status
 

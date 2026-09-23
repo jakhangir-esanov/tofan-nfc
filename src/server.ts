@@ -21,6 +21,10 @@ if (apiProxyTarget) {
   app.use('/api', apiProxy(apiProxyTarget));
 }
 
+app.get('/healthz', (_request, response) => {
+  response.type('text/plain').send('ok');
+});
+
 app.use(
   express.static(browserDistFolder, {
     maxAge: STATIC_CACHE_MAX_AGE,
