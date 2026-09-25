@@ -7,6 +7,9 @@ import { RateLimitedError } from '@shared/models/errors/rate-limited.error';
 import { ValidationError } from '@shared/models/errors/validation.error';
 import { InvalidCredentialsError } from '@core/auth/invalid-credentials.error';
 import { SessionExpiredError } from '@core/auth/session-expired.error';
+import { AppLocale } from '@core/layout/language/app-locale';
+
+const ISSUE_SEPARATOR = ' ';
 
 const MESSAGES_BY_CODE: Readonly<Record<string, string>> = {
   'Garment.AlreadyClaimed': $localize`:@@error.garment.alreadyClaimed:Bu futbolka allaqachon aktivatsiya qilingan.`,
@@ -18,13 +21,21 @@ const MESSAGES_BY_CODE: Readonly<Record<string, string>> = {
   'IdentityProvider.UserAlreadyExists': $localize`:@@error.auth.userExists:Bu email bilan akkaunt allaqachon mavjud.`,
 };
 
-export function toErrorMessage(error: unknown): string {
+export function toErrorMessage(error: unknown, locale: AppLocale): string {
   if (!(error instanceof DomainError)) {
     return genericMessage();
   }
 
-  const byCode = MESSAGES_BY_CODE[error.code];
-  return byCode ?? messageForClass(error);
+  return MESSAGES_BY_CODE[error.code] ?? backendMessage(error, locale) ?? messageForClass(error);
+}
+
+function backendMessage(error: DomainError, locale: AppLocale): string | undefined {
+  if (error instanceof ValidationError && error.issues.length > 0) {
+    return error.issues
+      .map((issue) => issue.messages?.[locale] ?? issue.message)
+      .join(ISSUE_SEPARATOR);
+  }
+  return error.messages?.[locale];
 }
 
 function messageForClass(error: DomainError): string {

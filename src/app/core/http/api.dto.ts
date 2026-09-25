@@ -1,3 +1,5 @@
+import { LocalizedText } from '@shared/models/localized-text';
+
 export enum ErrorType {
   Failure = 0,
   Validation = 1,
@@ -9,6 +11,7 @@ export enum ErrorType {
 export interface ApiError {
   code: string;
   message: string;
+  messages?: LocalizedText;
   type: ErrorType;
 }
 

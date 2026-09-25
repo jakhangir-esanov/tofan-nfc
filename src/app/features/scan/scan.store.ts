@@ -1,5 +1,6 @@
-import { Injectable, computed, inject, signal } from '@angular/core';
+import { Injectable, LOCALE_ID, computed, inject, signal } from '@angular/core';
 import { toErrorMessage } from '@core/feedback/error-message';
+import { toAppLocale } from '@core/layout/language/app-locale';
 import { Garment } from '@shared/models/garment';
 import {
   GarmentScan,
@@ -13,6 +14,7 @@ import { GarmentsService } from './services/garments.service';
 @Injectable()
 export class ScanStore {
   private readonly garments = inject(GarmentsService);
+  private readonly locale = toAppLocale(inject(LOCALE_ID));
 
   private readonly scan = signal<GarmentScan | null>(null);
 
@@ -44,7 +46,7 @@ export class ScanStore {
       this.scan.set(await this.garments.scan(token));
     } catch (error) {
       this.scan.set(null);
-      this.loadError.set(toErrorMessage(error));
+      this.loadError.set(toErrorMessage(error, this.locale));
     } finally {
       this.loading.set(false);
     }
@@ -57,7 +59,7 @@ export class ScanStore {
       this.scan.set(await this.garments.claim(token));
       return true;
     } catch (error) {
-      this.claimError.set(toErrorMessage(error));
+      this.claimError.set(toErrorMessage(error, this.locale));
       await this.load(token);
       return false;
     } finally {
