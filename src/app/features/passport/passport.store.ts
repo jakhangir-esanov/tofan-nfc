@@ -1,5 +1,6 @@
-import { Injectable, computed, inject, signal } from '@angular/core';
+import { Injectable, LOCALE_ID, computed, inject, signal } from '@angular/core';
 import { toErrorMessage } from '@core/feedback/error-message';
+import { toAppLocale } from '@core/layout/language/app-locale';
 import { Passport } from './models/passport';
 import { needsRescan } from './models/rescan-rule';
 import { PassportService } from './services/passport.service';
@@ -7,6 +8,7 @@ import { PassportService } from './services/passport.service';
 @Injectable()
 export class PassportStore {
   private readonly passports = inject(PassportService);
+  private readonly locale = toAppLocale(inject(LOCALE_ID));
 
   private readonly current = signal<Passport | null>(null);
 
@@ -36,6 +38,6 @@ export class PassportStore {
       this.rescanNeeded.set(true);
       return;
     }
-    this.loadError.set(toErrorMessage(error));
+    this.loadError.set(toErrorMessage(error, this.locale));
   }
 }

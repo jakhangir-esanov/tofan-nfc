@@ -8,11 +8,13 @@ import { NotFoundError } from '@shared/models/errors/not-found.error';
 import { RateLimitedError } from '@shared/models/errors/rate-limited.error';
 import { ServiceUnavailableError } from '@shared/models/errors/service-unavailable.error';
 import { ValidationError, ValidationIssue } from '@shared/models/errors/validation.error';
+import { LocalizedText } from '@shared/models/localized-text';
 import { ApiError, ErrorType } from './api.dto';
 
 interface ProblemDetails {
   title?: string;
   detail?: string;
+  messages?: LocalizedText;
   errors?: ApiError[];
 }
 
@@ -30,40 +32,42 @@ function fromHttpError(error: HttpErrorResponse): DomainError {
   const problem = toProblemDetails(error.error);
   const code = problem.title ?? '';
   const message = problem.detail ?? error.message;
+  const messages = problem.messages;
 
   switch (error.status) {
     case HttpStatusCode.BadRequest:
       return problem.errors === undefined
-        ? new BusinessRuleError(message, code)
-        : new ValidationError(message, toIssues(problem.errors), code);
+        ? new BusinessRuleError(message, code, messages)
+        : new ValidationError(message, toIssues(problem.errors), code, messages);
     case HttpStatusCode.Unauthorized:
       return new SessionExpiredError();
     case HttpStatusCode.Forbidden:
-      return new AccessDeniedError(message, code);
+      return new AccessDeniedError(message, code, messages);
     case HttpStatusCode.NotFound:
-      return new NotFoundError(message, code);
+      return new NotFoundError(message, code, messages);
     case HttpStatusCode.Conflict:
-      return new ConflictError(message, code);
+      return new ConflictError(message, code, messages);
     case HttpStatusCode.TooManyRequests:
-      return new RateLimitedError(message, code);
+      return new RateLimitedError(message, code, messages);
     default:
-      return new ServiceUnavailableError(message);
+      return new ServiceUnavailableError(message, '', messages);
   }
 }
 
 export function toDomainErrorFromApiError(error: ApiError | undefined): DomainError {
   const code = error?.code ?? '';
   const message = error?.message ?? '';
+  const messages = error?.messages;
 
   switch (error?.type) {
     case ErrorType.Validation:
-      return new ValidationError(message, [], code);
+      return new ValidationError(message, [], code, messages);
     case ErrorType.NotFound:
-      return new NotFoundError(message, code);
+      return new NotFoundError(message, code, messages);
     case ErrorType.Conflict:
-      return new ConflictError(message, code);
+      return new ConflictError(message, code, messages);
     case ErrorType.Problem:
-      return new BusinessRuleError(message, code);
+      return new BusinessRuleError(message, code, messages);
     default:
       return new ServiceUnavailableError(message);
   }
@@ -74,5 +78,5 @@ function toProblemDetails(body: unknown): ProblemDetails {
 }
 
 function toIssues(errors: ApiError[]): ValidationIssue[] {
-  return errors.map(({ code, message }) => ({ code, message }));
+  return errors.map(({ code, message, messages }) => ({ code, message, messages }));
 }

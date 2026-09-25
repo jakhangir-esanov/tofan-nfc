@@ -25,7 +25,7 @@ Commands and single-item queries return `Result<T>` with status 200:
 {
   "isSuccess": true,
   "isFailure": false,
-  "error": { "code": "", "message": "", "type": 0 },
+  "error": { "code": "", "message": "", "messages": { "en": "", "uz": "", "ru": "" }, "type": 0 },
   "data": {}
 }
 ```
@@ -40,24 +40,49 @@ RFC 7807 ProblemDetails built by `ApiResults.Problem`:
 {
   "title": "Garment.NotFound",
   "status": 404,
-  "detail": "The garment was not found.",
-  "errors": [{ "code": "NotEmptyValidator", "message": "'Email' must not be empty.", "type": 2 }]
+  "detail": "The specified garment was not found.",
+  "messages": {
+    "en": "The specified garment was not found.",
+    "uz": "Ko'rsatilgan kiyim topilmadi.",
+    "ru": "Указанная одежда не найдена."
+  },
+  "errors": [
+    {
+      "propertyName": "email",
+      "code": "NotEmptyValidator",
+      "message": "'Email' must not be empty.",
+      "messages": { "en": "…", "uz": "…", "ru": "…" },
+      "type": 2
+    }
+  ]
 }
 ```
 
-| Status / envelope type           | Class                                        |
-| -------------------------------- | -------------------------------------------- |
-| 400 with `errors` / `Validation` | `ValidationError` (`issues`: code + message) |
-| 400 without `errors` / `Problem` | `BusinessRuleError`                          |
-| 401                              | `SessionExpiredError` (`core/auth`)          |
-| 403                              | `AccessDeniedError`                          |
-| 404 / `NotFound`                 | `NotFoundError`                              |
-| 409 / `Conflict`                 | `ConflictError`                              |
-| 429                              | `RateLimitedError` (no endpoint returns it today) |
-| network failure, 5xx / `Failure` | `ServiceUnavailableError`                    |
+Since backend commit `203860a` (`tofan/docs/mobile-errors-v1.md`) every error response carries
+`messages: { en, uz, ru }`, including 409 `Conflict.DuplicateKey` and 500, and so does every item of
+`errors`. `title`, `detail` and `message` keep their English values. Keycloak login/refresh failures no
+longer put Keycloak's raw text in `detail`.
 
-Validation issues carry the FluentValidation validator code (`NotEmptyValidator`), not the property
-name, so they cannot be attached to a form field. Show them as a list.
+| Status / envelope type           | Class                                                   |
+| -------------------------------- | ------------------------------------------------------- |
+| 400 with `errors` / `Validation` | `ValidationError` (`issues`: code + message + messages) |
+| 400 without `errors` / `Problem` | `BusinessRuleError`                                     |
+| 401                              | `SessionExpiredError` (`core/auth`)                     |
+| 403                              | `AccessDeniedError`                                     |
+| 404 / `NotFound`                 | `NotFoundError`                                         |
+| 409 / `Conflict`                 | `ConflictError`                                         |
+| 429                              | `RateLimitedError` (no endpoint returns it today)       |
+| network failure, 5xx / `Failure` | `ServiceUnavailableError`                               |
+
+Every class carries the backend `code` and `messages` (`undefined` when the response had none, for
+example a network failure). `core/feedback/error-message.ts` picks the text in this order: a code in
+`MESSAGES_BY_CODE` (product wording such as "futbolka", which the backend's generic "kiyim" cannot
+match) → `messages` in the page locale (validation: every issue's `messages`, joined) → the class
+message. The page locale comes from `LOCALE_ID`, so a store passes `toAppLocale(inject(LOCALE_ID))`.
+
+Validation issues carry the FluentValidation validator code (`NotEmptyValidator`) and a camelCase
+`propertyName`; this app does not map `propertyName` to a form field yet and shows the issues as one
+line.
 
 ## Existing endpoints (verified)
 
