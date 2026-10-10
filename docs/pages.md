@@ -83,15 +83,20 @@ data page; the stamps page returns with Gamification (see below).
 number in the bottom corner, the owner's name below the emblem. Tapping it opens the booklet.
 
 **Page 1 — data page.** Laid out like the photo page of a real passport: the shirt photo on the left in
-a portrait frame, a two-column field list on the right — model, colour, size, material, manufactured
-date, serial number, owner, activation date, valid until. A machine-readable strip along the
+a portrait frame, a two-column field list on the right — drop and the number in it ("Drop 1 · 349 /
+500"), model (the variant's style name), colour, size, material, manufactured date, serial number,
+owner, activation date, valid until. A machine-readable strip along the
 bottom edge as a visual motif (decorative, no real data in it). A field the admin left empty (colour,
 size, material) is left out rather than shown blank; an owner without a profile has no owner row.
 
-**Page 2 — stamps (phase 3, not rendered today).** A grid of stamps positioned at slight random
-angles like real visa stamps, each with its icon, title and date. The backend sends neither stamps nor
-a rating yet, because nothing awards them; an empty stamps page or a rating of `0` would tell the owner
-something false, so neither the page nor the rating field exists until Gamification does.
+**Page 2 — rating (since 2026-10-11).** Shown only when the passport carries `standing`: the owner's
+global leaderboard rank (`#12`, or "Hali hisoblanmagan" before the leaderboard job has counted them),
+lifetime DP, and the level name in the page language. With no `standing` the booklet has two pages and
+no rating anywhere — a rating of `0` would tell the owner something false.
+
+**Stamps (phase 3, not rendered today).** A grid of stamps positioned at slight random angles like
+real visa stamps, each with its icon, title and date. The backend sends no stamps yet, because nothing
+awards them, so the page does not exist.
 
 **Locked variant (`expired`).** The booklet renders with the cover and the data page visible but
 greyed, a band across it, and a single action: **Muddatni uzaytirish**. Once stamps exist they are
@@ -130,8 +135,9 @@ too many attempts (429). Each ends with a way out: shop link or support contact.
   the emblem and the rating. Every booklet page, the data page too, sits on the same dark surface as
 the rest of the site (the cream paper page was dropped on 2026-09-23). Colours come from the Optimus UI theme preset
   in `core/config/ui.providers.ts` — the Peaktofan brand tokens. No hex values in components.
-- **The shirt is the hero.** It is drawn inline (no photo) in the shirt's own colour, at a fixed aspect
-  ratio, so the layout never jumps.
+- **The shirt is the hero.** It shows the variant image from the backend (`imageUrl`, one image per
+  colour and style of a drop). Shirts without one ("Drop 0", made before drops existed) are drawn
+  inline in the shirt's own colour. Both sit in the same fixed-aspect frame, so the layout never jumps.
 - **Motion with restraint.** Page turn is a CSS 3D transform on the booklet container; cover open is a
   scale-and-lift; stamp award is a press-and-settle. All of it degrades to a cross-fade under
   `prefers-reduced-motion`, and none of it blocks interaction.
@@ -174,8 +180,8 @@ on the same shirt.
 These do not block phase 1, but each one changes a screen later:
 
 1. Renewal price and period — decides the copy and layout of the locked passport.
-2. How rating is computed, and whether it is per account or per shirt — decides where it sits in the
-   booklet.
+2. Rating: answered on 2026-10-11 — the account's global leaderboard rank by lifetime DP, on its own
+   booklet page, in the passport only (never on the public scan).
 3. Does a resold shirt transfer to a new owner? If yes, activation needs a release flow and the
    passport needs an ownership history page.
 4. Should an expired passport be fully hidden or shown locked? This doc assumes **locked**, because a

@@ -8,7 +8,11 @@ import { PassportPage } from './passport-page';
 
 const garment = {
   serialNumber: '01K7X8M4Q9F2A6BC3DEFGHJKMN',
-  model: 'Peaktofan Classic',
+  dropName: 'Drop 1',
+  editionNumber: 349,
+  dropTotalQuantity: 500,
+  variantName: 'Peaktofan Classic',
+  imageUrl: null,
   color: 'Qora',
   size: 'L',
   material: '95% paxta',
@@ -23,6 +27,7 @@ const activePassport: Passport = {
   activatedAt: new Date('2026-09-21T10:12:00Z'),
   expiresAt: new Date('2026-11-21T10:12:00Z'),
   isExpired: false,
+  standing: null,
 };
 
 const expiredPassport: Passport = { ...activePassport, isExpired: true };
@@ -66,12 +71,45 @@ describe('PassportPage', () => {
     expect(textOf(fixture)).toContain('Muddati tugagan');
   });
 
-  it('should render no rating and no stamps because the backend sends neither', async () => {
+  it('should render no rating page when the backend sent no standing', async () => {
     const { fixture } = await render(vi.fn().mockResolvedValue(activePassport));
     const text = textOf(fixture);
 
     expect(text).not.toContain('Reyting');
     expect(text).not.toContain('shtamp');
+  });
+
+  it('should show the rank, the DP and the level in the page language when there is a standing', async () => {
+    const ranked: Passport = {
+      ...activePassport,
+      standing: {
+        rank: 12,
+        lifetimeDp: 4820,
+        levelNames: { uz: 'Jangchi', ru: 'Воин', en: 'Warrior' },
+      },
+    };
+    const { fixture } = await render(vi.fn().mockResolvedValue(ranked));
+    const text = textOf(fixture);
+
+    expect(text).toContain('#12');
+    expect(text).toContain('4820');
+    expect(text).toContain('Jangchi');
+  });
+
+  it('should say the owner is not ranked yet when the leaderboard has not counted them', async () => {
+    const unranked: Passport = {
+      ...activePassport,
+      standing: { rank: null, lifetimeDp: 30, levelNames: null },
+    };
+    const { fixture } = await render(vi.fn().mockResolvedValue(unranked));
+
+    expect(textOf(fixture)).toContain('Hali hisoblanmagan');
+  });
+
+  it('should show the drop and the number inside it when the passport opens', async () => {
+    const { fixture } = await render(vi.fn().mockResolvedValue(activePassport));
+
+    expect(textOf(fixture)).toMatch(/Drop 1 · 349 \/\s*500/);
   });
 
   it('should leave out the holder row when the owner has no profile yet', async () => {

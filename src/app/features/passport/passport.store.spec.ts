@@ -9,7 +9,11 @@ import { Passport } from './models/passport';
 
 const garment = {
   serialNumber: '01K7X8M4Q9F2A6BC3DEFGHJKMN',
-  model: 'Peaktofan Classic',
+  dropName: 'Drop 1',
+  editionNumber: 349,
+  dropTotalQuantity: 500,
+  variantName: 'Peaktofan Classic',
+  imageUrl: null,
   color: 'Qora',
   size: 'L',
   material: '95% paxta',
@@ -24,6 +28,7 @@ const expiredPassport: Passport = {
   activatedAt: new Date('2026-01-01T00:00:00Z'),
   expiresAt: new Date('2026-03-01T00:00:00Z'),
   isExpired: true,
+  standing: null,
 };
 
 function createStore(service: Partial<PassportService>): PassportStore {

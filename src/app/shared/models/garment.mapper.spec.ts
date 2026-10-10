@@ -1,10 +1,20 @@
 import { describe, expect, it } from 'vitest';
 import { GarmentDto } from './garment.dto';
-import { toGarment } from './garment.mapper';
+import { toGarment as mapGarment } from './garment.mapper';
+
+const imageUrlOf = (fileId: string): string => `/api/files/${fileId}/content`;
+
+function toGarment(garment: GarmentDto): ReturnType<typeof mapGarment> {
+  return mapGarment(garment, imageUrlOf);
+}
 
 const dto: GarmentDto = {
   serialNumber: '01K7X8M4Q9F2A6BC3DEFGHJKMN',
-  model: 'Peaktofan Classic',
+  dropName: 'Drop 1',
+  editionNumber: 349,
+  dropTotalQuantity: 500,
+  variantName: 'Peaktofan Classic',
+  imageFileId: 'f1',
   color: 'Qora',
   size: 'L',
   material: '95% paxta, 5% elastan',
@@ -12,11 +22,19 @@ const dto: GarmentDto = {
 };
 
 describe('toGarment', () => {
+  it('should point the image at the file content when the variant has an image', () => {
+    expect(toGarment(dto).imageUrl).toBe('/api/files/f1/content');
+    expect(toGarment({ ...dto, imageFileId: null }).imageUrl).toBeNull();
+  });
+
   it('should carry the product fields through unchanged', () => {
     const garment = toGarment(dto);
 
     expect(garment.serialNumber).toBe('01K7X8M4Q9F2A6BC3DEFGHJKMN');
-    expect(garment.model).toBe('Peaktofan Classic');
+    expect(garment.variantName).toBe('Peaktofan Classic');
+    expect(garment.dropName).toBe('Drop 1');
+    expect(garment.editionNumber).toBe(349);
+    expect(garment.dropTotalQuantity).toBe(500);
     expect(garment.material).toBe('95% paxta, 5% elastan');
   });
 

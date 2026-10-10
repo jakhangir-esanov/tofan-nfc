@@ -18,6 +18,17 @@
   border: 1px solid var(--app-border);
 }
 
+.garment-preview__image {
+  padding: 0;
+  object-fit: cover;
+}
+
+.garment-preview__edition {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--app-accent);
+}
+
 .garment-preview__caption {
   display: flex;
   flex-direction: column;

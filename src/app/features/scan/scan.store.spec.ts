@@ -7,7 +7,11 @@ import { GarmentScan } from './models/garment-scan';
 
 const garment = {
   serialNumber: '01K7X8M4Q9F2A6BC3DEFGHJKMN',
-  model: 'Peaktofan Classic',
+  dropName: 'Drop 1',
+  editionNumber: 349,
+  dropTotalQuantity: 500,
+  variantName: 'Peaktofan Classic',
+  imageUrl: null,
   color: 'Qora',
   size: 'L',
   material: '95% paxta',

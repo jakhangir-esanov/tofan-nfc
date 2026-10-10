@@ -10,8 +10,8 @@ Frontend
   `core/auth`, `core/layout` mobile shell, i18n for `uz`/`ru`/`en`
 - `features/scan`: scan landing, activation, authenticity, invalid states
 - `features/auth`: register (name, email, password), login, `returnUrl` handling
-- `features/passport`: booklet with cover and data page (no stamps page and no rating until the
-  backend sends them)
+- `features/passport`: booklet with cover, data page and, when the backend sends `standing`, a rating
+  page (rank, lifetime DP, level); no stamps page until the backend sends stamps
 - Locked passport for the expired state, with a disabled renew action
 - Required tests, including the security set in `.claude/rules/testing.md`
 
@@ -41,13 +41,12 @@ Out of scope: payments, stamp awarding, the multi-shirt list, the admin panel.
 - Locked passport becomes actionable; reminders 7 and 1 days before expiry (push, not SMS)
 - Open questions to answer first: price, period
 
-## Phase 3 — stamps and rating
+## Phase 3 — stamps
 
 - Stamp award animation and push notification
 - Stamp kinds: personal record, achievement, rank, special
-- Stamps page in the booklet and the rating on the cover — both need the backend to add `stamps` and
-  `rating` to the passport response first
-- Open question to answer first: how rating is computed, per account or per shirt
+- Stamps page in the booklet — needs the backend to add `stamps` to the passport response first
+- The rating already ships on its own booklet page (2026-10-11)
 
 ## Phase 4 — multiple shirts and admin
 

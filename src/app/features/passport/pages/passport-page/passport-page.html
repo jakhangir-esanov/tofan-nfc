@@ -1,6 +1,6 @@
 <app-state-screen [loading]="store.loading()" [error]="store.loadError()" (retry)="load()">
   @if (store.passport(); as passport) {
-    <app-passport-book [pageLabels]="pageLabels">
+    <app-passport-book [pageLabels]="pageLabels()">
       <section class="passport-page passport-page--cover">
         <app-logo class="cover__emblem" />
         <h1 class="cover__title" i18n="@@passport.cover.title">RAQAMLI PASPORT</h1>
@@ -20,8 +20,15 @@
             </div>
           }
           <div class="data-page__row">
-            <dt i18n="@@passport.field.model">Model</dt>
-            <dd>{{ passport.garment.model }}</dd>
+            <dt i18n="@@passport.field.drop">Drop</dt>
+            <dd>
+              {{ passport.garment.dropName }} · {{ passport.garment.editionNumber }} /
+              {{ passport.garment.dropTotalQuantity }}
+            </dd>
+          </div>
+          <div class="data-page__row">
+            <dt i18n="@@passport.field.variant">Model</dt>
+            <dd>{{ passport.garment.variantName }}</dd>
           </div>
           <div class="data-page__row">
             <dt i18n="@@passport.field.serial">Seriya raqami</dt>
@@ -43,6 +50,33 @@
           </div>
         </dl>
       </section>
+
+      @if (passport.standing; as standing) {
+        <section class="passport-page passport-page--paper">
+          <dl class="data-page">
+            <div class="data-page__row">
+              <dt i18n="@@passport.field.rank">Reyting</dt>
+              <dd>
+                @if (standing.rank !== null) {
+                  #{{ standing.rank }}
+                } @else {
+                  <ng-container i18n="@@passport.rank.none">Hali hisoblanmagan</ng-container>
+                }
+              </dd>
+            </div>
+            <div class="data-page__row">
+              <dt i18n="@@passport.field.lifetimeDp">DP</dt>
+              <dd>{{ standing.lifetimeDp }}</dd>
+            </div>
+            @if (level(); as name) {
+              <div class="data-page__row">
+                <dt i18n="@@passport.field.level">Daraja</dt>
+                <dd>{{ name }}</dd>
+              </div>
+            }
+          </dl>
+        </section>
+      }
     </app-passport-book>
   }
 </app-state-screen>

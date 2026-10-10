@@ -1,12 +1,24 @@
 <figure class="garment-preview">
-  <app-garment-shirt
-    class="garment-preview__photo"
-    [shade]="garment().shade"
-    [label]="garment().model"
-  />
+  @if (garment().imageUrl; as imageUrl) {
+    <img
+      class="garment-preview__photo garment-preview__image"
+      [src]="imageUrl"
+      [alt]="garment().variantName"
+    />
+  } @else {
+    <app-garment-shirt
+      class="garment-preview__photo"
+      [shade]="garment().shade"
+      [label]="garment().variantName"
+    />
+  }
 
   <figcaption class="garment-preview__caption">
-    <span class="garment-preview__model">{{ garment().model }}</span>
+    <span class="garment-preview__model">{{ garment().variantName }}</span>
+    <span class="garment-preview__edition"
+      >{{ garment().dropName }} · {{ garment().editionNumber }} /
+      {{ garment().dropTotalQuantity }}</span
+    >
     <span class="garment-preview__serial">{{ garment().serialNumber }}</span>
   </figcaption>
 </figure>

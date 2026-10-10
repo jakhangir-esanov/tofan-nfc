@@ -5,7 +5,11 @@ import { GarmentPreview } from './garment-preview';
 
 const garment: Garment = {
   serialNumber: '01K7X8M4Q9F2A6BC3DEFGHJKMN',
-  model: 'Peaktofan Classic',
+  dropName: 'Drop 1',
+  editionNumber: 349,
+  dropTotalQuantity: 500,
+  variantName: 'Peaktofan Classic',
+  imageUrl: null,
   color: '#1A3C6E',
   size: 'L',
   material: '95% paxta',
@@ -41,6 +45,20 @@ describe('GarmentPreview', () => {
 
     expect(host.querySelector('img')).toBeNull();
     expect(host.querySelectorAll('svg path')).toHaveLength(6);
+  });
+
+  it('should show the variant image instead of the drawing when the variant has one', () => {
+    const host = hostOf(render({ ...garment, imageUrl: '/api/files/f1/content' }));
+    const image = host.querySelector('img');
+
+    expect(image?.getAttribute('src')).toBe('/api/files/f1/content');
+    expect(host.querySelector('.shirt__body')).toBeNull();
+  });
+
+  it('should name the drop and the number inside it when the shirt is shown', () => {
+    const text = hostOf(render(garment)).textContent ?? '';
+
+    expect(text).toMatch(/Drop 1 · 349 \/\s*500/);
   });
 
   it('should show a swatch named by the code when the colour has no catalogue name', () => {
