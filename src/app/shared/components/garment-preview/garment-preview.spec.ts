@@ -91,6 +91,33 @@ describe('GarmentPreview', () => {
     expect(text).toContain('Qizil');
   });
 
+  it('should show the unique id, the authenticity mark and an unregistered status when nobody owns it', () => {
+    const text = hostOf(render(garment)).textContent ?? '';
+
+    expect(text).toContain('01K7X8M4Q9F2A6BC3DEFGHJKMN');
+    expect(text).toContain('Tasdiqlangan TOFAN originali');
+    expect(text).toContain("Ro'yxatdan o'tmagan");
+    expect(text).not.toContain('@');
+  });
+
+  it('should show the owner, the registration date and the validity when the shirt is registered', () => {
+    const fixture = TestBed.createComponent(GarmentPreview);
+    fixture.componentRef.setInput('garment', garment);
+    fixture.componentRef.setInput('registration', {
+      username: 'jahongir',
+      registeredAt: new Date('2026-09-21T10:12:00Z'),
+      expiresAt: new Date('2026-11-21T10:12:00Z'),
+      isExpired: true,
+    });
+    fixture.detectChanges();
+    const text = hostOf(fixture).textContent ?? '';
+
+    expect(text).toContain('@jahongir');
+    expect(text).toContain('21.09.2026');
+    expect(text).toContain('21.11.2026');
+    expect(text).toContain('Muddati tugagan');
+  });
+
   it('should leave out a product field when the admin left it empty', () => {
     const text = hostOf(render({ ...garment, material: '' })).textContent ?? '';
 

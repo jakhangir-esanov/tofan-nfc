@@ -41,13 +41,12 @@
   font-weight: 600;
 }
 
-.garment-preview__serial {
-  max-width: 100%;
+.garment-preview__authentic {
+  margin-top: 6px;
   font-size: 12px;
-  letter-spacing: 0.12em;
-  color: var(--app-text-muted);
-  overflow-wrap: anywhere;
-  text-align: center;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--app-success);
 }
 
 .garment-facts {
@@ -74,6 +73,25 @@
   margin: 0;
   font-size: 14px;
   text-align: right;
+}
+
+.garment-facts__code {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  overflow-wrap: anywhere;
+}
+
+.garment-facts__status {
+  font-weight: 600;
+  color: var(--app-text-muted);
+}
+
+.garment-facts__status--registered {
+  color: var(--app-success);
+}
+
+.garment-facts__status--expired {
+  color: var(--app-danger);
 }
 
 .garment-facts__color {

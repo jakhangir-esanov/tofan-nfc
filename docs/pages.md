@@ -104,9 +104,11 @@ absent from an expired payload, not merely covered.
 
 ### 4.4 Authenticity — `/t/:token/verify`
 
-What a stranger sees. The Peaktofan mark, a verified badge, the product data (model, material,
-manufactured date) and one line: this is a genuine Peaktofan shirt and it is already activated.
-A link to the shop. Nothing about the owner. No login prompt — this person is not the customer.
+What a stranger sees. The shirt card (`shared/components/garment-preview`, the same card the scan and
+activation screens use): product image, product name, size, colour, drop and the number in it, the
+unique ID (serial number), the "verified TOFAN original" mark and the status, and — since 2026-10-11 —
+the owner's `@username`, the registration date and the validity. Nothing else about the owner: no real
+name, phone, email, rating or stamps. No login prompt — this person is not the customer.
 
 ### 4.5 Register — `/auth/register`
 

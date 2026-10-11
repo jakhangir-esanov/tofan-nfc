@@ -586,20 +586,12 @@
           <context context-type="linenumber">30,32</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="verify.badge" datatype="html">
-        <source>PEAKTOFAN ORIGINALI</source>
-        <target state="translated">ОРИГИНАЛ PEAKTOFAN</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/scan/pages/verify-page/verify-page.html</context>
-          <context context-type="linenumber">4,5</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="verify.title" datatype="html">
         <source>Bu futbolka haqiqiy</source>
         <target state="translated">Эта футболка подлинная</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/scan/pages/verify-page/verify-page.html</context>
-          <context context-type="linenumber">5,6</context>
+          <context context-type="linenumber">4,5</context>
         </context-group>
       </trans-unit>
       <trans-unit id="verify.lead" datatype="html">
@@ -607,15 +599,39 @@
         <target state="translated"> Футболка уже активирована. Паспорт виден только владельцу. </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/scan/pages/verify-page/verify-page.html</context>
-          <context context-type="linenumber">7,9</context>
+          <context context-type="linenumber">6,8</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="garment.color" datatype="html">
-        <source>Rang</source>
-        <target state="translated">Цвет</target>
+      <trans-unit id="garment.authentic" datatype="html">
+        <source>✓ Tasdiqlangan TOFAN originali</source>
+        <target state="translated">✓ Подтверждённый оригинал TOFAN</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/components/garment-preview/garment-preview.html</context>
-          <context context-type="linenumber">29,30</context>
+          <context context-type="linenumber">23,26</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="garment.drop" datatype="html">
+        <source>Drop</source>
+        <target state="translated">Дроп</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/garment-preview/garment-preview.html</context>
+          <context context-type="linenumber">30,31</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="garment.edition" datatype="html">
+        <source>Drop ichidagi raqami</source>
+        <target state="translated">Номер в дропе</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/garment-preview/garment-preview.html</context>
+          <context context-type="linenumber">34,35</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="garment.uniqueId" datatype="html">
+        <source>Noyob ID</source>
+        <target state="translated">Уникальный ID</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/garment-preview/garment-preview.html</context>
+          <context context-type="linenumber">38,39</context>
         </context-group>
       </trans-unit>
       <trans-unit id="garment.size" datatype="html">
@@ -623,7 +639,15 @@
         <target state="translated">Размер</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/components/garment-preview/garment-preview.html</context>
-          <context context-type="linenumber">44,45</context>
+          <context context-type="linenumber">43,44</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="garment.color" datatype="html">
+        <source>Rang</source>
+        <target state="translated">Цвет</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/garment-preview/garment-preview.html</context>
+          <context context-type="linenumber">49,50</context>
         </context-group>
       </trans-unit>
       <trans-unit id="garment.material" datatype="html">
@@ -631,7 +655,7 @@
         <target state="translated">Материал</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/components/garment-preview/garment-preview.html</context>
-          <context context-type="linenumber">50,51</context>
+          <context context-type="linenumber">64,65</context>
         </context-group>
       </trans-unit>
       <trans-unit id="garment.manufacturedAt" datatype="html">
@@ -639,7 +663,39 @@
         <target state="translated">Дата производства</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/components/garment-preview/garment-preview.html</context>
-          <context context-type="linenumber">55,56</context>
+          <context context-type="linenumber">69,70</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="garment.status" datatype="html">
+        <source>Holati</source>
+        <target state="translated">Статус</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/garment-preview/garment-preview.html</context>
+          <context context-type="linenumber">73,75</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="garment.owner" datatype="html">
+        <source>Egasi</source>
+        <target state="translated">Владелец</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/garment-preview/garment-preview.html</context>
+          <context context-type="linenumber">85,86</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="garment.registeredAt" datatype="html">
+        <source>Ro&apos;yxatdan o&apos;tgan sana</source>
+        <target state="translated">Дата регистрации</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/garment-preview/garment-preview.html</context>
+          <context context-type="linenumber">90,91</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="garment.expiresAt" datatype="html">
+        <source>Amal qilish muddati</source>
+        <target state="translated">Действует до</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/garment-preview/garment-preview.html</context>
+          <context context-type="linenumber">94,95</context>
         </context-group>
       </trans-unit>
       <trans-unit id="garment.color.black" datatype="html">
@@ -647,7 +703,7 @@
         <target state="translated">Черный</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/components/garment-preview/garment-preview.ts</context>
-          <context context-type="linenumber">8</context>
+          <context context-type="linenumber">13</context>
         </context-group>
       </trans-unit>
       <trans-unit id="garment.color.blue" datatype="html">
@@ -655,7 +711,31 @@
         <target state="translated">Синий</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/components/garment-preview/garment-preview.ts</context>
-          <context context-type="linenumber">9</context>
+          <context context-type="linenumber">14</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="garment.status.unregistered" datatype="html">
+        <source>Ro&apos;yxatdan o&apos;tmagan</source>
+        <target state="translated">Не зарегистрирована</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/garment-preview/garment-preview.ts</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="garment.status.registered" datatype="html">
+        <source>Ro&apos;yxatdan o&apos;tgan</source>
+        <target state="translated">Зарегистрирована</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/garment-preview/garment-preview.ts</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="garment.status.expired" datatype="html">
+        <source>Muddati tugagan</source>
+        <target state="translated">Срок истёк</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/garment-preview/garment-preview.ts</context>
+          <context context-type="linenumber">20</context>
         </context-group>
       </trans-unit>
       <trans-unit id="passport.pages" datatype="html">

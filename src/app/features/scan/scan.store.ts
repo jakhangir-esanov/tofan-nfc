@@ -2,12 +2,14 @@ import { Injectable, LOCALE_ID, computed, inject, signal } from '@angular/core';
 import { toErrorMessage } from '@core/feedback/error-message';
 import { toAppLocale } from '@core/layout/language/app-locale';
 import { Garment } from '@shared/models/garment';
+import { GarmentRegistration } from '@shared/models/garment-registration';
 import {
   GarmentScan,
   InvalidReason,
   ScanState,
   garmentOf,
   invalidReasonOf,
+  registrationOf,
 } from './models/garment-scan';
 import { GarmentsService } from './services/garments.service';
 
@@ -28,6 +30,11 @@ export class ScanStore {
   readonly garment = computed<Garment | null>(() => {
     const scan = this.scan();
     return scan === null ? null : garmentOf(scan);
+  });
+
+  readonly registration = computed<GarmentRegistration | null>(() => {
+    const scan = this.scan();
+    return scan === null ? null : registrationOf(scan);
   });
 
   readonly claimableGarment = computed<Garment | null>(() =>

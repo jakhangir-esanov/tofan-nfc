@@ -131,9 +131,22 @@ Bearer optional. This is the only endpoint that decides what a scan means.
     "material": "95% paxta, 5% elastan",
     "manufacturedAt": "2026-08-14T00:00:00Z",
   },
+  "registration": {
+    "username": "jahongir",
+    "registeredAt": "2026-09-21T10:12:00Z",
+    "expiresAt": "2026-11-21T10:12:00Z",
+    "isExpired": false,
+  },
   "reason": null,
 }
 ```
+
+**`registration`** (2026-10-11) is present whenever the shirt has an owner, **whoever scans it**, and
+`null` when nobody registered it. `username` is the owner's profile username and is `null` for an
+owner who has not created a profile yet. The page shows it as `@username` with the registration date
+and the validity (`shared/components/garment-preview`). The public status comes from it
+(`shared/models/garment-registration.ts`): no registration → not registered, `isExpired` → expired,
+otherwise registered. `isExpired` is the server's verdict; never compare `expiresAt` to the device clock.
 
 **`model` is gone** (2026-10-11). A shirt is described by its drop and variant: `dropName` ("Drop 1"),
 `editionNumber` and `dropTotalQuantity` ("349 of 500"; zero-padding such as `0349` is the site's job,
@@ -161,8 +174,12 @@ a swatch; an old word is also named in the page language.
 Rules the backend holds:
 
 - There is no `passport` field on this response at all. The passport is its own endpoint, owner only.
-- `Foreign`, `Unclaimed` and `Claimable` carry no owner name, no activation date, no expiry, no rating
-  and no stamps — those fields are not declared on the scan response, so they cannot leak.
+- The scan carries the owner's **username** and dates only (product decision, 2026-10-11, following the
+  NFC task's field list). It never carries the real name, phone, email, rating or stamps — those
+  fields are not declared on the scan response, so they cannot leak. The real name, rank, DP and level
+  stay on the owner-only passport.
+- Every valid scan is a genuine shirt, so the preview always shows the "verified TOFAN original" mark;
+  `Invalid` has its own screens.
 - `Invalid` carries no `garment` either — an unknown token must not confirm that a serial exists.
 - An unknown token returns `200` with `state: Invalid`, never `404`: the difference between the two
   would reveal whether the token exists.

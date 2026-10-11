@@ -19,13 +19,20 @@ const garment = {
   shade: 'var(--app-shirt-black)',
 };
 
+const registration = {
+  username: 'jahongir',
+  registeredAt: new Date('2026-09-21T10:12:00Z'),
+  expiresAt: new Date('2026-11-21T10:12:00Z'),
+  isExpired: false,
+};
+
 async function renderForeignScan(): Promise<ComponentFixture<VerifyPage>> {
   TestBed.configureTestingModule({
     providers: [
       provideRouter([]),
       {
         provide: GarmentsService,
-        useValue: { scan: vi.fn().mockResolvedValue({ state: 'foreign', garment }) },
+        useValue: { scan: vi.fn().mockResolvedValue({ state: 'foreign', garment, registration }) },
       },
     ],
   });
@@ -56,16 +63,25 @@ describe('VerifyPage', () => {
 
   it('should confirm the shirt is genuine when a stranger scans it', async () => {
     const fixture = await renderForeignScan();
-
-    expect(textOf(fixture)).toContain('Peaktofan Classic');
-  });
-
-  it('should show nothing about the owner when a stranger scans it', async () => {
-    const fixture = await renderForeignScan();
     const text = textOf(fixture);
 
+    expect(text).toContain('Peaktofan Classic');
+    expect(text).toContain('Tasdiqlangan TOFAN originali');
+  });
+
+  it('should show the owner username, the registration and the validity to a stranger', async () => {
+    const text = textOf(await renderForeignScan());
+
+    expect(text).toContain('@jahongir');
+    expect(text).toContain("Ro'yxatdan o'tgan");
+    expect(text).toContain('21.09.2026');
+    expect(text).toContain('21.11.2026');
+  });
+
+  it('should keep the real name, the rating and the stamps away from a stranger', async () => {
+    const text = textOf(await renderForeignScan());
+
     expect(text).not.toContain('Esanov');
-    expect(text).not.toContain('Aktivatsiya');
     expect(text).not.toContain('Reyting');
     expect(text).not.toContain('Shtamp');
   });

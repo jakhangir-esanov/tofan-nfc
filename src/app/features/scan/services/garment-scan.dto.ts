@@ -15,8 +15,16 @@ export enum GarmentInvalidReasonDto {
   Hidden = 3,
 }
 
+export interface GarmentRegistrationDto {
+  username: string | null;
+  registeredAt: string;
+  expiresAt: string;
+  isExpired: boolean;
+}
+
 export interface GarmentScanDto {
   state: GarmentScanStateDto;
   reason: GarmentInvalidReasonDto | null;
   garment: GarmentDto | null;
+  registration: GarmentRegistrationDto | null;
 }

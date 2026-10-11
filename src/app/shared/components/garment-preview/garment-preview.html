@@ -19,11 +19,31 @@
       >{{ garment().dropName }} · {{ garment().editionNumber }} /
       {{ garment().dropTotalQuantity }}</span
     >
-    <span class="garment-preview__serial">{{ garment().serialNumber }}</span>
+    <span class="garment-preview__authentic" i18n="@@garment.authentic"
+      >✓ Tasdiqlangan TOFAN originali</span
+    >
   </figcaption>
 </figure>
 
 <dl class="garment-facts">
+  <div class="garment-facts__row">
+    <dt i18n="@@garment.drop">Drop</dt>
+    <dd>{{ garment().dropName }}</dd>
+  </div>
+  <div class="garment-facts__row">
+    <dt i18n="@@garment.edition">Drop ichidagi raqami</dt>
+    <dd>{{ garment().editionNumber }} / {{ garment().dropTotalQuantity }}</dd>
+  </div>
+  <div class="garment-facts__row">
+    <dt i18n="@@garment.uniqueId">Noyob ID</dt>
+    <dd class="garment-facts__code">{{ garment().serialNumber }}</dd>
+  </div>
+  @if (garment().size) {
+    <div class="garment-facts__row">
+      <dt i18n="@@garment.size">O'lcham</dt>
+      <dd>{{ garment().size }}</dd>
+    </div>
+  }
   @if (hasColor()) {
     <div class="garment-facts__row">
       <dt i18n="@@garment.color">Rang</dt>
@@ -39,12 +59,6 @@
       </dd>
     </div>
   }
-  @if (garment().size) {
-    <div class="garment-facts__row">
-      <dt i18n="@@garment.size">O'lcham</dt>
-      <dd>{{ garment().size }}</dd>
-    </div>
-  }
   @if (garment().material) {
     <div class="garment-facts__row">
       <dt i18n="@@garment.material">Material</dt>
@@ -55,4 +69,30 @@
     <dt i18n="@@garment.manufacturedAt">Ishlab chiqarilgan</dt>
     <dd>{{ garment().manufacturedAt | date: 'dd.MM.yyyy' }}</dd>
   </div>
+  <div class="garment-facts__row">
+    <dt i18n="@@garment.status">Holati</dt>
+    <dd
+      class="garment-facts__status"
+      [class.garment-facts__status--registered]="status() === 'registered'"
+      [class.garment-facts__status--expired]="status() === 'expired'"
+    >
+      {{ statusLabel() }}
+    </dd>
+  </div>
+  @if (registration(); as registration) {
+    @if (registration.username) {
+      <div class="garment-facts__row">
+        <dt i18n="@@garment.owner">Egasi</dt>
+        <dd>&#64;{{ registration.username }}</dd>
+      </div>
+    }
+    <div class="garment-facts__row">
+      <dt i18n="@@garment.registeredAt">Ro'yxatdan o'tgan sana</dt>
+      <dd>{{ registration.registeredAt | date: 'dd.MM.yyyy' }}</dd>
+    </div>
+    <div class="garment-facts__row">
+      <dt i18n="@@garment.expiresAt">Amal qilish muddati</dt>
+      <dd>{{ registration.expiresAt | date: 'dd.MM.yyyy' }}</dd>
+    </div>
+  }
 </dl>

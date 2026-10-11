@@ -1,19 +1,26 @@
 import { Garment } from '@shared/models/garment';
+import { GarmentRegistration } from '@shared/models/garment-registration';
 
 export type InvalidReason = 'unknown' | 'revoked' | 'hidden';
 
 export type ScanState = GarmentScan['state'];
 
+type ValidScanState = 'unclaimed' | 'claimable' | 'owned' | 'expired' | 'foreign';
+
 export type GarmentScan =
-  | { readonly state: 'unclaimed'; readonly garment: Garment }
-  | { readonly state: 'claimable'; readonly garment: Garment }
-  | { readonly state: 'owned'; readonly garment: Garment }
-  | { readonly state: 'expired'; readonly garment: Garment }
-  | { readonly state: 'foreign'; readonly garment: Garment }
+  | {
+      readonly state: ValidScanState;
+      readonly garment: Garment;
+      readonly registration: GarmentRegistration | null;
+    }
   | { readonly state: 'invalid'; readonly reason: InvalidReason };
 
 export function garmentOf(scan: GarmentScan): Garment | null {
   return scan.state === 'invalid' ? null : scan.garment;
+}
+
+export function registrationOf(scan: GarmentScan): GarmentRegistration | null {
+  return scan.state === 'invalid' ? null : scan.registration;
 }
 
 export function invalidReasonOf(scan: GarmentScan): InvalidReason | null {

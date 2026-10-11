@@ -25,7 +25,9 @@ async function scanWith(
 ): Promise<{ text: string; navigatedTo: string | null; claimed: boolean }> {
   const scan = vi
     .fn()
-    .mockResolvedValue(state === 'invalid' ? { state, reason: 'unknown' } : { state, garment });
+    .mockResolvedValue(
+      state === 'invalid' ? { state, reason: 'unknown' } : { state, garment, registration: null },
+    );
 
   const claim = vi.fn();
   TestBed.configureTestingModule({
