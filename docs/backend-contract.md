@@ -87,14 +87,14 @@ line.
 
 ## Existing endpoints (verified)
 
-| Endpoint            | Body                                             | Notes                                   |
-| ------------------- | ------------------------------------------------ | --------------------------------------- |
-| `POST /auth/register` | `username`, `email`, `phoneNumber?`, `password` | Returns tokens in the `Result` envelope |
-| `POST /auth/login`    | `username`, `password`                          | Returns tokens                          |
-| `POST /auth/refresh`  | `refreshToken`                                  |                                         |
-| `POST /auth/logout`   | `refreshToken`, requires Bearer                 |                                         |
-| `POST /profiles`      | `firstName`, `lastName`, `userName`, `dateOfBirth?`, `gender`, `profilePhotoUrl?`, `countryCode`, `timeZone` | Creates the Soldier profile |
-| `GET /profiles`       | —                                               | Current user's profile                  |
+| Endpoint              | Body                                                                                                         | Notes                                   |
+| --------------------- | ------------------------------------------------------------------------------------------------------------ | --------------------------------------- |
+| `POST /auth/register` | `username`, `email`, `phoneNumber?`, `password`                                                              | Returns tokens in the `Result` envelope |
+| `POST /auth/login`    | `username`, `password`                                                                                       | Returns tokens                          |
+| `POST /auth/refresh`  | `refreshToken`                                                                                               |                                         |
+| `POST /auth/logout`   | `refreshToken`, requires Bearer                                                                              |                                         |
+| `POST /profiles`      | `firstName`, `lastName`, `userName`, `dateOfBirth?`, `gender`, `profilePhotoUrl?`, `countryCode`, `timeZone` | Creates the Soldier profile             |
+| `GET /profiles`       | —                                                                                                            | Current user's profile                  |
 
 Token response: `{ accessToken, refreshToken, idToken, tokenType, expiresIn, refreshExpiresIn }`.
 
@@ -129,9 +129,9 @@ Bearer optional. This is the only endpoint that decides what a scan means.
     "imageFileId": "6f0c…",
     "size": "L",
     "material": "95% paxta, 5% elastan",
-    "manufacturedAt": "2026-08-14T00:00:00Z"
+    "manufacturedAt": "2026-08-14T00:00:00Z",
   },
-  "reason": null
+  "reason": null,
 }
 ```
 
@@ -191,7 +191,7 @@ Bearer required, owner only:
 
 ```jsonc
 {
-  "garment": { /* as above */ },
+  "garment": {/* as above */},
   "owner": { "firstName": "Jahongir", "lastName": "Esanov" },
   "activatedAt": "2026-09-21T10:12:00Z",
   "expiresAt": "2026-11-21T10:12:00Z",
@@ -199,8 +199,8 @@ Bearer required, owner only:
   "standing": {
     "rank": 12,
     "lifetimeDp": 4820,
-    "level": { "name": "Warrior", "nameRu": "Воин", "nameUz": "Jangchi", "badgeIcon": null }
-  }
+    "level": { "name": "Warrior", "nameRu": "Воин", "nameUz": "Jangchi", "badgeIcon": null },
+  },
 }
 ```
 
@@ -242,8 +242,8 @@ shirts are left out. Not called by this app yet: the shirt list is phase 4 (`doc
     "imageFileId": "6f0c…",
     "activatedAt": "2026-09-21T10:12:00Z",
     "expiresAt": "2026-11-21T10:12:00Z",
-    "isExpired": false
-  }
+    "isExpired": false,
+  },
 ]
 ```
 
@@ -252,17 +252,17 @@ shirts are left out. Not called by this app yet: the shirt list is phase 4 (`doc
 All of them exist and require the admin policy. They belong to `tofan-ui`, not to this app; they are listed
 here only so the scan states below make sense.
 
-| Endpoint                                     | Purpose                                     |
-| -------------------------------------------- | ------------------------------------------- |
-| `POST /admin/drops`                          | Create a drop: `{ name, totalQuantity }`    |
-| `GET /admin/drops`                           | Drops with their variants                   |
-| `POST /admin/drops/{id}/variants`            | Add a variant: `{ name, color, imageFileId }` |
-| `POST /admin/garments`                       | Create from `{ dropId, variantId, size, material, manufacturedAt }`; the server gives the serial and the next edition number; returns `{ id, serialNumber, editionNumber, token, linkUrl }` |
-| `GET /admin/garments`                        | Paged list                                  |
-| `POST /admin/garments/{id}/status`           | Body `{ status }`: active, hidden, revoked  |
-| `POST /admin/garments/{id}/extend`           | Body `{ months }` 1–24; returns the new expiry |
-| `GET /admin/garments/export-links`           | `.xlsx` with every column, for the print shop |
-| `DELETE /admin/garments/{id}`                | Delete a shirt nobody activated             |
+| Endpoint                           | Purpose                                                                                                                                                                                                                           |
+| ---------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `POST /admin/drops`                | Create a drop: `{ name, totalQuantity }`                                                                                                                                                                                          |
+| `GET /admin/drops`                 | Drops with their variants                                                                                                                                                                                                         |
+| `POST /admin/drops/{id}/variants`  | Add a variant: `{ name, color, imageFileId }`                                                                                                                                                                                     |
+| `POST /admin/garments`             | Create 1–500 shirts from `{ dropId, variantId, size, material, manufacturedAt, quantity }`; the server gives each a serial and the next edition number; returns an array of `{ id, serialNumber, editionNumber, token, linkUrl }` |
+| `GET /admin/garments`              | Paged list                                                                                                                                                                                                                        |
+| `POST /admin/garments/{id}/status` | Body `{ status }`: active, hidden, revoked                                                                                                                                                                                        |
+| `POST /admin/garments/{id}/extend` | Body `{ months }` 1–24; returns the new expiry                                                                                                                                                                                    |
+| `GET /admin/garments/export-links` | `.xlsx` with every column, for the print shop                                                                                                                                                                                     |
+| `DELETE /admin/garments/{id}`      | Delete a shirt nobody activated                                                                                                                                                                                                   |
 
 One of them changes what a scan sees, so this app must handle it:
 
@@ -280,11 +280,11 @@ to render.
 
 ### Still missing
 
-| Endpoint                                      | Phase | Purpose                    |
-| --------------------------------------------- | ----- | -------------------------- |
-| `POST /payments/create`                       | 2     | Start a renewal payment    |
-| `POST /payments/webhook`                      | 2     | Provider callback (server) |
-| `POST /garments/{id}/stamps`                  | 3     | Award a stamp (app, admin) |
+| Endpoint                     | Phase | Purpose                    |
+| ---------------------------- | ----- | -------------------------- |
+| `POST /payments/create`      | 2     | Start a renewal payment    |
+| `POST /payments/webhook`     | 2     | Provider callback (server) |
+| `POST /garments/{id}/stamps` | 3     | Award a stamp (app, admin) |
 
 ## Backend work this app still depends on
 
