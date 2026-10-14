@@ -31,7 +31,7 @@ features/passport/
   passport.routes.ts
 ```
 
-The booklet container is `shared/components/passport-book`; pages inside it carry the global
+The booklet container is `features/passport/components/passport-book`; pages inside it carry the global
 `.passport-page` class so the track can lay them out. Both pages use the site's dark surface
 (`.passport-page--cover`, `.passport-page--paper` in `src/styles/styles.css`); long values such as a
 26-character ULID serial wrap instead of overflowing at 375px.

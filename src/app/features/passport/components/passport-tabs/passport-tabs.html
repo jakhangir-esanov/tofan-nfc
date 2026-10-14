@@ -1,0 +1,13 @@
+<nav class="passport-tabs" i18n-aria-label="@@passport.tabs" aria-label="Pasport bo'limlari">
+  @for (option of options(); track option.id) {
+    <button
+      type="button"
+      class="passport-tabs__tab"
+      [attr.aria-current]="option.id === active() ? 'page' : null"
+      (click)="active.set(option.id)"
+    >
+      <i class="pi" [class]="option.icon" aria-hidden="true"></i>
+      {{ option.label }}
+    </button>
+  }
+</nav>

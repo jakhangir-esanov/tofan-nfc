@@ -1,0 +1,14 @@
+@if (imageUrl(); as url) {
+  <img
+    class="garment-photo__image"
+    [src]="url"
+    [alt]="garment().variantName"
+    (error)="imageFailed.set(true)"
+  />
+} @else {
+  <app-garment-shirt
+    class="garment-photo__drawing"
+    [shade]="garment().shade"
+    [label]="garment().variantName"
+  />
+}

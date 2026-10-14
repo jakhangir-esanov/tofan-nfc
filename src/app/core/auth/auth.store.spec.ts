@@ -2,12 +2,12 @@ import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { describe, expect, it, vi } from 'vitest';
 import { ServiceUnavailableError } from '@shared/models/errors/service-unavailable.error';
-import { AuthSession } from './auth-session';
-import { AuthSessionStorage } from './auth-session.storage';
-import { AuthService } from './auth.service';
+import { AuthSession } from './models/auth-session';
+import { AuthSessionStorage } from './storage/auth-session.storage';
+import { AuthService } from './services/auth.service';
 import { AuthStore } from './auth.store';
-import { Registration } from './registration';
-import { UserProfile } from './user-profile';
+import { Registration } from './models/registration';
+import { UserProfile } from './models/user-profile';
 
 const registration: Registration = {
   firstName: 'Jahongir',

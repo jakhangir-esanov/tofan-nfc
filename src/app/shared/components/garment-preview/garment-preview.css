@@ -1,81 +1,72 @@
 .garment-preview {
   margin: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
 }
 
 .garment-preview__photo {
-  display: block;
-  box-sizing: border-box;
-  width: 100%;
-  max-width: 320px;
-  aspect-ratio: 1;
-  padding: 24px;
-  border-radius: var(--app-radius);
-  background: radial-gradient(circle at 50% 40%, var(--app-surface-raised), var(--app-surface));
   border: 1px solid var(--app-border);
+  border-radius: var(--app-radius-large);
+}
+
+.garment-preview__photo--compact {
+  aspect-ratio: 6 / 5;
 }
 
 .garment-preview__caption {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 18px 0 6px;
 }
 
 .garment-preview__model {
-  font-size: 18px;
-  font-weight: 600;
-}
-
-.garment-preview__serial {
-  max-width: 100%;
-  font-size: 12px;
-  letter-spacing: 0.12em;
-  color: var(--app-text-muted);
+  min-width: 0;
+  font-size: 22px;
+  font-weight: 300;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
   overflow-wrap: anywhere;
-  text-align: center;
 }
 
-.garment-facts {
-  margin: 20px 0 0;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.garment-facts__row {
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid var(--app-border);
-}
-
-.garment-facts__row dt {
+.garment-preview__edition {
+  flex-shrink: 0;
   color: var(--app-text-muted);
-  font-size: 14px;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
 }
 
-.garment-facts__row dd {
-  margin: 0;
-  font-size: 14px;
-  text-align: right;
+.garment-preview__authentic {
+  margin: 0 0 8px;
+  color: var(--app-success);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
-.garment-facts__color {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 8px;
+.garment-facts__code {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+}
+
+.garment-facts__status {
+  color: var(--app-text-muted);
+}
+
+.garment-facts__status--registered {
+  color: var(--app-success);
+}
+
+.garment-facts__status--expired {
+  color: var(--app-danger);
 }
 
 .garment-facts__swatch {
-  width: 18px;
-  height: 18px;
+  width: 14px;
+  height: 14px;
   flex-shrink: 0;
-  border-radius: 50%;
   border: 1px solid var(--app-shirt-outline);
+  border-radius: 50%;
 }

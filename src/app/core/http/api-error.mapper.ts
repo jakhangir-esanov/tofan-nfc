@@ -1,5 +1,5 @@
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
-import { SessionExpiredError } from '@core/auth/session-expired.error';
+import { SessionExpiredError } from '@core/auth/errors/session-expired.error';
 import { AccessDeniedError } from '@shared/models/errors/access-denied.error';
 import { BusinessRuleError } from '@shared/models/errors/business-rule.error';
 import { ConflictError } from '@shared/models/errors/conflict.error';

@@ -1,13 +1,19 @@
-import { toGarment } from '@shared/models/garment.mapper';
+import { ImageUrlOf, toGarment } from '@shared/garment/garment.mapper';
+import { GarmentRegistration } from '@shared/garment/garment-registration';
 import { enumMap } from '@shared/utils/enum-map';
 import { GarmentScan, InvalidReason, ScanState } from '../models/garment-scan';
 import { ScanContractError } from '../models/scan-contract.error';
-import { GarmentInvalidReasonDto, GarmentScanDto, GarmentScanStateDto } from './garment-scan.dto';
+import {
+  GarmentInvalidReasonDto,
+  GarmentRegistrationDto,
+  GarmentScanDto,
+  GarmentScanStateDto,
+} from './garment-scan.dto';
 
 const scanStateMap = enumMap<ScanState, GarmentScanStateDto>(GarmentScanStateDto);
 const invalidReasonMap = enumMap<InvalidReason, GarmentInvalidReasonDto>(GarmentInvalidReasonDto);
 
-export function toGarmentScan(dto: GarmentScanDto): GarmentScan {
+export function toGarmentScan(dto: GarmentScanDto, imageUrlOf: ImageUrlOf): GarmentScan {
   const state = toScanState(dto.state);
   if (state === 'invalid') {
     return { state, reason: toInvalidReason(dto.reason) };
@@ -17,7 +23,23 @@ export function toGarmentScan(dto: GarmentScanDto): GarmentScan {
     throw new ScanContractError(`The scan response for '${state}' is missing the garment.`);
   }
 
-  return { state, garment: toGarment(dto.garment) };
+  return {
+    state,
+    garment: toGarment(dto.garment, imageUrlOf),
+    registration: toRegistration(dto.registration ?? null),
+  };
+}
+
+function toRegistration(dto: GarmentRegistrationDto | null): GarmentRegistration | null {
+  if (dto === null) {
+    return null;
+  }
+  return {
+    username: dto.username ?? null,
+    registeredAt: new Date(dto.registeredAt),
+    expiresAt: new Date(dto.expiresAt),
+    isExpired: dto.isExpired,
+  };
 }
 
 function toScanState(value: GarmentScanStateDto): ScanState {

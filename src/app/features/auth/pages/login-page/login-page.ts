@@ -4,7 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import { ButtonModule } from '@openng/optimus-ui/button';
 import { InputTextModule } from '@openng/optimus-ui/inputtext';
 import { AppPaths } from '@core/config/app-paths';
-import { safeReturnUrl } from '@core/auth/return-url';
+import { safeReturnUrl } from '@core/auth/models/return-url';
 import { PasswordInput } from '@shared/components/password-input/password-input';
 import { AuthFormStore } from '../../auth-form.store';
 import { MINIMUM_PASSWORD_LENGTH } from '../../models/credentials-rules';

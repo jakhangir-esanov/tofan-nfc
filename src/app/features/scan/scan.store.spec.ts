@@ -7,7 +7,11 @@ import { GarmentScan } from './models/garment-scan';
 
 const garment = {
   serialNumber: '01K7X8M4Q9F2A6BC3DEFGHJKMN',
-  model: 'Peaktofan Classic',
+  dropName: 'Drop 1',
+  editionNumber: 349,
+  dropTotalQuantity: 500,
+  variantName: 'Peaktofan Classic',
+  imageUrl: null,
   color: 'Qora',
   size: 'L',
   material: '95% paxta',
@@ -25,7 +29,7 @@ function createStore(service: Partial<GarmentsService>): ScanStore {
 
 describe('ScanStore', () => {
   it('should expose the state the server returned when the scan succeeds', async () => {
-    const scan: GarmentScan = { state: 'foreign', garment };
+    const scan: GarmentScan = { state: 'foreign', garment, registration: null };
     const store = createStore({ scan: () => Promise.resolve(scan) });
 
     await store.load('token-1');
@@ -38,7 +42,7 @@ describe('ScanStore', () => {
   it('should refuse to claim when the server did not say the garment is claimable', async () => {
     const claim = vi.fn();
     const store = createStore({
-      scan: () => Promise.resolve({ state: 'foreign', garment }),
+      scan: () => Promise.resolve({ state: 'foreign', garment, registration: null }),
       claim,
     });
 
@@ -71,7 +75,9 @@ describe('ScanStore', () => {
   });
 
   it('should hold no invalid reason when the scan resolved to a garment', async () => {
-    const store = createStore({ scan: () => Promise.resolve({ state: 'foreign', garment }) });
+    const store = createStore({
+      scan: () => Promise.resolve({ state: 'foreign', garment, registration: null }),
+    });
 
     await store.load('token-1');
 
@@ -91,7 +97,7 @@ describe('ScanStore', () => {
   });
 
   it('should reload the scan from the server when a claim fails', async () => {
-    const scan = vi.fn().mockResolvedValue({ state: 'foreign', garment });
+    const scan = vi.fn().mockResolvedValue({ state: 'foreign', garment, registration: null });
     const claim = vi.fn().mockRejectedValue(new NotFoundError('taken', 'Garment.AlreadyClaimed'));
     const store = createStore({ scan, claim });
 
@@ -105,8 +111,8 @@ describe('ScanStore', () => {
 
   it('should expose the state returned by the claim when it succeeds', async () => {
     const store = createStore({
-      scan: () => Promise.resolve({ state: 'claimable', garment }),
-      claim: () => Promise.resolve({ state: 'owned', garment }),
+      scan: () => Promise.resolve({ state: 'claimable', garment, registration: null }),
+      claim: () => Promise.resolve({ state: 'owned', garment, registration: null }),
     });
 
     const claimed = await store.claim('token-1');

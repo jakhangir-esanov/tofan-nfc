@@ -18,11 +18,12 @@ Every screen in this app is a rendering of one server-owned state.
 | `claimable` | signed in, shirt not activated yet     | Activation confirm              | none                     |
 | `owned`     | the owner                              | Passport                        | owner's own              |
 | `expired`   | the owner, validity ran out            | Locked passport + renew         | owner's own              |
-| `foreign`   | anyone else, shirt already activated   | Authenticity                    | **none**                 |
+| `foreign`   | anyone else, shirt already activated   | Authenticity                    | public registration only |
 | `invalid`   | unknown, revoked or hidden token       | Invalid chip                    | none                     |
 
-`foreign` is the security-critical one: the response contains the shirt's public product data and
-nothing about its owner. Not hidden — absent.
+`foreign` is the security-critical one: the response contains the shirt's public product data and the
+public registration (`@username`, registration date, validity). Everything else about the owner is not
+hidden — absent.
 
 ## 3. Routes
 
@@ -76,32 +77,50 @@ other owner's name.
 
 ### 4.3 Passport — `/t/:token/passport`
 
-The centrepiece. A real passport booklet, swipe or tap to turn. Today it has two pages, cover and
-data page; the stamps page returns with Gamification (see below).
+The centrepiece, redesigned 2026-10-12 after the product owner's prototype. The passport opens closed:
+a cover that the owner taps to open. Behind it are three sections, switched by a bar pinned to the
+bottom of the screen: **Pasport**, **Futbolka**, **Profil**. The bar appears once the cover is open.
 
-**Cover.** Dark textured field, embossed Peaktofan emblem, the words "RAQAMLI PASPORT", the serial
-number in the bottom corner, the owner's name below the emblem. Tapping it opens the booklet.
+**Cover** (`features/passport/components/passport-book`). Dark textured field, the Peaktofan emblem, the words
+"RAQAMLI PASPORT", the owner's name, the serial number, "Muddati tugagan" when the server marked the
+passport expired, and the hint "Ochish uchun bosing". It swings open like a book cover; with reduced
+motion it simply disappears. It closes again on every visit.
 
-**Page 1 — data page.** Laid out like the photo page of a real passport: the shirt photo on the left in
-a portrait frame, a two-column field list on the right — model, colour, size, material, manufactured
-date, serial number, owner, activation date, valid until. A machine-readable strip along the
-bottom edge as a visual motif (decorative, no real data in it). A field the admin left empty (colour,
-size, material) is left out rather than shown blank; an owner without a profile has no owner row.
+**Pasport — the ID card** (`features/passport/components/passport-card`). The shirt photo (the variant
+image, or the drawn shirt when there is none or it fails to load) with the model, "Drop 1 · 349 / 500",
+the serial along the edge and a holographic seal. Below it a two-column grid: owner, colour, size,
+material, manufactured date, activation date, valid until, and — only when the passport carries
+`standing` — the leaderboard rank (`#12`, or "Hali hisoblanmagan"), lifetime DP and the level name in
+the page language. Then the serial number and a machine-readable strip built from the owner's name and
+the serial (decorative). A field the admin left empty is left out rather than shown blank; an owner
+without a profile has no owner row. With no `standing` there is no rating anywhere — a rating of `0`
+would tell the owner something false.
 
-**Page 2 — stamps (phase 3, not rendered today).** A grid of stamps positioned at slight random
-angles like real visa stamps, each with its icon, title and date. The backend sends neither stamps nor
-a rating yet, because nothing awards them; an empty stamps page or a rating of `0` would tell the owner
-something false, so neither the page nor the rating field exists until Gamification does.
+**Futbolka** (`passport-shirt`). The shared shirt card plus the validity: the period, a progress bar
+and "N kun qoldi". The days are `expiresAt` minus the device date and are display only; "Muddati
+tugagan" is shown only when the server says `isExpired`.
 
-**Locked variant (`expired`).** The booklet renders with the cover and the data page visible but
-greyed, a band across it, and a single action: **Muddatni uzaytirish**. Once stamps exist they are
+**Profil** (`passport-profile`). The owner's name, the account name, the language switcher and
+"Chiqish".
+
+There is deliberately no section that shares the shirt's link (no QR code, no copy, no share sheet):
+the token stays in the URL and the API call (`.claude/rules/nfc-security.md`).
+
+**Stamps (phase 3, not rendered today).** A grid of stamps positioned at slight random angles like
+real visa stamps, each with its icon, title and date. The backend sends no stamps yet, because nothing
+awards them, so the page does not exist.
+
+**Locked variant (`expired`).** The cover says "Muddati tugagan" and the ID card is greyed. The renew
+action (**Muddatni uzaytirish**) is not built yet. Once stamps exist they are
 absent from an expired payload, not merely covered.
 
 ### 4.4 Authenticity — `/t/:token/verify`
 
-What a stranger sees. The Peaktofan mark, a verified badge, the product data (model, material,
-manufactured date) and one line: this is a genuine Peaktofan shirt and it is already activated.
-A link to the shop. Nothing about the owner. No login prompt — this person is not the customer.
+What a stranger sees. The shirt card (`shared/components/garment-preview`, the same card the scan and
+activation screens use): product image, product name, size, colour, drop and the number in it, the
+unique ID (serial number), the "verified TOFAN original" mark and the status, and — since 2026-10-11 —
+the owner's `@username`, the registration date and the validity. Nothing else about the owner: no real
+name, phone, email, rating or stamps. No login prompt — this person is not the customer.
 
 ### 4.5 Register — `/auth/register`
 
@@ -124,20 +143,24 @@ too many attempts (429). Each ends with a way out: shop link or support contact.
 
 ## 5. Visual design
 
-- **Mobile first, always.** Single column, full-bleed, safe-area insets, `max-width: 480px` centred on
+- **Mobile first, always.** Single column, full-bleed, safe-area insets, `max-width: 440px` centred on
   desktop. No sidebar, no topbar shell, no data table anywhere in this app.
-- **Dark and premium.** The passport metaphor wants depth: dark background, warm metallic accent for
-  the emblem and the rating. Every booklet page, the data page too, sits on the same dark surface as
-the rest of the site (the cream paper page was dropped on 2026-09-23). Colours come from the Optimus UI theme preset
-  in `core/config/ui.providers.ts` — the Peaktofan brand tokens. No hex values in components.
-- **The shirt is the hero.** It is drawn inline (no photo) in the shirt's own colour, at a fixed aspect
-  ratio, so the layout never jumps.
-- **Motion with restraint.** Page turn is a CSS 3D transform on the booklet container; cover open is a
-  scale-and-lift; stamp award is a press-and-settle. All of it degrades to a cross-fade under
+- **Dark and premium, with a light twin.** The passport metaphor wants depth: near-black background,
+  warm gold accent, thin uppercase headings. Dark is the default; the header has a switch to a cream
+  light theme (`core/layout/theme.store.ts`), remembered per device in `localStorage` (key `peaktofan.theme`, a
+  preference only, never the token). Colours live as `--app-*` tokens in `src/styles/styles.css` (light
+  on `:root`, dark on `:root.app-dark`) and in the Optimus UI preset (`core/config/peaktofan.preset.ts`).
+  No hex values in components.
+- **Type.** Raleway for text and IBM Plex Mono for serials, both served from `public/fonts` (latin and
+  cyrillic subsets). No font is loaded from a third party.
+- **The shirt is the hero.** It shows the variant image from the backend (`imageUrl`, one image per
+  colour and style of a drop). Shirts without one ("Drop 0", made before drops existed) are drawn
+  inline in the shirt's own colour. Both sit in the same fixed-aspect frame, so the layout never jumps.
+- **Motion with restraint.** The cover opens with a CSS 3D transform on the booklet container; stamp award is a press-and-settle. All of it degrades to a cross-fade under
   `prefers-reduced-motion`, and none of it blocks interaction.
 - **One primary action per screen**, in a sticky bottom bar within thumb reach.
 - **Three states on every screen**: branded loading, inline error with retry, empty.
-- **No new dependency** for the booklet: a `shared/components/passport-book` built from CSS transforms
+- **No new dependency** for the booklet: a `features/passport/components/passport-book` built from CSS transforms
   and `@angular/cdk` swipe.
 
 ## 5.1 Control notes
@@ -155,11 +178,11 @@ Shared (`shared/components/`):
 | Component        | Purpose                                                             |
 | ---------------- | ------------------------------------------------------------------- |
 | `state-screen`   | Branded loading / error+retry / empty frame used by every page       |
-| `passport-book`  | Booklet container: page turn, swipe, reduced-motion fallback         |
 | `garment-preview`| Shirt photo plus product fields, used by activation and authenticity |
 | `password-input` | FormValueControl wrapper over Optimus p-password for Signal Forms    |
 
-Feature-only: `passport-cover`, `passport-data-page`, `passport-stamps-page`, `stamp-card`
+Feature-only: `passport-book` (booklet container: page turn, swipe, reduced-motion fallback),
+`passport-cover`, `passport-data-page`, `passport-stamps-page`, `stamp-card`
 (in `features/passport/components/`), `register-form`, `login-form` (in `features/auth/components/`).
 
 ## 7. Languages
@@ -174,8 +197,8 @@ on the same shirt.
 These do not block phase 1, but each one changes a screen later:
 
 1. Renewal price and period — decides the copy and layout of the locked passport.
-2. How rating is computed, and whether it is per account or per shirt — decides where it sits in the
-   booklet.
+2. Rating: answered on 2026-10-11 — the account's global leaderboard rank by lifetime DP, on its own
+   booklet page, in the passport only (never on the public scan).
 3. Does a resold shirt transfer to a new owner? If yes, activation needs a release flow and the
    passport needs an ownership history page.
 4. Should an expired passport be fully hidden or shown locked? This doc assumes **locked**, because a

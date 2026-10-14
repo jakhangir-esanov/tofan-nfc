@@ -106,6 +106,10 @@
             },
             "development": {
               "buildTarget": "tofan-nfc:build:development"
+            },
+            "remote": {
+              "buildTarget": "tofan-nfc:build:development",
+              "proxyConfig": "proxy.dev.conf.json"
             }
           },
           "defaultConfiguration": "development"

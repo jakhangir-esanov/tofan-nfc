@@ -3,20 +3,20 @@
     @case ('unclaimed') {
       @if (store.garment(); as garment) {
         <section class="scan">
-          <h1 class="scan__title" i18n="@@scan.unclaimed.title">
+          <app-garment-preview [garment]="garment" />
+          <h1 class="app-heading" i18n="@@scan.unclaimed.title">
             Futbolkangiz aktivatsiya kutmoqda
           </h1>
-          <p class="scan__lead app-muted" i18n="@@scan.unclaimed.lead">
+          <p class="app-lead" i18n="@@scan.unclaimed.lead">
             Ro'yxatdan o'ting va bu futbolkaning raqamli pasportini oching.
           </p>
-          <app-garment-preview [garment]="garment" />
         </section>
 
         <div class="app-action-bar">
           <a
             [routerLink]="registerUrl()"
             [queryParams]="{ returnUrl: returnUrl() }"
-            class="scan__primary app-tap-target"
+            class="app-button app-button--primary"
             i18n="@@scan.unclaimed.register"
           >
             Ro'yxatdan o'tish
@@ -24,7 +24,7 @@
           <a
             [routerLink]="loginUrl()"
             [queryParams]="{ returnUrl: returnUrl() }"
-            class="scan__secondary app-tap-target"
+            class="app-button app-button--ghost"
             i18n="@@scan.unclaimed.login"
           >
             Akkauntim bor

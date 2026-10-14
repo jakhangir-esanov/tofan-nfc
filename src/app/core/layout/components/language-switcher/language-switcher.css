@@ -1,0 +1,78 @@
+:host {
+  position: relative;
+  display: inline-flex;
+}
+
+.language-switcher__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--app-text-muted);
+  font: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.language-switcher__toggle .pi {
+  font-size: 16px;
+}
+
+.language-switcher__toggle:hover,
+.language-switcher__toggle[aria-expanded='true'] {
+  color: var(--app-text);
+}
+
+.language-switcher__menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 20;
+  min-width: 168px;
+  margin: 0;
+  padding: 6px;
+  border: 1px solid var(--app-accent-line);
+  border-radius: var(--app-radius-control);
+  background: var(--app-surface);
+  box-shadow: 0 18px 40px -16px var(--app-shadow);
+  list-style: none;
+}
+
+.language-switcher__option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--app-text);
+  font: inherit;
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.language-switcher__option:hover {
+  background: var(--app-glow);
+}
+
+.language-switcher__option[aria-checked='true'] {
+  color: var(--app-accent-strong);
+}
+
+.language-switcher__code {
+  width: 22px;
+  color: var(--app-text-muted);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}

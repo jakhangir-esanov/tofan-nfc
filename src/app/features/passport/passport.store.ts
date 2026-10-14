@@ -1,6 +1,6 @@
 import { Injectable, LOCALE_ID, computed, inject, signal } from '@angular/core';
 import { toErrorMessage } from '@core/feedback/error-message';
-import { toAppLocale } from '@core/layout/language/app-locale';
+import { toAppLocale } from '@core/layout/models/app-locale';
 import { Passport } from './models/passport';
 import { needsRescan } from './models/rescan-rule';
 import { PassportService } from './services/passport.service';

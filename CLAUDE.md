@@ -1,4 +1,8 @@
-# CLAUDE.md — Peaktofan NFC (Angular)
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+# Peaktofan NFC (Angular)
 
 Strict, repository-aware rules for Claude Code. If a request conflicts with this file, follow this file.
 If a request is ambiguous, choose the option that keeps the structure below simple and consistent.
@@ -35,9 +39,15 @@ Stack:
 
 ```bash
 npm start             # ng serve, /api is proxied to the backend (proxy.conf.json), uz only
+npm run start:dev     # ng serve against the remote dev backend (proxy.dev.conf.json), uz only
 npm run serve:ssr     # every locale on :4200 like production (ssr.env, src/api-proxy.ts)
+npm run serve:ssr:dev # same, against the remote dev backend (ssr.dev.env)
 npm run build         # ng build (must pass before finishing a task)
 npm test              # ng test (Vitest)
+npx ng test --include='**/scan.store.spec.ts'   # single spec file
+npm run lint:comments # comment ban only (scripts/check-no-comments.mjs)
+npm run lint:boundaries # Sheriff only
+npm run format        # Prettier over src/
 npm run lint          # ng lint + lint:comments + lint:boundaries (must pass before finishing a task)
 npm run i18n:extract  # ng extract-i18n into src/locale/messages.xlf
 ```
@@ -54,21 +64,26 @@ no DI composition folder). It is a small UI project; keep it flat and readable.
 ```text
 src/app/
   core/                    # app-wide singletons, loaded once, never feature-specific
-    auth/                  # AuthStore, AuthService, session storage, guards, auth interceptors
+    auth/                  # auth.store.ts plus guards/, interceptors/, storage/, models/, errors/,
+                           # services/ (AuthService, DTO, mapper)
     http/                  # ApiClient (HttpClient), API_BASE_URL, Result envelope, error mapping
-    layout/                # mobile shell: brand header, language switcher, safe-area container
+    layout/                # mobile shell: components/ (app-shell, language-switcher, theme-switcher),
+                           # models/ (app-locale, app-theme), theme.store.ts
     config/                # app paths, title strategy, UI providers
     feedback/              # toast, error message text
   features/                # one folder per screen group, lazy loaded
+    home/                  # / — the landing screen without a token
     scan/                  # /t/:token — resolve, activate, verify
     auth/                  # login, register
     passport/              # the passport booklet
     not-found/
-  shared/                  # business-agnostic, reusable in any feature
+  shared/                  # reusable in any feature
     components/            # dumb reusable components (wrappers over Optimus UI)
+    garment/               # the Garment model, DTO and mapper, read by scan and passport
     models/ | utils/ | directives/ | pipes/
   routes/
     app.routes.ts          # top-level routes, loadChildren per feature
+    app.routes.server.ts   # SSR render modes
   app.config.ts
   app.ts                   # root component (Angular 22 naming, no .component suffix)
 ```
@@ -98,15 +113,16 @@ components in `pages/` and has its own `<feature>.routes.ts`; `routes/app.routes
 | Need                    | Location                            | File name                  |
 | ----------------------- | ----------------------------------- | -------------------------- |
 | Model / entity          | `features/<x>/models/`              | `garment-scan.ts`          |
-| Pure rule, draft, labels| `features/<x>/models/`              | `scan-state.ts`            |
+| Pure rule, draft, labels| `features/<x>/models/`              | `scan-route.ts`            |
 | Backend DTO             | `features/<x>/services/`            | `garment-scan.dto.ts`      |
 | DTO to model mapping    | `features/<x>/services/`            | `garment-scan.mapper.ts`   |
 | HTTP calls              | `features/<x>/services/`            | `garments.service.ts`      |
 | Screen state            | `features/<x>/`                     | `scan.store.ts`            |
 | Routed screen           | `features/<x>/pages/<name>-page/`   | `scan-page.ts`             |
-| Feature-only component  | `features/<x>/components/<name>/`   | `garment-preview.ts`       |
-| Reusable component      | `shared/components/<name>/`         | `passport-book.ts`         |
-| Route guard             | `core/auth/`                        | `auth.guard.ts`            |
+| Feature-only component  | `features/<x>/components/<name>/`   | `passport-book.ts`         |
+| Reusable component      | `shared/components/<name>/`         | `garment-preview.ts`       |
+| Route guard             | `core/auth/guards/`                 | `auth.guard.ts`            |
+| Shared by two features  | `shared/<area>/`                    | `shared/garment/garment.ts`|
 
 Angular 22 file naming: no `.component` suffix (`garment-preview.ts`, class `GarmentPreview`).
 Stores `.store.ts`, services `.service.ts`, DTOs `.dto.ts`, mappers `.mapper.ts`, routes `.routes.ts`.
@@ -194,8 +210,9 @@ holds Keycloak secrets.
   replay it. It proves nothing about identity.
 - The **server** decides the scan state (`unclaimed`, `claimable`, `owned`, `foreign`, `expired`,
   `invalid`). The frontend renders what it is told and never infers a state from a 403 or from local data.
-- A non-owner scan shows authenticity only. Owner name, activation date, stamps and rating are never in
-  that response — not hidden by CSS, not present in the payload.
+- A non-owner scan shows authenticity plus the public registration (decided 2026-10-12): the owner's
+  `@username`, the registration date and the validity. Real name, phone, email, stamps and rating are
+  never in that response — not hidden by CSS, not present in the payload.
 - Never put a token in a log, an analytics event, an error report or a query string sent to a third party.
 - Expiry, ownership and claim limits are enforced server-side. Hiding a button is UX, not security.
 
@@ -234,8 +251,8 @@ holds Keycloak secrets.
 - Components: test inputs to rendered output and outputs emitted.
 - Store tests mock the feature service, never `HttpClient`.
 - **Mandatory security tests**: an unauthenticated scan of a claimed shirt renders the authenticity
-  screen and no passport data; a `foreign` state never renders owner information; an expired passport
-  renders locked. See `.claude/rules/testing.md`.
+  screen and no passport data; a `foreign` state renders the `@username`, registration date and validity
+  and nothing else about the owner (no real name, rating or stamps); an expired passport renders locked. See `.claude/rules/testing.md`.
 - Test file sits next to the file: `garment-scan.mapper.spec.ts`. Names: `should <result> when <condition>`.
 
 ## 14. How to work on a request
@@ -261,7 +278,8 @@ Then:
 - Clean Architecture layer folders (`domain/`, `application/`, `infrastructure/`, `presentation/`,
   `data-access/`), repository abstractions, use-case classes, DI composition folders
 - A second authentication system, an SMS/OTP step, or any auth state outside `core/auth`
-- Deciding ownership, validity or expiry on the frontend
+- Deciding ownership, validity or expiry on the frontend. Showing "N days left" computed from the
+  server's `expiresAt` is display only; whether a passport is expired always comes from the server
 - Putting the NFC token anywhere outside the URL and the API call (no logs, no analytics, no storage)
 - OpenAPI code generators and generated clients
 - Mock backends or fake services; the app talks to the real backend

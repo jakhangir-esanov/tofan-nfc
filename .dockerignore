@@ -10,3 +10,4 @@ Dockerfile
 .dockerignore
 ssr.env
 *.md
+ssr.dev.env

@@ -34,11 +34,11 @@ features/scan/
   scan.routes.ts
 ```
 
-The `Garment` model, DTO and mapper live in `shared/models/` because `passport` reads them too.
+The `Garment` model, DTO and mapper live in `shared/garment/` because `passport` reads them too.
 There is no shirt photo. `GarmentPreview` draws the shirt with `shared/components/garment-shirt` (an
 inline SVG without the emblem) and paints it with `Garment.shade`: the `#RRGGBB` code the admin panel
 saved, a theme shade for an older colour word (`knownColor`, `black` or `blue`), or
-`--app-shirt-neutral` for anything else (`garmentShadeOf` in `shared/models/garment-color.ts`). The
+`--app-shirt-neutral` for anything else (`garmentShadeOf` in `shared/garment/garment-color.ts`). The
 colour row shows a swatch; an older word is also named in the page language.
 
 ## State

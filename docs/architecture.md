@@ -62,7 +62,7 @@ compile-time checked and there is no dictionary shipped to the client.
 ### The garment shape lives in `shared/`
 
 `Garment` is read by both `scan` and `passport`, and features may not import each other. Its model, DTO
-and mapper therefore live in `shared/models/` (`garment.ts`, `garment.dto.ts`, `garment.mapper.ts`)
+and mapper therefore live in `shared/garment/` (`garment.ts`, `garment.dto.ts`, `garment.mapper.ts`)
 rather than in one feature's `services/`. Everything that belongs to a single feature — the scan state
 union, the passport and its stamps — stays inside that feature.
 

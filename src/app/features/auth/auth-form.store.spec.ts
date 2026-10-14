@@ -2,9 +2,9 @@ import { TestBed } from '@angular/core/testing';
 import { signal } from '@angular/core';
 import { describe, expect, it, vi } from 'vitest';
 import { AuthStore } from '@core/auth/auth.store';
-import { Registration } from '@core/auth/registration';
+import { Registration } from '@core/auth/models/registration';
 import { NotificationService } from '@core/feedback/notification.service';
-import { InvalidCredentialsError } from '@core/auth/invalid-credentials.error';
+import { InvalidCredentialsError } from '@core/auth/errors/invalid-credentials.error';
 import { AuthFormStore } from './auth-form.store';
 
 const registration: Registration = {

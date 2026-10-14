@@ -1,48 +1,36 @@
 <app-state-screen [loading]="store.loading()" [error]="store.loadError()" (retry)="load()">
   @if (store.passport(); as passport) {
-    <app-passport-book [pageLabels]="pageLabels">
-      <section class="passport-page passport-page--cover">
-        <app-logo class="cover__emblem" />
-        <h1 class="cover__title" i18n="@@passport.cover.title">RAQAMLI PASPORT</h1>
-        <p class="cover__holder">{{ holder() }}</p>
-        <p class="cover__serial">{{ passport.garment.serialNumber }}</p>
-        @if (store.locked()) {
-          <p class="cover__locked" i18n="@@passport.locked">Muddati tugagan</p>
-        }
-      </section>
+    @switch (tab()) {
+      @case ('card') {
+        <app-passport-book [(opened)]="opened">
+          <ng-container bookCover>
+            <span class="cover__brand" i18n="@@layout.brand">PEAKTOFAN</span>
+            <span class="cover__middle">
+              <app-logo class="cover__emblem" />
+              <h1 class="cover__title" i18n="@@passport.cover.title">RAQAMLI PASPORT</h1>
+              @if (holder()) {
+                <span class="cover__holder">{{ holder() }}</span>
+              }
+              @if (store.locked()) {
+                <span class="cover__locked" i18n="@@passport.locked">Muddati tugagan</span>
+              }
+            </span>
+            <span class="cover__serial app-mono">{{ passport.garment.serialNumber }}</span>
+          </ng-container>
 
-      <section class="passport-page passport-page--paper">
-        <dl class="data-page">
-          @if (holder()) {
-            <div class="data-page__row">
-              <dt i18n="@@passport.field.holder">Egasi</dt>
-              <dd>{{ holder() }}</dd>
-            </div>
-          }
-          <div class="data-page__row">
-            <dt i18n="@@passport.field.model">Model</dt>
-            <dd>{{ passport.garment.model }}</dd>
-          </div>
-          <div class="data-page__row">
-            <dt i18n="@@passport.field.serial">Seriya raqami</dt>
-            <dd>{{ passport.garment.serialNumber }}</dd>
-          </div>
-          @if (passport.garment.material) {
-            <div class="data-page__row">
-              <dt i18n="@@passport.field.material">Material</dt>
-              <dd>{{ passport.garment.material }}</dd>
-            </div>
-          }
-          <div class="data-page__row">
-            <dt i18n="@@passport.field.activatedAt">Aktivatsiya</dt>
-            <dd>{{ passport.activatedAt | date: 'dd.MM.yyyy' }}</dd>
-          </div>
-          <div class="data-page__row">
-            <dt i18n="@@passport.field.expiresAt">Amal qilish muddati</dt>
-            <dd>{{ passport.expiresAt | date: 'dd.MM.yyyy' }}</dd>
-          </div>
-        </dl>
-      </section>
-    </app-passport-book>
+          <app-passport-card [passport]="passport" [level]="level()" />
+        </app-passport-book>
+      }
+      @case ('shirt') {
+        <app-passport-shirt [passport]="passport" [now]="openedAt" />
+      }
+      @case ('profile') {
+        <app-passport-profile [holder]="holder()" />
+      }
+    }
+
+    @if (opened()) {
+      <app-passport-tabs [options]="tabOptions" [(active)]="tab" />
+    }
   }
 </app-state-screen>

@@ -4,22 +4,54 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 12px;
   text-align: center;
 }
 
+.home__signal {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 220px;
+  height: 220px;
+}
+
 .home__mark {
-  height: 72px;
-  margin-bottom: 8px;
+  height: 134px;
+}
+
+.home__wave {
+  position: absolute;
+  inset: 34px;
+  border: 1px solid var(--app-accent-line);
+  border-radius: 50%;
+  animation: home-wave 2.6s ease-in-out infinite;
+}
+
+.home__wave--wide {
+  inset: 0;
+  animation-delay: 0.5s;
 }
 
 .home__title {
-  margin: 0;
-  font-size: 22px;
-  font-weight: 700;
+  margin-top: 18px;
 }
 
 .home__lead {
-  margin: 0;
-  font-size: 15px;
+  margin-bottom: 0;
+}
+
+@keyframes home-wave {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 0.9;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home__wave {
+    animation: none;
+  }
 }

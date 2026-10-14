@@ -1,0 +1,23 @@
+<section class="profile">
+  <header class="profile__head">
+    <span class="profile__avatar" aria-hidden="true">{{ initial() }}</span>
+    <h2 class="profile__name">{{ name() }}</h2>
+    @if (username() && username() !== name()) {
+      <p class="profile__username">{{ username() }}</p>
+    }
+  </header>
+
+  <div class="profile__row">
+    <span class="app-caption" i18n="@@profile.language">Til</span>
+    <app-language-switcher />
+  </div>
+
+  <button
+    type="button"
+    class="app-button app-button--ghost"
+    i18n="@@profile.signOut"
+    (click)="signOut()"
+  >
+    Chiqish
+  </button>
+</section>

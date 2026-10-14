@@ -24,7 +24,8 @@ These are not optional; a review rejects a change that lands without them.
 
 **Security**
 
-- `foreign`: the rendered DOM contains no owner name, no activation date, no stamp and no rating.
+- `foreign`: the rendered DOM contains the `@username`, registration date and validity, and no real
+  name, no stamp and no rating.
   Assert on the text content, not on a CSS class — hiding with CSS is not passing.
 - Anonymous scan of a claimed shirt: renders the authenticity screen, and the passport service is
   never called.

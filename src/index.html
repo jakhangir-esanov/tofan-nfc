@@ -6,9 +6,19 @@
     <base href="/" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="referrer" content="no-referrer" />
-    <meta name="color-scheme" content="dark" />
-    <meta name="theme-color" content="#0b0c0f" />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="theme-color" content="#07080b" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="preload" href="/fonts/raleway-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <script>
+      try {
+        if (localStorage.getItem('peaktofan.theme') === 'light') {
+          document.documentElement.classList.remove('app-dark');
+        }
+      } catch (unavailable) {
+        document.documentElement.classList.add('app-dark');
+      }
+    </script>
   </head>
   <body>
     <app-root></app-root>

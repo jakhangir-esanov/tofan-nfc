@@ -7,7 +7,11 @@ import { ScanPage } from './scan-page';
 
 const garment = {
   serialNumber: '01K7X8M4Q9F2A6BC3DEFGHJKMN',
-  model: 'Peaktofan Classic',
+  dropName: 'Drop 1',
+  editionNumber: 349,
+  dropTotalQuantity: 500,
+  variantName: 'Peaktofan Classic',
+  imageUrl: null,
   color: 'Qora',
   size: 'L',
   material: '95% paxta',
@@ -21,7 +25,9 @@ async function scanWith(
 ): Promise<{ text: string; navigatedTo: string | null; claimed: boolean }> {
   const scan = vi
     .fn()
-    .mockResolvedValue(state === 'invalid' ? { state, reason: 'unknown' } : { state, garment });
+    .mockResolvedValue(
+      state === 'invalid' ? { state, reason: 'unknown' } : { state, garment, registration: null },
+    );
 
   const claim = vi.fn();
   TestBed.configureTestingModule({

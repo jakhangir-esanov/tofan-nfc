@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { guestGuard } from '@core/auth/guest.guard';
+import { guestGuard } from '@core/auth/guards/guest.guard';
 import { LoginPage } from './pages/login-page/login-page';
 import { RegisterPage } from './pages/register-page/register-page';
 

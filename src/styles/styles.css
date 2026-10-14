@@ -1,30 +1,154 @@
 @import '@openng/icons/openng-icons.css';
 
-:root {
-  --app-shell-max-width: 480px;
-  --app-gutter: 16px;
-  --app-radius: 18px;
+@font-face {
+  font-family: 'Raleway';
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url('/fonts/raleway-latin.woff2') format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
 
-  --app-canvas: #0b0c0f;
-  --app-surface: #14161b;
-  --app-surface-raised: #1c1f26;
-  --app-border: #2a2e37;
-  --app-text: #f2f3f5;
-  --app-text-muted: #9aa0ac;
-  --app-accent: #c8a45c;
-  --app-accent-contrast: #14161b;
+@font-face {
+  font-family: 'Raleway';
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url('/fonts/raleway-cyrillic.woff2') format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/plex-mono-400-latin.woff2') format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/plex-mono-400-cyrillic.woff2') format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/plex-mono-500-latin.woff2') format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/plex-mono-500-cyrillic.woff2') format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+
+:root {
+  --app-shell-max-width: 440px;
+  --app-gutter: 20px;
+  --app-radius: 20px;
+  --app-radius-large: 28px;
+  --app-radius-control: 14px;
+  --app-control-height: 54px;
+
+  --app-font-sans: 'Raleway', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --app-font-mono: 'IBM Plex Mono', ui-monospace, Menlo, Consolas, monospace;
+  --app-logo-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='390 40 500 776'%3E%3Cpath d='M640 42 L675 143 C730 180 790 208 843 230 C800 282 720 318 640 318 C560 318 480 282 437 230 C490 208 550 180 606 143 Z'/%3E%3Cpath d='M395 203 C415 262 500 302 612 348 L640 397 L668 348 C780 302 865 262 885 203 C891 240 891 275 881 297 C852 347 762 377 686 410 L686 670 L640 812 L595 670 L595 410 C518 377 428 347 399 297 C389 275 389 240 395 203 Z'/%3E%3Cpath d='M393 318 C405 352 470 396 557 440 L557 668 L393 492 Z'/%3E%3Cpath d='M887 318 C875 352 810 396 723 440 L723 668 L887 492 Z'/%3E%3C/svg%3E");
+
+  --app-canvas: #eeece7;
+  --app-glow: rgba(143, 111, 47, 0.1);
+  --app-surface: #ffffff;
+  --app-surface-raised: #f6f4ef;
+  --app-inset: #f2f0ea;
+  --app-border: rgba(11, 12, 16, 0.1);
+  --app-text: #0b0c10;
+  --app-text-muted: #666a76;
+  --app-accent: #8f6f2f;
+  --app-accent-strong: #6b4f18;
+  --app-accent-line: rgba(143, 111, 47, 0.4);
+  --app-accent-contrast: #f4efe2;
+  --app-cta-background: #0b0c10;
+  --app-cta-shadow: rgba(11, 12, 16, 0.35);
+  --app-foil-1: #8b8d96;
+  --app-foil-2: #2b2c33;
+  --app-foil-3: #0e0e11;
+  --app-foil-4: #000000;
+  --app-cover-background: radial-gradient(90% 60% at 50% 32%, #ffffff, #dedad1 78%);
+  --app-cover-inner: #f7f5f0;
+  --app-tabbar: rgba(255, 255, 255, 0.88);
+  --app-shadow: rgba(40, 32, 12, 0.28);
+  --app-watermark-opacity: 0.05;
+  --app-danger: #b3402f;
+  --app-success: #2e7d4f;
+
+  --app-photo-base: #0b0c10;
+  --app-photo-ink: #f5f2ea;
+  --app-photo-ink-muted: rgba(245, 242, 234, 0.78);
+  --app-photo-shade: rgba(0, 0, 0, 0.82);
+  --app-photo-veil: rgba(0, 0, 0, 0.12);
+  --app-seal-ink: rgba(10, 10, 14, 0.85);
+  --app-seal-ring: rgba(255, 255, 255, 0.4);
+  --app-seal-foil: conic-gradient(from 210deg, #f6e7b8, #b8c6e8, #e8b8d4, #b8e8d0, #f6e7b8);
+
   --app-shirt-black: #2b2e36;
   --app-shirt-blue: #2f63c4;
   --app-shirt-neutral: #5f6470;
   --app-shirt-outline: #5a5f6b;
   --app-shirt-light: #ffffff;
   --app-shirt-shadow: #000000;
-  --app-danger: #e05a4f;
-  --app-success: #4caf7d;
 
   --app-motion-fast: 180ms;
-  --app-motion-page-turn: 520ms;
-  --app-motion-easing: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --app-motion-page-turn: 1150ms;
+  --app-motion-easing: cubic-bezier(0.22, 0.8, 0.18, 1);
+
+  color-scheme: light;
+}
+
+:root.app-dark {
+  --app-canvas: #07080b;
+  --app-glow: rgba(201, 163, 90, 0.1);
+  --app-surface: #0f1116;
+  --app-surface-raised: #161822;
+  --app-inset: #0a0b0f;
+  --app-border: rgba(255, 255, 255, 0.09);
+  --app-text: #f2f0eb;
+  --app-text-muted: #8d919d;
+  --app-accent: #c9a35a;
+  --app-accent-strong: #ecd9a6;
+  --app-accent-line: rgba(201, 163, 90, 0.3);
+  --app-accent-contrast: #1a1305;
+  --app-cta-background: linear-gradient(180deg, #dcbd7a, #b98f46);
+  --app-cta-shadow: rgba(201, 163, 90, 0.5);
+  --app-foil-1: #fff4cf;
+  --app-foil-2: #e6c987;
+  --app-foil-3: #b28b3f;
+  --app-foil-4: #6d5223;
+  --app-cover-background: radial-gradient(90% 60% at 50% 34%, #1b2136, #0a0c14 72%);
+  --app-cover-inner: #090a0f;
+  --app-tabbar: rgba(15, 17, 22, 0.86);
+  --app-shadow: rgba(0, 0, 0, 0.85);
+  --app-watermark-opacity: 0.04;
+  --app-danger: #e58b7c;
+  --app-success: #8fcaa2;
+
+  color-scheme: dark;
 }
 
 html,
@@ -34,21 +158,44 @@ body {
 
 body {
   margin: 0;
-  background-color: var(--app-canvas);
+  background:
+    radial-gradient(70% 38% at 50% -4%, var(--app-glow), transparent 70%), var(--app-canvas);
+  background-attachment: fixed;
   color: var(--app-text);
-  font-family: var(--p-font-family, 'Inter', system-ui, sans-serif);
+  font-family: var(--app-font-sans);
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.55;
+  font-feature-settings: 'lnum' 1;
   -webkit-font-smoothing: antialiased;
   overscroll-behavior-y: none;
 }
 
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: var(--app-watermark-opacity);
+  background: var(--app-accent);
+  -webkit-mask: var(--app-logo-mask) 50% 58% / min(90vw, 520px) no-repeat;
+  mask: var(--app-logo-mask) 50% 58% / min(90vw, 520px) no-repeat;
+}
+
+:focus-visible {
+  outline: 2px solid var(--app-accent);
+  outline-offset: 3px;
+}
+
 .app-shell {
+  position: relative;
   display: flex;
   flex-direction: column;
   width: 100%;
   max-width: var(--app-shell-max-width);
   min-height: 100dvh;
   margin: 0 auto;
-  padding: env(safe-area-inset-top) var(--app-gutter) env(safe-area-inset-bottom);
+  padding: 0 var(--app-gutter) env(safe-area-inset-bottom);
   box-sizing: border-box;
 }
 
@@ -56,10 +203,10 @@ body {
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
-  padding-block: 12px 24px;
+  padding-block: 4px 24px;
 }
 
-.app-shell__content > * {
+.app-shell__content > :not(router-outlet) {
   display: flex;
   flex: 1 1 auto;
   flex-direction: column;
@@ -70,9 +217,81 @@ body {
   bottom: 0;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding-block: 12px calc(12px + env(safe-area-inset-bottom));
+  gap: 10px;
+  margin-top: auto;
+  padding-block: 16px calc(12px + env(safe-area-inset-bottom));
   background: linear-gradient(to top, var(--app-canvas) 70%, transparent);
+}
+
+.app-heading {
+  margin: 22px 0 12px;
+  font-size: 25px;
+  font-weight: 300;
+  line-height: 1.32;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.app-lead {
+  margin: 0 0 26px;
+  max-width: 36ch;
+  color: var(--app-text-muted);
+  font-size: 14.5px;
+}
+
+.app-caption {
+  color: var(--app-text-muted);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.app-mono {
+  font-family: var(--app-font-mono);
+  font-feature-settings: normal;
+}
+
+.app-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: var(--app-control-height);
+  padding: 0 16px;
+  border: 1px solid transparent;
+  border-radius: var(--app-radius-control);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    transform var(--app-motion-fast) var(--app-motion-easing),
+    border-color var(--app-motion-fast) var(--app-motion-easing);
+}
+
+.app-button:active {
+  transform: scale(0.985);
+}
+
+.app-button--primary {
+  background: var(--app-cta-background);
+  color: var(--app-accent-contrast);
+  box-shadow: 0 12px 28px -14px var(--app-cta-shadow);
+}
+
+.app-button--ghost {
+  background: transparent;
+  border-color: var(--app-border);
+  color: var(--app-text);
+}
+
+.app-button--ghost:hover {
+  border-color: var(--app-accent-line);
 }
 
 .app-surface {
@@ -83,6 +302,55 @@ body {
 
 .app-muted {
   color: var(--app-text-muted);
+}
+
+.app-specs {
+  margin: 0;
+  padding: 0;
+}
+
+.app-spec {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--app-border);
+}
+
+.app-spec dt {
+  color: var(--app-text-muted);
+  font-size: 12.5px;
+  letter-spacing: 0.04em;
+}
+
+.app-spec dd {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+.app-badge {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border: 1px solid var(--app-accent-line);
+  border-radius: 50%;
+  background: var(--app-glow);
+  color: var(--app-accent);
+  font-size: 24px;
+}
+
+.app-badge--danger {
+  border-color: var(--app-danger);
+  color: var(--app-danger);
 }
 
 .p-toast {
@@ -99,25 +367,4 @@ body {
     --app-motion-fast: 1ms;
     --app-motion-page-turn: 1ms;
   }
-}
-
-.passport-page {
-  flex: 0 0 100%;
-  min-width: 100%;
-  box-sizing: border-box;
-  padding: 24px 20px;
-  border-radius: var(--app-radius);
-}
-
-.passport-page--cover {
-  background: radial-gradient(circle at 50% 20%, var(--app-surface-raised), var(--app-canvas));
-  border: 1px solid var(--app-border);
-  min-height: 420px;
-}
-
-.passport-page--paper {
-  background: linear-gradient(180deg, var(--app-surface-raised), var(--app-surface));
-  border: 1px solid var(--app-border);
-  color: var(--app-text);
-  min-height: 420px;
 }

@@ -4,38 +4,30 @@
   flex-direction: column;
 }
 
-.auth__title {
-  margin: 0;
-  font-size: 24px;
-  font-weight: 700;
-}
-
-.auth__lead {
-  margin: 4px 0 24px;
-  font-size: 15px;
-}
-
 .auth__form {
   display: flex;
   flex: 1 1 auto;
   flex-direction: column;
-  gap: 16px;
+  gap: 18px;
 }
 
 .auth__field {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
 }
 
 .auth__label {
-  font-size: 13px;
   color: var(--app-text-muted);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
 }
 
 .auth__error {
-  font-size: 12px;
   color: var(--app-danger);
+  font-size: 12px;
+  font-weight: 600;
 }
 
 .auth__error--summary {
@@ -65,13 +57,13 @@
 
 .auth__choices .auth__label {
   padding: 0;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 
 .auth__choice-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 8px;
+  gap: 10px;
 }
 
 .auth__choice {
@@ -79,11 +71,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  min-height: 50px;
   border: 1px solid var(--app-border);
-  border-radius: var(--app-radius);
+  border-radius: 25px;
   background-color: var(--app-surface);
   color: var(--app-text-muted);
   font-size: 15px;
+  font-weight: 600;
   cursor: pointer;
   transition:
     border-color var(--app-motion-fast) var(--app-motion-easing),
@@ -98,7 +92,8 @@
 
 .auth__choice:has(input:checked) {
   border-color: var(--app-accent);
-  color: var(--app-text);
+  background-color: var(--app-glow);
+  color: var(--app-accent-strong);
 }
 
 .auth__choice:has(input:focus-visible) {

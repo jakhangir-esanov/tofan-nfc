@@ -1,13 +1,13 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppPaths } from '@core/config/app-paths';
-import { AuthService } from './auth.service';
-import { AuthSession } from './auth-session';
-import { AuthSessionStorage } from './auth-session.storage';
-import { Registration } from './registration';
-import { SessionExpiredError } from './session-expired.error';
-import { UserProfile } from './user-profile';
-import { resolveTimeZone } from './time-zone';
+import { AuthService } from './services/auth.service';
+import { AuthSession } from './models/auth-session';
+import { AuthSessionStorage } from './storage/auth-session.storage';
+import { Registration } from './models/registration';
+import { SessionExpiredError } from './errors/session-expired.error';
+import { UserProfile } from './models/user-profile';
+import { resolveTimeZone } from './models/time-zone';
 
 @Injectable({ providedIn: 'root' })
 export class AuthStore {

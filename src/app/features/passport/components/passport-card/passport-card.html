@@ -1,0 +1,104 @@
+@let garment = passport().garment;
+<article class="card" [class.card--locked]="passport().isExpired">
+  <header class="card__top">
+    <span class="card__brand">
+      <app-logo class="card__logo" />
+      <span i18n="@@layout.brand">PEAKTOFAN</span>
+    </span>
+    <span class="card__kind" i18n="@@passport.card.kind">PASPORT</span>
+  </header>
+
+  <div class="card__portrait">
+    <app-garment-photo class="card__photo" [garment]="garment" />
+    <p class="card__meta">
+      <b>{{ garment.variantName }}</b>
+      <span class="app-mono"
+        >{{ garment.dropName }} · {{ garment.editionNumber }} /
+        {{ garment.dropTotalQuantity }}</span
+      >
+    </p>
+    <span class="card__spine app-mono" aria-hidden="true">{{ garment.serialNumber }}</span>
+    <span class="card__seal" aria-hidden="true"><i></i></span>
+  </div>
+
+  <dl class="card__grid">
+    @if (holder()) {
+      <div class="card__cell card__cell--full">
+        <dt class="app-caption" i18n="@@passport.field.holder">Egasi</dt>
+        <dd>{{ holder() }}</dd>
+      </div>
+    }
+    @if (hasColor()) {
+      <div class="card__cell">
+        <dt class="app-caption" i18n="@@garment.color">Rang</dt>
+        <dd>
+          <span
+            class="card__swatch"
+            [style.background-color]="garment.shade"
+            [attr.role]="colorLabel() ? null : 'img'"
+            [attr.aria-label]="colorLabel() ? null : garment.color"
+            [attr.aria-hidden]="colorLabel() ? 'true' : null"
+          ></span>
+          {{ colorLabel() }}
+        </dd>
+      </div>
+    }
+    @if (garment.size) {
+      <div class="card__cell">
+        <dt class="app-caption" i18n="@@garment.size">O'lcham</dt>
+        <dd>{{ garment.size }}</dd>
+      </div>
+    }
+    @if (garment.material) {
+      <div class="card__cell">
+        <dt class="app-caption" i18n="@@passport.field.material">Material</dt>
+        <dd>{{ garment.material }}</dd>
+      </div>
+    }
+    <div class="card__cell">
+      <dt class="app-caption" i18n="@@garment.manufacturedAt">Ishlab chiqarilgan</dt>
+      <dd>{{ garment.manufacturedAt | date: 'dd.MM.yyyy' }}</dd>
+    </div>
+    <div class="card__cell">
+      <dt class="app-caption" i18n="@@passport.field.activatedAt">Aktivatsiya</dt>
+      <dd>{{ passport().activatedAt | date: 'dd.MM.yyyy' }}</dd>
+    </div>
+    <div class="card__cell">
+      <dt class="app-caption" i18n="@@passport.field.expiresAt">Amal qilish muddati</dt>
+      <dd>{{ passport().expiresAt | date: 'dd.MM.yyyy' }}</dd>
+    </div>
+    @if (passport().standing; as standing) {
+      <div class="card__cell">
+        <dt class="app-caption" i18n="@@passport.field.rank">Reyting</dt>
+        <dd>
+          @if (standing.rank !== null) {
+            #{{ standing.rank }}
+          } @else {
+            <ng-container i18n="@@passport.rank.none">Hali hisoblanmagan</ng-container>
+          }
+        </dd>
+      </div>
+      <div class="card__cell">
+        <dt class="app-caption" i18n="@@passport.field.lifetimeDp">DP</dt>
+        <dd>{{ standing.lifetimeDp }}</dd>
+      </div>
+      @if (level(); as name) {
+        <div class="card__cell">
+          <dt class="app-caption" i18n="@@passport.field.level">Daraja</dt>
+          <dd>{{ name }}</dd>
+        </div>
+      }
+    }
+  </dl>
+
+  <p class="card__serial">
+    <small i18n="@@passport.field.serial">Seriya raqami</small>
+    <b class="app-mono">{{ garment.serialNumber }}</b>
+  </p>
+
+  <p class="card__zone app-mono" aria-hidden="true">
+    @for (line of zone(); track $index) {
+      <span>{{ line }}</span>
+    }
+  </p>
+</article>

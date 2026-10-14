@@ -1,0 +1,14 @@
+.theme-switcher {
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--app-text-muted);
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.theme-switcher:hover {
+  color: var(--app-text);
+}

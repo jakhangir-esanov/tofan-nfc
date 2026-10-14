@@ -1,0 +1,19 @@
+<div class="passport-book" [class.passport-book--open]="opened()">
+  <div class="passport-book__pages" [attr.inert]="opened() ? null : ''">
+    <ng-content />
+  </div>
+
+  <div
+    class="passport-book__cover"
+    role="button"
+    [attr.tabindex]="opened() ? -1 : 0"
+    [attr.aria-hidden]="opened() ? 'true' : null"
+    [attr.aria-expanded]="opened()"
+    (click)="open()"
+    (keydown.enter)="open()"
+    (keydown.space)="open()"
+  >
+    <ng-content select="[bookCover]" />
+    <span class="passport-book__hint" i18n="@@passport.cover.open">Ochish uchun bosing</span>
+  </div>
+</div>

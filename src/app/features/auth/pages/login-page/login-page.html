@@ -1,6 +1,6 @@
 <section class="auth">
-  <h1 class="auth__title" i18n="@@auth.login.title">Kirish</h1>
-  <p class="auth__lead app-muted" i18n="@@auth.login.lead">
+  <h1 class="app-heading" i18n="@@auth.login.title">Kirish</h1>
+  <p class="app-lead" i18n="@@auth.login.lead">
     Akkauntingizga kiring va futbolka pasportini oching.
   </p>
 
@@ -30,10 +30,10 @@
     <div class="app-action-bar">
       <p-button
         type="submit"
+        [fluid]="true"
         [loading]="store.submitting()"
         i18n-label="@@auth.login.submit"
         label="Kirish"
-        styleClass="auth__submit"
       />
       <a
         class="auth__link app-tap-target"

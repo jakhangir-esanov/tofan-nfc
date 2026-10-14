@@ -1,0 +1,19 @@
+<app-garment-preview [garment]="passport().garment" [registration]="registration()" />
+
+<section class="validity">
+  <h2 class="validity__title" i18n="@@passport.validity.title">Amal qilish muddati</h2>
+  <p class="validity__period">
+    {{ passport().activatedAt | date: 'dd.MM.yyyy' }} →
+    {{ passport().expiresAt | date: 'dd.MM.yyyy' }}
+  </p>
+  <div class="validity__bar" aria-hidden="true">
+    <i [style.width.%]="barWidth()"></i>
+  </div>
+  @if (passport().isExpired) {
+    <p class="validity__left validity__left--expired" i18n="@@passport.locked">Muddati tugagan</p>
+  } @else {
+    <p class="validity__left" i18n="@@passport.validity.daysLeft">
+      {{ validity().daysLeft }} kun qoldi
+    </p>
+  }
+</section>

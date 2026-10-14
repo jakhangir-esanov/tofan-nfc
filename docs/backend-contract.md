@@ -1,9 +1,10 @@
 # Backend contract
 
 Status: **implemented**. The garment endpoints below ship in the `Garment` module of the `tofan`
-repository (2026-09-22; see `docs/garment-module.md` there). `Shop` and `Gamification` are still empty
-module shells, so the passport carries neither a rating nor stamps. The auth and profile endpoints are
-real and verified against `D:\Projects\tofan`.
+repository (2026-09-22; see `docs/garment-module.md` there). Since 2026-10-11 (branch `garment-drops`,
+`docs/garment-ui-v1.1.md`) every shirt belongs to a numbered drop and a variant with an image, and the
+passport carries the owner's rank, lifetime DP and level. There are still no stamps. The auth and
+profile endpoints are real and verified against `D:\Projects\tofan`.
 
 This file is the single source for DTO shapes in `features/<x>/services/`. When the backend changes,
 compare against the staging Swagger and update here first.
@@ -14,7 +15,7 @@ compare against the staging Swagger and update here first.
   Development uses `/api`, proxied by `proxy.conf.json`.
 - Routes have no `/api` prefix on the backend itself.
 - Auth: `Authorization: Bearer <access_token>` from Keycloak (realm `tofan`), attached by
-  `core/auth/auth-token.interceptor.ts` for `API_BASE_URL` requests only.
+  `core/auth/interceptors/auth-token.interceptor.ts` for `API_BASE_URL` requests only.
 - JSON is camelCase. Enums travel as integers.
 
 ## Success envelope
@@ -86,14 +87,14 @@ line.
 
 ## Existing endpoints (verified)
 
-| Endpoint            | Body                                             | Notes                                   |
-| ------------------- | ------------------------------------------------ | --------------------------------------- |
-| `POST /auth/register` | `username`, `email`, `phoneNumber?`, `password` | Returns tokens in the `Result` envelope |
-| `POST /auth/login`    | `username`, `password`                          | Returns tokens                          |
-| `POST /auth/refresh`  | `refreshToken`                                  |                                         |
-| `POST /auth/logout`   | `refreshToken`, requires Bearer                 |                                         |
-| `POST /profiles`      | `firstName`, `lastName`, `userName`, `dateOfBirth?`, `gender`, `profilePhotoUrl?`, `countryCode`, `timeZone` | Creates the Soldier profile |
-| `GET /profiles`       | —                                               | Current user's profile                  |
+| Endpoint              | Body                                                                                                         | Notes                                   |
+| --------------------- | ------------------------------------------------------------------------------------------------------------ | --------------------------------------- |
+| `POST /auth/register` | `username`, `email`, `phoneNumber?`, `password`                                                              | Returns tokens in the `Result` envelope |
+| `POST /auth/login`    | `username`, `password`                                                                                       | Returns tokens                          |
+| `POST /auth/refresh`  | `refreshToken`                                                                                               |                                         |
+| `POST /auth/logout`   | `refreshToken`, requires Bearer                                                                              |                                         |
+| `POST /profiles`      | `firstName`, `lastName`, `userName`, `dateOfBirth?`, `gender`, `profilePhotoUrl?`, `countryCode`, `timeZone` | Creates the Soldier profile             |
+| `GET /profiles`       | —                                                                                                            | Current user's profile                  |
 
 Token response: `{ accessToken, refreshToken, idToken, tokenType, expiresIn, refreshExpiresIn }`.
 
@@ -120,18 +121,41 @@ Bearer optional. This is the only endpoint that decides what a scan means.
   "state": 3,
   "garment": {
     "serialNumber": "01K7X8M4Q9F2A6BC3DEFGHJKMN",
-    "model": "Peaktofan Classic",
+    "dropName": "Drop 1",
+    "editionNumber": 349,
+    "dropTotalQuantity": 500,
+    "variantName": "Oversize",
     "color": "#1A3C6E",
+    "imageFileId": "6f0c…",
     "size": "L",
     "material": "95% paxta, 5% elastan",
-    "manufacturedAt": "2026-08-14T00:00:00Z"
+    "manufacturedAt": "2026-08-14T00:00:00Z",
   },
-  "reason": null
+  "registration": {
+    "username": "jahongir",
+    "registeredAt": "2026-09-21T10:12:00Z",
+    "expiresAt": "2026-11-21T10:12:00Z",
+    "isExpired": false,
+  },
+  "reason": null,
 }
 ```
 
-**There is no shirt photo.** The backend dropped `photoFileId` on 2026-09-23. The site draws the shirt
-itself (`shared/components/garment-shirt`) and paints it with the shirt's colour.
+**`registration`** (2026-10-11) is present whenever the shirt has an owner, **whoever scans it**, and
+`null` when nobody registered it. `username` is the owner's profile username and is `null` for an
+owner who has not created a profile yet. The page shows it as `@username` with the registration date
+and the validity (`shared/components/garment-preview`). The public status comes from it
+(`shared/garment/garment-registration.ts`): no registration → not registered, `isExpired` → expired,
+otherwise registered. `isExpired` is the server's verdict; never compare `expiresAt` to the device clock.
+
+**`model` is gone** (2026-10-11). A shirt is described by its drop and variant: `dropName` ("Drop 1"),
+`editionNumber` and `dropTotalQuantity` ("349 of 500"; zero-padding such as `0349` is the site's job,
+the backend sends numbers) and `variantName` (the style). Shirts made before drops existed belong to
+"Drop 0", whose variant names are their old model names.
+
+**The image belongs to the variant**, not to the shirt: `imageFileId`, served anonymously at
+`GET /files/{imageFileId}/content`. It is `null` for every "Drop 0" variant, so keep the drawn shirt
+(`shared/components/garment-shirt`, painted with `color`) as the fallback.
 
 `serialNumber` is made by the server: a ULID, 26 characters of Crockford base32 (for example
 `01K7X8M4Q9F2A6BC3DEFGHJKMN`). Older shirts may still carry a `PT-…` serial; the site shows either as
@@ -139,7 +163,7 @@ it is and never checks its shape.
 
 `color` is a `#RRGGBB` code chosen in the admin panel with a colour picker. Older shirts may carry a
 word (`black`, `blue`, `Qora`, `Ko'k`, Russian names). `garmentShadeOf`
-(`shared/models/garment-color.ts`) paints the shirt with the code, maps the old words to theme shades
+(`shared/garment/garment-color.ts`) paints the shirt with the code, maps the old words to theme shades
 (`--app-shirt-black`, `--app-shirt-blue`) and falls back to `--app-shirt-neutral`. The colour row shows
 a swatch; an old word is also named in the page language.
 
@@ -150,8 +174,12 @@ a swatch; an old word is also named in the page language.
 Rules the backend holds:
 
 - There is no `passport` field on this response at all. The passport is its own endpoint, owner only.
-- `Foreign`, `Unclaimed` and `Claimable` carry no owner name, no activation date, no expiry, no rating
-  and no stamps — those fields are not declared on the scan response, so they cannot leak.
+- The scan carries the owner's **username** and dates only (product decision, 2026-10-11, following the
+  NFC task's field list). It never carries the real name, phone, email, rating or stamps — those
+  fields are not declared on the scan response, so they cannot leak. The real name, rank, DP and level
+  stay on the owner-only passport.
+- Every valid scan is a genuine shirt, so the preview always shows the "verified TOFAN original" mark;
+  `Invalid` has its own screens.
 - `Invalid` carries no `garment` either — an unknown token must not confirm that a serial exists.
 - An unknown token returns `200` with `state: Invalid`, never `404`: the difference between the two
   would reveal whether the token exists.
@@ -180,18 +208,32 @@ Bearer required, owner only:
 
 ```jsonc
 {
-  "garment": { /* as above */ },
+  "garment": {/* as above */},
   "owner": { "firstName": "Jahongir", "lastName": "Esanov" },
   "activatedAt": "2026-09-21T10:12:00Z",
   "expiresAt": "2026-11-21T10:12:00Z",
-  "isExpired": false
+  "isExpired": false,
+  "standing": {
+    "rank": 12,
+    "lifetimeDp": 4820,
+    "level": { "name": "Warrior", "nameRu": "Воин", "nameUz": "Jangchi", "badgeIcon": null },
+  },
 }
 ```
 
-**There is no `rating` and no `stamps` field.** Gamification is not built, so nothing could fill either;
-both arrive with the first real stamp. Render the rating slot and page 2 of the booklet from their empty
-states until then — a `rating` of `0` would read as "this person scored nothing", which is worse than
-showing no number at all.
+`standing` (2026-10-11) is the owner's place in Gamification:
+
+- `rank` — global leaderboard position; `null` until the leaderboard job has counted the owner. Show
+  "not ranked yet", never `0`.
+- `lifetimeDp` — DP earned over all time. Not the balance: the leaderboard ranks by lifetime DP, and the
+  balance drops whenever DP is converted to TC.
+- `level` — `null` before the first level; `badgeIcon` may be `null` too (the seeded levels have none).
+- `standing` itself is `null` when Gamification could not answer. Hide the rating block then; the
+  passport still opens.
+
+It is on the passport only. The scan never says anything about the owner.
+
+**There is still no `stamps` field.** Render page 2 of the booklet from its empty state.
 
 - **400** `Garment.NotOwner` when the caller is not the owner — not `403`, so the frontend is never
   tempted to turn a transport status into a state. It re-reads the scan endpoint instead.
@@ -205,33 +247,41 @@ showing no number at all.
 
 Bearer required. A plain array inside the `Result` envelope, newest activation first. Revoked and hidden
 shirts are left out. Not called by this app yet: the shirt list is phase 4 (`docs/roadmap.md`).
+The Swagger schema (checked 2026-10-12) declares `imageFileId`, `activatedAt` and `expiresAt` as
+nullable, so the DTO for this endpoint must type all three as `string | null`.
 
 ```jsonc
 [
   {
     "token": "n1gq9Xh2…",
     "serialNumber": "01K7X8M4Q9F2A6BC3DEFGHJKMN",
-    "model": "Peaktofan Classic",
+    "dropName": "Drop 1",
+    "editionNumber": 349,
+    "variantName": "Oversize",
+    "imageFileId": "6f0c…",
     "activatedAt": "2026-09-21T10:12:00Z",
     "expiresAt": "2026-11-21T10:12:00Z",
-    "isExpired": false
-  }
+    "isExpired": false,
+  },
 ]
 ```
 
 ### Admin endpoints
 
-All six exist and require the admin policy. They belong to `tofan-ui`, not to this app; they are listed
+All of them exist and require the admin policy. They belong to `tofan-ui`, not to this app; they are listed
 here only so the scan states below make sense.
 
-| Endpoint                                     | Purpose                                     |
-| -------------------------------------------- | ------------------------------------------- |
-| `POST /admin/garments`                       | Create; the server makes the serial; returns `{ id, serialNumber, token, linkUrl }` |
-| `GET /admin/garments`                        | Paged list                                  |
-| `POST /admin/garments/{id}/status`           | Body `{ status }`: active, hidden, revoked  |
-| `POST /admin/garments/{id}/extend`           | Body `{ months }` 1–24; returns the new expiry |
-| `GET /admin/garments/export-links`           | `.xlsx` with every column, for the print shop |
-| `DELETE /admin/garments/{id}`                | Delete a shirt nobody activated             |
+| Endpoint                           | Purpose                                                                                                                                                                                                                           |
+| ---------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `POST /admin/drops`                | Create a drop: `{ name, totalQuantity }`                                                                                                                                                                                          |
+| `GET /admin/drops`                 | Drops with their variants                                                                                                                                                                                                         |
+| `POST /admin/drops/{id}/variants`  | Add a variant: `{ name, color, imageFileId }`                                                                                                                                                                                     |
+| `POST /admin/garments`             | Create 1–500 shirts from `{ dropId, variantId, size, material, manufacturedAt, quantity }`; the server gives each a serial and the next edition number; returns an array of `{ id, serialNumber, editionNumber, token, linkUrl }` |
+| `GET /admin/garments`              | Paged list                                                                                                                                                                                                                        |
+| `POST /admin/garments/{id}/status` | Body `{ status }`: active, hidden, revoked                                                                                                                                                                                        |
+| `POST /admin/garments/{id}/extend` | Body `{ months }` 1–24; returns the new expiry                                                                                                                                                                                    |
+| `GET /admin/garments/export-links` | `.xlsx` with every column, for the print shop                                                                                                                                                                                     |
+| `DELETE /admin/garments/{id}`      | Delete a shirt nobody activated                                                                                                                                                                                                   |
 
 One of them changes what a scan sees, so this app must handle it:
 
@@ -249,15 +299,14 @@ to render.
 
 ### Still missing
 
-| Endpoint                                      | Phase | Purpose                    |
-| --------------------------------------------- | ----- | -------------------------- |
-| `POST /payments/create`                       | 2     | Start a renewal payment    |
-| `POST /payments/webhook`                      | 2     | Provider callback (server) |
-| `POST /garments/{id}/stamps`                  | 3     | Award a stamp (app, admin) |
+| Endpoint                     | Phase | Purpose                    |
+| ---------------------------- | ----- | -------------------------- |
+| `POST /payments/create`      | 2     | Start a renewal payment    |
+| `POST /payments/webhook`     | 2     | Provider callback (server) |
+| `POST /garments/{id}/stamps` | 3     | Award a stamp (app, admin) |
 
 ## Backend work this app still depends on
 
 1. Stamp storage and the rule that a stamp is never revoked except by an admin (Gamification). That
    work adds the `stamps` field to the passport; it does not exist today.
-2. Rating calculation — undefined, so the passport has no `rating` field yet either.
-3. A transfer flow, if a resold shirt should ever change owner.
+2. A transfer flow, if a resold shirt should ever change owner.

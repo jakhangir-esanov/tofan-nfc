@@ -1,10 +1,18 @@
 :host {
   display: inline-flex;
   height: 40px;
+  aspect-ratio: 500 / 776;
 }
 
 .logo__mark {
-  height: 100%;
-  width: auto;
-  fill: var(--app-accent);
+  flex: 1 1 auto;
+  background: radial-gradient(
+    circle at 50% 28%,
+    var(--app-foil-1) 0,
+    var(--app-foil-2) 24%,
+    var(--app-foil-3) 58%,
+    var(--app-foil-4) 100%
+  );
+  -webkit-mask: var(--app-logo-mask) center / contain no-repeat;
+  mask: var(--app-logo-mask) center / contain no-repeat;
 }

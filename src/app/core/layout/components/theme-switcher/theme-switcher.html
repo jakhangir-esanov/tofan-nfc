@@ -1,0 +1,13 @@
+<button
+  type="button"
+  class="theme-switcher app-tap-target"
+  [attr.aria-label]="label()"
+  (click)="store.toggle()"
+>
+  <i
+    class="pi"
+    [class.pi-sun]="store.theme() === 'dark'"
+    [class.pi-moon]="store.theme() === 'light'"
+    aria-hidden="true"
+  ></i>
+</button>

@@ -1,10 +1,24 @@
 <div class="app-shell">
   <header class="app-shell__header">
-    <span class="app-shell__brand">
+    <a class="app-shell__brand" [routerLink]="home">
       <app-logo class="app-shell__logo" />
       <span i18n="@@layout.brand">PEAKTOFAN</span>
-    </span>
-    <app-language-switcher />
+    </a>
+    <div class="app-shell__tools">
+      <app-language-switcher />
+      <app-theme-switcher />
+      @if (signedIn()) {
+        <button
+          type="button"
+          class="app-shell__sign-out app-tap-target"
+          i18n-aria-label="@@profile.signOut"
+          aria-label="Chiqish"
+          (click)="signOut()"
+        >
+          <i class="pi pi-sign-out" aria-hidden="true"></i>
+        </button>
+      }
+    </div>
   </header>
 
   <main class="app-shell__content">

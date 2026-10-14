@@ -1,3 +1,9 @@
+:host {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+}
+
 .state-screen {
   display: flex;
   flex: 1 1 auto;
@@ -12,9 +18,9 @@
 .state-screen__mark {
   width: 44px;
   height: 44px;
-  border-radius: 50%;
   border: 2px solid var(--app-border);
   border-top-color: var(--app-accent);
+  border-radius: 50%;
   animation: state-screen-spin 900ms linear infinite;
 }
 
@@ -26,6 +32,7 @@
 .state-screen__text {
   margin: 0;
   color: var(--app-text-muted);
+  font-size: 14px;
 }
 
 @keyframes state-screen-spin {

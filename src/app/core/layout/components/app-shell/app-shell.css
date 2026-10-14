@@ -1,20 +1,49 @@
 .app-shell__header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-block: 12px;
+  margin-inline: calc(-1 * var(--app-gutter));
+  padding: calc(10px + env(safe-area-inset-top)) var(--app-gutter) 10px;
+  background: var(--app-tabbar);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
 }
 
 .app-shell__brand {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  font-size: 13px;
+  gap: 11px;
+  color: var(--app-text);
+  font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.22em;
-  color: var(--app-accent);
+  letter-spacing: 0.44em;
+  text-decoration: none;
 }
 
 .app-shell__logo {
   height: 24px;
+}
+
+.app-shell__tools {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.app-shell__sign-out {
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--app-text-muted);
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.app-shell__sign-out:hover {
+  color: var(--app-danger);
 }

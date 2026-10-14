@@ -1,6 +1,6 @@
 <section class="auth">
-  <h1 class="auth__title" i18n="@@auth.register.title">Ro'yxatdan o'tish</h1>
-  <p class="auth__lead app-muted" i18n="@@auth.register.lead">
+  <h1 class="app-heading" i18n="@@auth.register.title">Ro'yxatdan o'tish</h1>
+  <p class="app-lead" i18n="@@auth.register.lead">
     Bir marta ro'yxatdan o'ting — futbolkangiz pasporti shu akkauntga bog'lanadi.
   </p>
 
@@ -26,11 +26,11 @@
     <fieldset class="auth__field auth__choices">
       <legend class="auth__label" i18n="@@auth.field.gender">Jinsingiz</legend>
       <div class="auth__choice-row">
-        <label class="auth__choice app-tap-target">
+        <label class="auth__choice">
           <input type="radio" value="male" [formField]="registerForm.gender" />
           <span i18n="@@auth.gender.male">Erkak</span>
         </label>
-        <label class="auth__choice app-tap-target">
+        <label class="auth__choice">
           <input type="radio" value="female" [formField]="registerForm.gender" />
           <span i18n="@@auth.gender.female">Ayol</span>
         </label>
@@ -65,6 +65,7 @@
     <div class="app-action-bar">
       <p-button
         type="submit"
+        [fluid]="true"
         [loading]="store.submitting()"
         i18n-label="@@auth.register.submit"
         label="Ro'yxatdan o'tish"
